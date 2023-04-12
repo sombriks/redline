@@ -1,0 +1,36 @@
+{
+  "name": "service-node-koa",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "service",
+  "main": "index.js",
+  "scripts": {
+    "test": "cross-env NODE_ENV=test mocha -r dotenv-flow/config **/*.spec.js",
+    "test:coverage": "c8 npm run test",
+    "migrate:make": "knex migrate:make --knexfile app/config/db/knexfile.cjs -x mjs -- ",
+    "migrate:latest": "knex migrate:latest --knexfile app/config/db/knexfile.cjs",
+    "migrate:rollback": "knex migrate:rollback --knexfile app/config/db/knexfile.cjs"
+  },
+  "keywords": [],
+  "authors": [
+    "sombriks"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@koa/router": "^12.0.0",
+    "better-sqlite3": "^8.3.0",
+    "cross-env": "^7.0.3",
+    "dotenv-flow": "^3.2.0",
+    "knex": "^2.4.2",
+    "koa": "^2.14.1",
+    "koa-bodyparser": "^4.4.0",
+    "mysql2": "^3.2.0"
+  },
+  "devDependencies": {
+    "c8": "^7.13.0",
+    "chai": "^4.3.7",
+    "chai-http": "^4.3.0",
+    "mocha": "^10.2.0",
+    "nodemon": "^2.0.22"
+  }
+}
