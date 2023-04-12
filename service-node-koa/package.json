@@ -3,15 +3,20 @@
   "type": "module",
   "version": "1.0.0",
   "description": "service",
-  "main": "index.js",
+  "main": "index.mjs",
   "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon -r dotenv-flow/config",
     "test": "cross-env NODE_ENV=test mocha -r dotenv-flow/config **/*.spec.js",
     "test:coverage": "c8 npm run test",
     "migrate:make": "knex migrate:make --knexfile app/config/db/knexfile.cjs -x mjs -- ",
     "migrate:latest": "knex migrate:latest --knexfile app/config/db/knexfile.cjs",
     "migrate:rollback": "knex migrate:rollback --knexfile app/config/db/knexfile.cjs"
   },
-  "keywords": [],
+  "keywords": [
+    "financeiro",
+    "controle",
+    "app"
+  ],
   "authors": [
     "sombriks"
   ],
