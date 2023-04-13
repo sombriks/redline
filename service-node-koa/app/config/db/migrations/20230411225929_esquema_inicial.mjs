@@ -74,8 +74,8 @@ export const up = async (knex) => {
         .references("usuario.id").onDelete("cascade")
       tb.integer("tipo_conta_id").notNullable()
         .references("tipo_conta.id")
-      tb.timestamp("fechamento")
-      tb.timestamp("vencimento")
+      tb.integer("dia_fechamento")
+      tb.integer("dia_vencimento")
       tb.decimal("limite", 10, 2).notNullable()
     })
     .createTable("movimentacao", tb => {
@@ -102,6 +102,7 @@ export const up = async (knex) => {
       tb.timestamp("final").notNullable().defaultTo(knex.fn.now())
       tb.integer("cateoria_id").notNullable()
         .references("categoria.id").onDelete("cascade")
+      tb.decimal("limite", 10, 2).notNullable()
     });
 };
 
