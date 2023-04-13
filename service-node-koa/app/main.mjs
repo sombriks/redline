@@ -6,7 +6,9 @@ import {
   modelocategoriaRouter,
   statusRouter,
   tipoContaRouter,
-  tipoMovimentacaoRouter, tipoRecorrenciaRouter
+  tipoMovimentacaoRouter,
+  tipoRecorrenciaRouter,
+  usuarioRouter
 } from "./routes/index.mjs"
 
 export const app = new Koa()
@@ -31,3 +33,6 @@ app
 
   .use(tipoRecorrenciaRouter.routes())
   .use(tipoRecorrenciaRouter.allowedMethods())
+
+  .use(usuarioRouter.routes())
+  .use(usuarioRouter.allowedMethods())
