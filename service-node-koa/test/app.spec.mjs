@@ -26,4 +26,16 @@ describe("Base API test", () => {
         done();
       });
   })
+
+  it("should return modelocategoria", done => {
+    chai
+      .request(app.callback())
+      .get('/modelocategoria')
+      .end((err, res) => {
+        if (err) return done(err);
+        res.should.have.status(200);
+        res.body.should.be.an("array")
+        done();
+      });
+  })
 })

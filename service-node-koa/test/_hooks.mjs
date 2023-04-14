@@ -1,0 +1,10 @@
+import {dbMigrate, knex} from "../app/config/db/index.mjs";
+
+/**
+ * hooks to make sure there will be a testing database available with proper
+ * teardown after all tests are done https://mochajs.org/#root-hook-plugins
+ */
+export const mochaHooks = {
+  async beforeAll() { await dbMigrate() },
+  async afterAll() { await knex.destroy() }
+}

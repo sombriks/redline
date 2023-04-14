@@ -6,7 +6,7 @@
   "main": "index.mjs",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon -r dotenv-flow/config",
-    "test": "cross-env NODE_ENV=test mocha -r dotenv-flow/config --recursive test/**/*.spec.mjs",
+    "test": "cross-env NODE_ENV=test mocha -r dotenv-flow/config -r ./test/_hooks.mjs --recursive test/**/*.spec.mjs",
     "test:coverage": "c8 npm run test",
     "migrate:make": "knex migrate:make --knexfile app/config/db/knexfile.cjs -x mjs -- ",
     "migrate:latest": "knex migrate:latest --knexfile app/config/db/knexfile.cjs",
@@ -40,6 +40,7 @@
   },
   "c8": {
     "exclude": [
+      "test",
       "**/*.spec.mjs",
       "**/migrations/*"
     ]
