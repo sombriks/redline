@@ -1,8 +1,8 @@
 import chai from "chai"
 import chaiHttp from "chai-http"
 
-import {app} from "./main.mjs"
-import {knex, dbMigrate} from "./config/db/index.mjs";
+import {app} from "../app/main.mjs"
+import {knex, dbMigrate} from "../app/config/db/index.mjs";
 
 chai.should();
 chai.use(chaiHttp);
