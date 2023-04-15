@@ -27,7 +27,12 @@ export const up = async (knex) => {
       { descricao: "TRANSPORTE" }, { descricao: "ASSINATURAS" }, { descricao: "SERVICOS" },
       { descricao: "INVESTIMENTOS" }, { descricao: "IMPREVISTOS" }, { descricao: "ELETRONICOS" },
       { descricao: "LAZER" }, { descricao: "SAUDE" }, { descricao: "RESERVA" }
-    ])
+    ]),
+    knex("usuario").insert({
+      nome:"adm",
+      email: "adm@meudinheiro.cc",
+      senha: "6b6e6f776e20696e697469616c697a61@09ef83851dbb53c8eb7d47634bcb08ec"
+    })
   ])
 };
 

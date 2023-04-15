@@ -1,9 +1,11 @@
 import chai, {expect} from "chai"
 
-import {knex, dbMigrate} from "../app/config/db/index.mjs";
-import {listModelocategoria, listTipoRecorrencia} from "../app/services/index.mjs"
-import {listTipoConta} from "../app/services/tipo_conta.mjs";
-import {listTipoMovimentacao} from "../app/services/tipo_movimentacao.mjs";
+import {
+  listModelocategoria,
+  listTipoRecorrencia,
+  listTipoConta,
+  listTipoMovimentacao
+} from "../app/services/index.mjs"
 
 chai.should();
 
@@ -18,24 +20,24 @@ describe("Base service test", () => {
   it("should list modelocategoria", async () => {
     const modelos = await listModelocategoria()
     modelos.should.be.a("array")
-    expect(modelos.find(m => m.descricao == "SALARIO")).to.be.ok
+    expect(modelos.find(m => m.descricao === "SALARIO")).to.be.ok
   })
 
   it("should list tipo_conta", async () => {
     const tipos = await listTipoConta()
     tipos.should.be.a("array")
-    expect(tipos.find(m => m.descricao == "CARTAO")).to.be.ok
+    expect(tipos.find(m => m.descricao === "CARTAO")).to.be.ok
   })
 
   it("should list tipo_movimentacao", async () => {
     const tipos = await listTipoMovimentacao()
     tipos.should.be.a("array")
-    expect(tipos.find(m => m.descricao == "ENTRADA")).to.be.ok
+    expect(tipos.find(m => m.descricao === "ENTRADA")).to.be.ok
   })
 
   it("should list tipo_recorrencia", async () => {
     const tipos = await listTipoRecorrencia()
     tipos.should.be.a("array")
-    expect(tipos.find(m => m.descricao == "MENSAL")).to.be.ok
+    expect(tipos.find(m => m.descricao === "MENSAL")).to.be.ok
   })
 })

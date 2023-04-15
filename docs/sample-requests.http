@@ -1,0 +1,9 @@
+### attempt to login
+
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "adm@meudinheiro.cc",
+  "senha": "e1e2e3e4"
+}
