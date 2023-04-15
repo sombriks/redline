@@ -12,6 +12,18 @@ Content-Type: application/json
 
 ### Create new user
 
+POST {{url}}/signup
+Content-Type: application/json
+
+{
+  "nome": "teste 1",
+  "email": "teste@teste.com",
+  "senha": "e1e2e3e4"
+}
+
+
+> {% client.global.set("lastUser", response.body.json) %}
+
 ### Update user
 
 ### List users

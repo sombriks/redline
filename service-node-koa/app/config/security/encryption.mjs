@@ -29,4 +29,5 @@ export const sign = payload => {
 }
 
 export const verify = token => {
+  jwt.verify(token?.token || token)
 }

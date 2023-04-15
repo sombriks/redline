@@ -1,5 +1,5 @@
 import chai from "chai"
-import {decrypt, encrypt} from "../app/config/security.mjs";
+import {decrypt, encrypt} from "../app/config/security/index.mjs";
 
 chai.should();
 
