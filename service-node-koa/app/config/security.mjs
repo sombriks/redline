@@ -1,4 +1,4 @@
-import {createCipheriv, randomBytes, createDecipheriv} from "crypto";
+import {createCipheriv, createDecipheriv, randomBytes} from "crypto";
 import jwt from "jsonwebtoken";
 
 export const encrypt = (plain, iv = randomBytes(16)) => {
@@ -25,8 +25,7 @@ export const decrypt = (secret) => {
 
 export const sign = payload => {
   // TODO what else to add to payload?
-  const token = {token: jwt.sign(payload, process.env.SECRET)}
-  return token
+  return {token: jwt.sign(payload, process.env.SECRET)}
 }
 
 export const verify = token => {

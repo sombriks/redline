@@ -1,6 +1,6 @@
 # ROADMAP
 
-- [ ] core db
+- [X] core db
 - [ ] api
 - [ ] tests
 - [ ] publish 

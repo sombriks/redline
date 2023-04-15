@@ -30,6 +30,7 @@ export const up = async (knex) => {
     ]),
     knex("usuario").insert({
       nome:"adm",
+      admin: true,
       email: "adm@meudinheiro.cc",
       senha: "6b6e6f776e20696e697469616c697a61@09ef83851dbb53c8eb7d47634bcb08ec"
     })

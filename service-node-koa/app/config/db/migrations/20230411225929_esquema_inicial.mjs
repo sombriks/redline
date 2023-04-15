@@ -15,6 +15,7 @@ export const up = async (knex) => {
       tb.string("nome").notNullable()
       tb.string("email").notNullable().unique()
       tb.string("senha").notNullable()
+      tb.boolean("admin").notNullable().defaultTo(false)
       tb.timestamp("criacao").notNullable().defaultTo(knex.fn.now())
       tb.timestamp("alteracao").notNullable().defaultTo(knex.fn.now())
     })

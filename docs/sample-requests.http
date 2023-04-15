@@ -1,9 +1,43 @@
-### attempt to login
+### Attempt to admin login
 
-POST http://localhost:3000/login
+POST {{url}}/login
 Content-Type: application/json
 
 {
   "email": "adm@meudinheiro.cc",
   "senha": "e1e2e3e4"
 }
+
+> {% client.global.set("token", response.body.json.token) %}
+
+### Create new user
+
+### Update user
+
+### List users
+
+### Check user default categories
+
+### Remove user
+
+### Create user and
+
+### Add an account
+
+### Add an entry to the account
+
+### Modify an entry - add a category
+
+### Remove entry
+
+### Add planning
+
+### Update planning
+
+### List plannings
+
+### Remove planning
+
+### Create new category
+
+### Add entry to new category
