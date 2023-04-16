@@ -17,25 +17,25 @@ describe("Base service test", () => {
     done();
   })
 
-  it("should list modelocategoria", async () => {
+  it("Should list modelocategoria", async () => {
     const modelos = await listModelocategoria()
     modelos.should.be.a("array")
     expect(modelos.find(m => m.descricao === "SALARIO")).to.be.ok
   })
 
-  it("should list tipo_conta", async () => {
+  it("Should list tipo_conta", async () => {
     const tipos = await listTipoConta()
     tipos.should.be.a("array")
     expect(tipos.find(m => m.descricao === "CARTAO")).to.be.ok
   })
 
-  it("should list tipo_movimentacao", async () => {
+  it("Should list tipo_movimentacao", async () => {
     const tipos = await listTipoMovimentacao()
     tipos.should.be.a("array")
     expect(tipos.find(m => m.descricao === "ENTRADA")).to.be.ok
   })
 
-  it("should list tipo_recorrencia", async () => {
+  it("Should list tipo_recorrencia", async () => {
     const tipos = await listTipoRecorrencia()
     tipos.should.be.a("array")
     expect(tipos.find(m => m.descricao === "MENSAL")).to.be.ok

@@ -10,7 +10,8 @@ authRouter.post("/login", async ctx => {
   const {email, senha} = ctx.request.body
   const user = await login(email, senha)
   if (!user) return // 404
-  ctx.body = sign(user)
+  const payload = {...user, senha: undefined}
+  ctx.body = sign(payload)
 })
 
 authRouter.post("/signup", async ctx => { // TODO captcha protection

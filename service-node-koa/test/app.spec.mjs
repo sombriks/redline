@@ -1,7 +1,8 @@
-import chai from "chai"
+import chai, {expect} from "chai"
 import chaiHttp from "chai-http"
 
 import {app} from "../app/main.mjs"
+import {verify} from "../app/config/security/index.mjs"
 
 chai.should();
 chai.use(chaiHttp);
@@ -14,7 +15,7 @@ describe("Base API test", () => {
     done();
   })
 
-  it("should return status ONLINE", done => {
+  it("Should return status ONLINE", done => {
     chai
       .request(app.callback())
       .get('/status')
@@ -26,7 +27,7 @@ describe("Base API test", () => {
       });
   })
 
-  it("should return modelocategoria", done => {
+  it("Should return modelocategoria", done => {
     chai
       .request(app.callback())
       .get('/modelocategoria')
@@ -34,6 +35,24 @@ describe("Base API test", () => {
         if (err) return done(err);
         res.should.have.status(200);
         res.body.should.be.an("array")
+        done();
+      });
+  })
+
+  it("Should login", done => {
+    const testUser = {email: "adm@meudinheiro.cc", senha: "e1e2e3e4"}
+    chai
+      .request(app.callback())
+      .post("/login")
+      .send(testUser)
+      .end((err, res) => {
+        if (err) return done(err);
+        res.should.have.status(200);
+        res.body.should.be.an("object")
+        const data = verify(res.body)
+        expect(data).to.be.ok
+        data.email.should.be.eq(testUser.email)
+        expect(data.senha).to.be.undefined
         done();
       });
   })
