@@ -43,6 +43,7 @@ export const up = async (knex) => {
  */
 export const down = async (knex) => {
   return Promise.all([
+    knex("usuario").del(),
     knex("modelocategoria").del(),
     knex("tipo_conta").del(),
     knex("tipo_recorrencia").del(),
