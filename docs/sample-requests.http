@@ -22,9 +22,19 @@ Content-Type: application/json
 }
 
 
-> {% client.global.set("lastUser", response.body.json) %}
+> {% client.global.set("lastUserId", response.body.json.id) %}
 
 ### Update user
+
+PUT {{url}}/user/{{lastUserId}}
+Content-Type: application/json
+Authorization: `Bearer {{token}}`
+
+{
+  "nome": "teste 2",
+  "email": "teste@teste.com",
+  "senha": "e2e3e4e5"
+}
 
 ### List users
 
