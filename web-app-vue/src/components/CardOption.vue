@@ -1,9 +1,9 @@
 <template>
-    <div class="card">{{ props.title }}</div>
+  <div class="card">{{ props.title }}</div>
 </template>
 
 <script setup>
-const props = defineProps(["title"])
+const props = defineProps(["title", "active"]);
 </script>
 
 <style scoped>
@@ -14,6 +14,7 @@ const props = defineProps(["title"])
     padding: 1em;
     border-radius: 1em;
 }
+
 .expand {
 
 }
