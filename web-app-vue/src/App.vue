@@ -10,17 +10,18 @@ const activeCard = reactive({
   carteirasContas: false,
   configuracoes: false
 });
+
+const toggle = (k, v) => {
+  Object.keys(activeCard).forEach(k => activeCard[k] = false)
+  activeCard[k] = v;
+};
 </script>
 
 <template>
   <div class="container">
     <h1>Redline</h1>
-    <card-option title="Login" :active="activeCard.login"></card-option>
-    <card-option title="Movimentação" :active="activeCard.movimentacao"></card-option>
-    <card-option title="Categorias" :active="activeCard.categorias"></card-option>
-    <card-option title="Planejamentos" :active="activeCard.planejamentos"></card-option>
-    <card-option title="Carteiras/Contas" :active="activeCard.carteirasContas"></card-option>
-    <card-option title="Configurações" :active="activeCard.configuracoes"></card-option>
+    <card-option v-for="(item,key) in activeCard" :key="key" :title="key" :active="item"
+                 @onActive="e => toggle(key,e)"></card-option>
   </div>
 </template>
 
