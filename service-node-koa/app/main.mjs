@@ -1,4 +1,5 @@
 import Koa from "koa";
+import cors from "@koa/cors"
 import bodyParser from "koa-bodyparser";
 
 import {
@@ -19,6 +20,7 @@ import {
 export const app = new Koa()
 
 app
+  .use(cors())
   .use(bodyParser())
 
   .use(authRouter.routes())
