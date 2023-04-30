@@ -2,7 +2,10 @@
   <div class="card" ref="card"
        :class="{'expand':props.active, 'shrink': !props.active}"
        @click="onActive">
-    {{ props.title }}
+    <div v-if="props.active">
+      <slot></slot>
+    </div>
+    <div v-else>{{props.title}}</div>
   </div>
 </template>
 

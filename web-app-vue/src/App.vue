@@ -1,6 +1,7 @@
 <script setup>
 import CardOption from "@/components/CardOption.vue";
 import { reactive } from "vue";
+import LoginCard from "@/components/usuario/login-card.vue";
 
 const activeCard = reactive({
   login: false,
@@ -12,7 +13,7 @@ const activeCard = reactive({
 });
 
 const toggle = (k, v) => {
-  Object.keys(activeCard).forEach(k => activeCard[k] = false)
+  Object.keys(activeCard).forEach(k => activeCard[k] = false);
   activeCard[k] = v;
 };
 </script>
@@ -20,6 +21,10 @@ const toggle = (k, v) => {
 <template>
   <div class="container">
     <h1>Redline</h1>
+    <card-option :title="'Login'" :active="activeCard.login"
+                 @onActive="e => toggle('login',e)">
+      <login-card></login-card>
+    </card-option>
     <card-option v-for="(item,key) in activeCard" :key="key" :title="key" :active="item"
                  @onActive="e => toggle(key,e)"></card-option>
   </div>
