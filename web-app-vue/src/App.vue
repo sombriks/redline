@@ -56,7 +56,6 @@ const cState = useCardState();
     justify-content: center;
     min-width: 480px;
     border-radius: 2em;
-    border: 1px solid red;
     overflow: hidden;
 }
 </style>
