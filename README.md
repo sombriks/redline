@@ -1,4 +1,4 @@
-# Redline
+# [Redline](https://github.com/sombriks/redline)
 
 https://lazerhawk.bandcamp.com/album/redline
 
