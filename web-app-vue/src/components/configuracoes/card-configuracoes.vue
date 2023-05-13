@@ -1,5 +1,15 @@
 <template>
-  <div>Configurações</div>
+  <div>Configurações
+    <button @click="logout()">Desconectar</button>
+  </div>
 </template>
-<script setup></script>
+<script setup>
+
+import { useUserStore } from "@/stores/userStore";
+
+const uStore = useUserStore();
+const logout = () => {
+  uStore.logout();
+};
+</script>
 <style scoped></style>

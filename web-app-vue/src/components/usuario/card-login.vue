@@ -8,18 +8,21 @@
     <input type="password" v-model="senha" required />
     <hr>
     <button v-if="!createMode" type="submit">Login</button>
-    <button type="button" @click="createMode = !createMode">{{createMode ? "Cancelar" : "Criar conta"}}</button>
+    <button type="button" aria-roledescription="create-mode" @click="createMode = !createMode">{{createMode ? "Cancelar" : "Criar conta"}}</button>
     <button v-if="createMode" type="submit">Criar</button>
   </form>
 </template>
 <script setup>
 import { ref } from "vue";
 import { login, createUser } from "@/services/api";
+import { useUserStore } from "@/stores/userStore";
 
 const nome = ref("");
 const email = ref("");
 const senha = ref("");
 const createMode = ref(false);
+
+const uState = useUserStore()
 
 const doLogin = async () => {
   try {
@@ -27,11 +30,10 @@ const doLogin = async () => {
       const creationResult = await createUser({
         nome: nome.value, email: email.value, senha: senha.value
       })
-      console.log(creationResult);
     }
     const result = await login({ email: email.value, senha: senha.value });
-    console.log(result);
     // TODO guardar informação do usuário logado
+    uState.setToken(result.token)
   } catch (e) {
     console.log(e);
     alert("Algo deu errado");
