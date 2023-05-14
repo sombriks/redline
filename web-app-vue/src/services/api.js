@@ -19,3 +19,10 @@ export const login = async (user) => {
 export const createUser = async (newUser) => {
   return await req({ uri: "/signup", payload: newUser });
 };
+
+export const removeAccount = async ({ email, senha }) => {
+  return await req({
+    method: "DELETE",
+    uri: `/removeAccount?email=${email}&senha=${senha}`
+  });
+};

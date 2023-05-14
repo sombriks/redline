@@ -27,4 +27,5 @@ export const setRedLine = redLine => {
 
 export const clearRedLine = () => {
   localStorage.removeItem("redLine");
+  return getRedLine();
 };
