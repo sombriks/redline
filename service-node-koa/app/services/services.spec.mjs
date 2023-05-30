@@ -5,7 +5,7 @@ import {
   listTipoRecorrencia,
   listTipoConta,
   listTipoMovimentacao
-} from "../app/services/index.mjs"
+} from "./index.mjs"
 
 chai.should();
 

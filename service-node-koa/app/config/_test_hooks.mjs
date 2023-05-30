@@ -1,4 +1,4 @@
-import {dbMigrate, knex} from "../app/config/db/index.mjs";
+import {dbMigrate, knex} from "./db/index.mjs";
 
 /**
  * hooks to make sure there will be a testing database available and proper

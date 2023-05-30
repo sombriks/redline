@@ -92,7 +92,7 @@ export const up = async (knex) => {
       tb.integer("conta_id").notNullable().unsigned()
         .references("conta.id")
         .onDelete("cascade")
-      tb.integer("cateoria_id").unsigned()
+      tb.integer("categoria_id").unsigned()
         .references("categoria.id")
       tb.integer("recorrencia_id").unsigned()
         .references("recorrencia.id")

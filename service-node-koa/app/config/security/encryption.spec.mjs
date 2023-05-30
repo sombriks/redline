@@ -1,9 +1,9 @@
 import chai from "chai"
-import {decrypt, encrypt} from "../app/config/security/index.mjs";
+import {decrypt, encrypt} from "./index.mjs";
 
 chai.should();
 
-describe("General config tests", () => {
+describe("Encryption tests", () => {
 
   it("Should be in testing mode", done => {
     if (!process.env.NODE_ENV) return done(new Error("NODE_ENV vazio"));
