@@ -94,6 +94,7 @@ export const up = async (knex) => {
         .onDelete("cascade")
       tb.integer("categoria_id").unsigned()
         .references("categoria.id")
+        .onDelete("set null")
       tb.integer("recorrencia_id").unsigned()
         .references("recorrencia.id")
         .onDelete("cascade")

@@ -8,11 +8,18 @@
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/service-node-koa/redline.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="redline" uuid="4d31fea2-0be7-4e21-930a-a5793487d1ca">
+    <data-source source="LOCAL" name="mysql@sombriks.org" uuid="4d31fea2-0be7-4e21-930a-a5793487d1ca">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://sombriks.org:3306</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="postgres@sombriks.org" uuid="d3fd0892-d6fa-43af-84bc-93a7f32ac84c">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://sombriks.org:5432/redline</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

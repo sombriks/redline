@@ -27,10 +27,12 @@ module.exports = {
     connection: {
       filename: ':memory:'
     }
+    // client: 'pg',
+    // connection: process.env.PG_CONNECTION_URL
   },
   production: {
     ..._cfg,
-    client: 'mysql2',
-    connection: process.env.MYSQL_CONNECTION_URL
+    client: 'pg',
+    connection: process.env.PG_CONNECTION_URL
   }
 }
