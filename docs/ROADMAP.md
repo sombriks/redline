@@ -3,7 +3,7 @@
 - [X] core db
 - [X] api
 - [X] tests
-- [ ] publish
-- [ ] web client
-- [ ] mobile app
+- [X] web client
 - [ ] more tests
+- [ ] publish
+- [ ] mobile app

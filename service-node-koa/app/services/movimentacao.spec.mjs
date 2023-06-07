@@ -1,17 +1,18 @@
 import chai, { expect } from "chai";
 
 import {
-  atualizaMovimentacao, findMovimentacaoById,
+  atualizaMovimentacao,
+  findMovimentacaoById,
   getAdmin,
   listCategoriasByUsuarioIdAndDescricao,
-  listContasByUsuarioId,
+  listContas,
   listMovimentacaoByUsuarioId,
   novaEntrada,
-  novaSaida, removeMovimentacao,
+  novaSaida,
+  removeMovimentacao,
   resetCategorias,
   resetConta
 } from "./index.mjs";
-import { knex } from "../config/db/index.mjs";
 
 chai.should();
 
@@ -21,7 +22,7 @@ describe("Movimentacao service test", () => {
     const { id } = await getAdmin();
     await resetCategorias(id);
     await resetConta(id);
-    const [conta] = await listContasByUsuarioId(id);
+    const [conta] = await listContas({ usuario_id: id });
     const [categoria] = await listCategoriasByUsuarioIdAndDescricao({ usuario_id: id, descricao: "OUTROS" });
     // movimentações de teste
     await novaEntrada({
@@ -54,7 +55,7 @@ describe("Movimentacao service test", () => {
 
   it("Should save a new movimentacao", async () => {
     const usuario = await getAdmin();
-    const [conta] = await listContasByUsuarioId(usuario.id);
+    const [conta] = await listContas({ usuario_id: usuario.id });
     const result = await novaEntrada({
       conta_id: conta.id,
       valor: 200,
@@ -85,8 +86,8 @@ describe("Movimentacao service test", () => {
   it("Should delete movimentacao", async () => {
     const usuario = await getAdmin();
     const movimentacoes = await listMovimentacaoByUsuarioId(usuario.id);
-    await removeMovimentacao(movimentacoes[0].id)
+    await removeMovimentacao(movimentacoes[0].id);
     const result = await findMovimentacaoById(movimentacoes[0].id);
-    expect(result).to.be.undefined
-  })
+    expect(result).to.be.undefined;
+  });
 });

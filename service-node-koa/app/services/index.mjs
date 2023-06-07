@@ -1,5 +1,4 @@
 // reexportação dos módulos de serviço
-export * from "./auth.mjs"
 export * from "./categoria.mjs"
 export * from "./conta.mjs"
 export * from "./modelocategoria.mjs"

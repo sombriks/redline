@@ -20,9 +20,9 @@ export const createUser = async (newUser) => {
   return await req({ uri: "/signup", payload: newUser });
 };
 
-export const removeAccount = async ({ email, senha }) => {
+export const removeAccount = async ({ id, email, senha }) => {
   return await req({
     method: "DELETE",
-    uri: `/removeAccount?email=${email}&senha=${senha}`
+    uri: `/${id}/removeAccount?email=${email}&senha=${senha}`
   });
 };

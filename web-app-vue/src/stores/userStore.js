@@ -26,9 +26,9 @@ export const useUserStore = defineStore("user-store", () => {
     redLine = clearRedLine();
   };
 
-  const deleteAccount = async ({email, senha}) => {
-    await removeAccount({email, senha})
-    logout()
+  const deleteAccount = async ({ email, senha }) => {
+    await removeAccount({ id: userData.value.id, email, senha });
+    logout();
   };
 
   return { store, setToken, logout, userData, deleteAccount };

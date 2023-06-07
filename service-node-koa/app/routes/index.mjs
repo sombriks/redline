@@ -1,5 +1,4 @@
 // reexportação dos módulos de rota
-export * from "./auth.mjs"
 export * from "./categoria.mjs"
 export * from "./conta.mjs"
 export * from "./modelocategoria.mjs"
