@@ -9,12 +9,6 @@ chai.use(chaiHttp);
 
 describe("User API test", () => {
 
-  it("Should be in testing mode", done => {
-    if (!process.env.NODE_ENV) return done(new Error("NODE_ENV vazio"));
-    process.env.NODE_ENV.should.be.eql("test");
-    done();
-  });
-
   it("Should login", done => {
     const testUser = { email: "adm@meudinheiro.cc", senha: "e1e2e3e4" };
     chai

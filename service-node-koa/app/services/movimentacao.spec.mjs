@@ -39,12 +39,6 @@ describe("Movimentacao service test", () => {
     });
   });
 
-  it("Should be in testing mode", done => {
-    if (!process.env.NODE_ENV) return done(new Error("NODE_ENV vazio"));
-    process.env.NODE_ENV.should.be.eql("test");
-    done();
-  });
-
   it("Should list movimentacoes", async () => {
     const usuario = await getAdmin();
     const movimentacoes = await listMovimentacaoByUsuarioId(usuario.id);

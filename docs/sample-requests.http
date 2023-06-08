@@ -1,3 +1,23 @@
+### List modelocategoria
+
+GET {{url}}/modelocategoria
+Content-Type: application/json
+
+### List tipo conta
+
+GET {{url}}/tipo_conta
+Content-Type: application/json
+
+### List tipo movimentacao
+
+GET {{url}}/tipo_movimentacao
+Content-Type: application/json
+
+### List tipo recorrencia
+
+GET {{url}}/tipo_recorrencia
+Content-Type: application/json
+
 ### Attempt to admin login
 
 POST {{url}}/login
@@ -38,7 +58,7 @@ Authorization: `Bearer {{token}}`
 
 ### List users
 
-### Check user default categories
+### Check user categories
 
 ### Remove user
 

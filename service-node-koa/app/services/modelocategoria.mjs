@@ -1,4 +1,3 @@
-import {knex} from "../config/db/index.mjs"
+import { knex } from "../config/db/index.mjs";
 
-export const listModelocategoria = async () =>
-  await knex("modelocategoria")
+export const listModelocategoria = async () => await knex("modelocategoria");

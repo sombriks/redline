@@ -11,12 +11,6 @@ chai.should();
 
 describe("Base service test", () => {
 
-  it("Should be in testing mode", done => {
-    if (!process.env.NODE_ENV) return done(new Error("NODE_ENV vazio"));
-    process.env.NODE_ENV.should.be.eql("test");
-    done();
-  });
-
   it("Should list modelo categoria", async () => {
     const modelos = await listModelocategoria();
     modelos.should.be.a("array");

@@ -1,3 +1,3 @@
-import {knex} from "../config/db/index.mjs"
+import { knex } from "../config/db/index.mjs";
 
-export const listTipoRecorrencia = async () => await knex("tipo_recorrencia")
+export const listTipoRecorrencia = async () => await knex("tipo_recorrencia");

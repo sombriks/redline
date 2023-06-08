@@ -8,8 +8,9 @@ export const resetConta = async (usuario_id) => {
   return knex("conta").insert(nova, ["id"]);
 };
 
-export const listContas = async ({ usuario_id, limit = 100, offset = 0 }) =>
-  await knex("conta").where({ usuario_id }).limit(limit).offset(offset);
+export const listContas = async ({ usuario_id, q = "", limit = 100, offset = 0 }) =>
+  await knex("conta").where({ usuario_id })
+    .andWhereLike("descricao", `%${q}%`).limit(limit).offset(offset);
 
 export const findConta = async ({ id, usuario_id }) =>
   await knex("conta").where({ id, usuario_id }).first();
@@ -17,8 +18,10 @@ export const findConta = async ({ id, usuario_id }) =>
 export const insertConta = async conta =>
   await knex("conta").insert(conta, ["id"]);
 
-export const updateConta = async ({ id, conta }) =>
-  await knex("conta").update(conta).where({ id });
+export const updateConta = async ({ id = -1, conta }) => {
+  conta.id = id;
+  return knex("conta").update(conta).where({ id });
+};
 
 export const delConta = async (id = -1) =>
   await knex("conta").del().where({ id });

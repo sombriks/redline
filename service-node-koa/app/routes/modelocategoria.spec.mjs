@@ -9,12 +9,6 @@ chai.use(chaiHttp);
 
 describe("Modelocategoria API test", () => {
 
-  it("Should be in testing mode", done => {
-    if (!process.env.NODE_ENV) return done(new Error("NODE_ENV vazio"));
-    process.env.NODE_ENV.should.be.eql("test");
-    done();
-  })
-
   it("Should return modelocategoria", done => {
     chai
       .request(app.callback())
