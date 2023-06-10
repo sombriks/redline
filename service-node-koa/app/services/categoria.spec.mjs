@@ -1,7 +1,14 @@
 import chai, { expect } from "chai";
 import { getAdmin } from "./usuario.mjs";
 import { listContas, resetConta } from "./conta.mjs";
-import { findCategoria, insertCategoria, listCategorias, resetCategorias } from "./categoria.mjs";
+import {
+  delCategoria,
+  findCategoria,
+  insertCategoria,
+  listCategorias,
+  resetCategorias,
+  updateCategoria
+} from "./categoria.mjs";
 
 chai.should();
 
@@ -34,5 +41,21 @@ describe("Categoria service tests", () => {
     };
     const result = await insertCategoria(novaCategoria);
     expect(result).to.be.ok;
+  });
+
+  it("Should update categoria", async () => {
+    const { id } = await getAdmin();
+    const [categoria] = await listCategorias({ usuario_id: id });
+    categoria.descricao = "atualizada descrição";
+    await updateCategoria({ id: categoria.id, categoria });
+    const result = await findCategoria({ id: categoria.id, usuario_id: id });
+    expect(result).to.be.ok;
+    result.descricao.should.be.eq(categoria.descricao);
+  });
+
+  it("Should remove categoria", async () => {
+    const { id } = await getAdmin();
+    const [categoria] = await listCategorias({ usuario_id: id });
+    const result = await delCategoria({ id: categoria.id, usuario_id: id });
   });
 });
