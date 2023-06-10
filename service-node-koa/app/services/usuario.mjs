@@ -4,7 +4,7 @@ import { decrypt, encrypt } from "../config/security/index.mjs";
 export const novoUsuario = async ({ nome, email, senha }) =>
   knex("usuario").insert({ nome, email, senha: encrypt(senha) }, ["id"]);
 
-export const delUsuario = async id =>
+export const delUsuario = async (id=-1) =>
   knex("usuario").del().where({ id });
 
 export const getAdmin = async () =>

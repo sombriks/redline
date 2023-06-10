@@ -9,8 +9,12 @@ export const resetConta = async (usuario_id) => {
 };
 
 export const listContas = async ({ usuario_id, q = "", limit = 100, offset = 0 }) =>
-  await knex("conta").where({ usuario_id })
-    .andWhereLike("descricao", `%${q}%`).limit(limit).offset(offset);
+  await knex("conta")
+    .where({ usuario_id })
+    .andWhereLike("descricao", `%${q}%`)
+    .orderBy("id")
+    .limit(limit)
+    .offset(offset);
 
 export const findConta = async ({ id, usuario_id }) =>
   await knex("conta").where({ id, usuario_id }).first();

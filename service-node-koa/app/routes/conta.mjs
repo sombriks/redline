@@ -24,7 +24,7 @@ contaRouter.post("/:usuario_id/conta", async ctx => {
 contaRouter.put("/:usuario_id/conta/:id", async ctx => {
   const { usuario_id, id } = ctx.request.params;
   const conta = ctx.request.body;
-  if (conta.usuario_id != usuario_id) ctx.throw(403, "invalid account");
+  if (conta.usuario_id != usuario_id) ctx.throw(403, "invalid user");
   else ctx.body = await updateConta({ id, conta });
 });
 
