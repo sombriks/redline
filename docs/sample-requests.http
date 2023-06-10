@@ -60,9 +60,23 @@ Authorization: `Bearer {{token}}`
 
 ### Check user categories
 
-### Remove user
+GET {{url}}/{{lastUserId}}/categoria
+Content-Type: application/json
+Authorization: `Bearer {{token}}`
 
-### Create user and
+
+### Create new user category
+
+POST {{url}}/{{lastUserId}}/categoria
+Content-Type: application/json
+Authorization: `Bearer {{token}}`
+
+{
+  "usuario_id": "{{lastUserId}}",
+  "descricao": "NOVA"
+}
+
+### Remove user
 
 ### Add an account
 

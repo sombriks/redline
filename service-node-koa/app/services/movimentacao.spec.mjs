@@ -20,8 +20,8 @@ describe("Movimentacao service test", () => {
 
   before(async () => {
     const { id } = await getAdmin();
-    await resetCategorias(id);
-    await resetConta(id);
+    await resetConta({ usuario_id: id });
+    await resetCategorias({ usuario_id: id });
     const [conta] = await listContas({ usuario_id: id });
     const [categoria] = await listCategorias({ usuario_id: id, q: "OUTROS" });
     // movimentações de teste

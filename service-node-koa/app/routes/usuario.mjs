@@ -21,8 +21,8 @@ usuarioRouter.post("/login", async ctx => {
 usuarioRouter.post("/signup", async ctx => { // TODO captcha protection
   const { nome, email, senha } = ctx.request.body;
   const [{ id }] = await novoUsuario({ nome, email, senha });
-  await resetCategorias(id);
-  await resetConta(id);
+  await resetCategorias({ usuario_id: id });
+  await resetConta({ usuario_id: id });
   ctx.body = { id, nome, email };
 });
 
@@ -32,8 +32,8 @@ usuarioRouter.del("/:usuario_id/removeAccount", async ctx => {
   const usuario = await login({ email, senha });
   if (!usuario) {
     ctx.body = null;
-  } else if(ctx.request.params.usuario_id != usuario.id) {
-    ctx.throw("mismatch user id")
+  } else if (ctx.request.params.usuario_id != usuario.id) {
+    ctx.throw("mismatch user id");
   } else {
     ctx.body = delUsuario(usuario.id);
   }

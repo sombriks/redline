@@ -29,6 +29,6 @@ contaRouter.put("/:usuario_id/conta/:id", async ctx => {
 });
 
 contaRouter.del("/:usuario_id/conta/:id", async ctx => {
-  const { id } = ctx.request.params;
-  ctx.body = await delConta(id);
+  const { usuario_id, id } = ctx.request.params;
+  ctx.body = await delConta({ usuario_id, id });
 });

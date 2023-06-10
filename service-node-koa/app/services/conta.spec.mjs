@@ -9,7 +9,7 @@ describe("Conta service tests", () => {
 
   before(async () => {
     const { id } = await getAdmin();
-    await resetConta(id);
+    await resetConta({ usuario_id: id });
   });
 
   it("Should list contas", async () => {
@@ -58,7 +58,7 @@ describe("Conta service tests", () => {
     expect(contas).to.be.an("array");
     expect(contas.length > 0).to.be.ok;
     const [conta] = contas;
-    const result = await delConta(conta.id);
+    const result = await delConta({ id: conta.id, usuario_id: id });
     expect(result).to.be.ok;
     const none = await findConta({ id: conta.id, usuario_id: id });
     expect(none).to.be.undefined;

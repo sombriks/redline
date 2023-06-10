@@ -1,6 +1,6 @@
 import { knex } from "../config/db/index.mjs";
 
-export const resetConta = async (usuario_id) => {
+export const resetConta = async ({ usuario_id }) => {
   await knex("conta").where({ usuario_id }).del();
   const { id } = await knex("tipo_conta")
     .where("descricao", "CARTEIRA").first();
@@ -27,5 +27,5 @@ export const updateConta = async ({ id = -1, conta }) => {
   return knex("conta").update(conta).where({ id });
 };
 
-export const delConta = async (id = -1) =>
-  await knex("conta").del().where({ id });
+export const delConta = async ({ id = -1, usuario_id = -1 }) =>
+  await knex("conta").del().where({ id, usuario_id });
