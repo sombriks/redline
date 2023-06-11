@@ -12,7 +12,8 @@ export const getRedLine = () => {
         planejamentos: false,
         carteirasContas: false,
         configuracoes: false
-      }
+      },
+      carteiras: []
     };
   } else {
     redLine = JSON.parse(lastState);

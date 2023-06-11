@@ -12,17 +12,19 @@ const req = async ({ method = "POST", uri, payload, token }) => {
   return result.json();
 };
 
-export const login = async (user) => {
-  return await req({ uri: "/login", payload: user });
-};
+export const login = async (user) =>
+  await req({ uri: "/login", payload: user });
 
-export const createUser = async (newUser) => {
-  return await req({ uri: "/signup", payload: newUser });
-};
+export const createUser = async (newUser) =>
+  await req({ uri: "/signup", payload: newUser });
 
-export const removeAccount = async ({ id, email, senha }) => {
-  return await req({
+// TODO passar token daqui pra baixo
+
+export const removeAccount = async ({ id, email, senha }) =>
+  await req({
     method: "DELETE",
     uri: `/${id}/removeAccount?email=${email}&senha=${senha}`
   });
-};
+
+export const listCarteiras = async ({ id, q = "", limit = 50, offset = 0 }) =>
+  await req({ uri: `/${id}/conta?q=${q}&limit=${limit}&offset=${offset}` });

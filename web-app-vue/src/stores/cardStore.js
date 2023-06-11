@@ -2,7 +2,7 @@ import { reactive } from "vue";
 import { defineStore } from "pinia";
 import { getRedLine, setRedLine } from "@/services/redLine";
 
-export const useCardStore = defineStore("card-state", () => {
+export const useCardStore = defineStore("card-store", () => {
 
   let redLine = getRedLine();
 
