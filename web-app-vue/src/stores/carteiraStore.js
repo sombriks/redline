@@ -1,12 +1,20 @@
 import { reactive } from "vue";
 import { defineStore } from "pinia";
-import { getRedLine } from "@/services/redLine";
+import { getRedLine, setRedLine } from "@/services/redLine";
+import { useUserStore } from "@/stores/userStore";
+import { listCarteiras } from "@/services/api";
 
 export const useCarteiraStore = defineStore("carteira-store", () => {
 
-  let redLine = getRedLine();
+  const uState = useUserStore();
 
   const store = reactive({
-    carteiras: redLine.carteiras
+    carteiras: getRedLine()?.carteiras || []
   });
-})
+
+  const sincronizar = async () => {
+    store.carteiras = await listCarteiras({ id: uState.userData.id });
+  };
+
+  return { store, sincronizar };
+});

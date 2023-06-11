@@ -4,15 +4,14 @@ import { getRedLine, setRedLine } from "@/services/redLine";
 
 export const useCardStore = defineStore("card-store", () => {
 
-  let redLine = getRedLine();
-
   const store = reactive({
-    activeCard: redLine.activeCard
+    activeCard: getRedLine().activeCard
   });
 
   const toggleCard = (k, v) => {
     Object.keys(store.activeCard).forEach(k => store.activeCard[k] = false);
     store.activeCard[k] = v;
+    let redLine = getRedLine();
     redLine.activeCard = store.activeCard;
     setRedLine(redLine);
   };

@@ -1,5 +1,8 @@
 // base api calls
-const req = async ({ method = "POST", uri, payload, token }) => {
+import { useUserStore } from "@/stores/userStore";
+
+const req = async ({ method = "POST", uri, payload }) => {
+  const token = useUserStore().store.token
   const url = `${import.meta.env.VITE_API_URL}${uri}`;
   const headers = {
     "Content-Type": "application/json",
@@ -26,5 +29,8 @@ export const removeAccount = async ({ id, email, senha }) =>
     uri: `/${id}/removeAccount?email=${email}&senha=${senha}`
   });
 
-export const listCarteiras = async ({ id, q = "", limit = 50, offset = 0 }) =>
-  await req({ uri: `/${id}/conta?q=${q}&limit=${limit}&offset=${offset}` });
+export const listCarteiras = async ({ id , q = "", limit = 50, offset = 0 }) =>
+  await req({
+    method: "GET",
+    uri: `/${id}/conta?q=${q}&limit=${limit}&offset=${offset}`
+  });

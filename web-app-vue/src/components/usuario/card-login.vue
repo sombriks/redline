@@ -14,7 +14,6 @@
 </template>
 <script setup>
 import { ref } from "vue";
-import { login, createUser } from "@/services/api";
 import { useUserStore } from "@/stores/userStore";
 
 const nome = ref("");
@@ -27,11 +26,11 @@ const uState = useUserStore()
 const doLogin = async () => {
   try {
     if(createMode.value) {
-      const creationResult = await createUser({
+      await uState.doCreateUser({
         nome: nome.value, email: email.value, senha: senha.value
       })
     }
-    const result = await login({ email: email.value, senha: senha.value });
+    const result = await uState.doLogin({ email: email.value, senha: senha.value });
     // TODO guardar informação do usuário logado
     uState.setToken(result.token)
   } catch (e) {

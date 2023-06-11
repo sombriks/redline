@@ -2,28 +2,30 @@ import { computed, reactive } from "vue";
 import { defineStore } from "pinia";
 import jwt_decode from "jwt-decode";
 import { clearRedLine, getRedLine, setRedLine } from "@/services/redLine";
-import { removeAccount } from "@/services/api";
+import { createUser, login, removeAccount } from "@/services/api";
 
 export const useUserStore = defineStore("user-store", () => {
 
-  let redLine = getRedLine();
-
   const store = reactive({
-    token: redLine?.token
+    token: getRedLine()?.token
   });
 
+  const userData = computed(() => jwt_decode(store.token));
 
   const setToken = (_token) => {
+    let redLine = getRedLine();
     store.token = _token;
     redLine.token = _token;
     setRedLine(redLine);
   };
 
-  const userData = computed(() => jwt_decode(store.token));
+  const doCreateUser = ({nome, email, senha}) => createUser({nome, email, senha})
+
+  const doLogin = ({email, senha}) => login({email, senha})
 
   const logout = () => {
     store.token = null;
-    redLine = clearRedLine();
+    clearRedLine();
   };
 
   const deleteAccount = async ({ email, senha }) => {
@@ -31,5 +33,5 @@ export const useUserStore = defineStore("user-store", () => {
     logout();
   };
 
-  return { store, setToken, logout, userData, deleteAccount };
+  return { store, userData, setToken, doLogin, doCreateUser, logout, deleteAccount };
 });
