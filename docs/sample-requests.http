@@ -5,17 +5,17 @@ Content-Type: application/json
 
 ### List tipo conta
 
-GET {{url}}/tipo_conta
+GET {{url}}/tipo-conta
 Content-Type: application/json
 
 ### List tipo movimentacao
 
-GET {{url}}/tipo_movimentacao
+GET {{url}}/tipo-movimentacao
 Content-Type: application/json
 
 ### List tipo recorrencia
 
-GET {{url}}/tipo_recorrencia
+GET {{url}}/tipo-recorrencia
 Content-Type: application/json
 
 ### Attempt to admin login

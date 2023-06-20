@@ -1,7 +1,7 @@
 <template>
   <div class="card" ref="card"
        :class="{'expand':props.active, 'shrink': !props.active}">
-    <div @click="onActive">{{props.title}}</div>
+    <div class="title" @click="onActive">{{props.title}}</div>
     <div v-if="props.active">
       <slot></slot>
     </div>
@@ -31,6 +31,11 @@ const onActive = () => {
     padding: 1em;
 }
 
+.title {
+  display:flex;
+  justify-content: center;
+}
+
 .expand {
     animation: expandAnim forwards 500ms;
 }
@@ -45,7 +50,7 @@ const onActive = () => {
     }
 
     100% {
-        min-height: 80vh;
+        min-height: 60vh;
     }
 }
 
@@ -55,11 +60,11 @@ const onActive = () => {
 
 @keyframes shrinkAnim {
     0% {
-        min-height: 80vh;
+        min-height: 60vh;
     }
 
     1% {
-        min-height: 75vh;
+        min-height: 55vh;
     }
 
     90% {

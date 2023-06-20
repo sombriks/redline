@@ -3,5 +3,5 @@ import {listTipoConta} from "../services/index.mjs";
 
 export const tipoContaRouter = new Router()
 
-tipoContaRouter.get("/tipo_conta",
+tipoContaRouter.get("/tipo-conta",
   async ctx => ctx.body = await listTipoConta())

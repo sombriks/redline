@@ -1,7 +1,7 @@
 <template>
   <ul v-if="cState.store.contas && cState.store.contas.length">
     <li v-for="conta in cState.store.contas" :key="conta.id">
-      {{ conta.descricao }}
+      {{ conta.descricao }} -
     </li>
   </ul>
   <div v-else>Não há contas para visualizar</div>
@@ -13,7 +13,7 @@ import { onMounted } from "vue";
 const cState = useContaStore();
 
 onMounted(() => {
-  cState.sincronizar();
+  cState.sincronizarContas();
 });
 </script>
 <style scoped></style>
