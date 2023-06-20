@@ -2,8 +2,8 @@
   <div>nova carteira</div>
 </template>
 <script setup>
-import { useCarteiraStore } from "@/stores/carteiraStore";
+import { useContaStore } from "@/stores/contaStore";
 
-const cState = useCarteiraStore();
+const cState = useContaStore();
 </script>
 <style scoped></style>

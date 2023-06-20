@@ -4,8 +4,8 @@ import CardLogin from "@/components/usuario/card-login.vue";
 import NovaMovimentacao from "@/components/movimentacao/nova-movimentacao.vue";
 import ListaCategorias from "@/components/categoria/lista-categorias.vue";
 import ListaPlanejamentos from "@/components/planejamento/lista-planejamentos.vue";
-import NovaCarteira from "@/components/carteira/nova-carteira.vue";
-import ListaCarteiras from "@/components/carteira/lista-carteiras.vue";
+import NovaCarteira from "@/components/conta/nova-conta.vue";
+import ListaCarteiras from "@/components/conta/lista-contas.vue";
 import CardConfiguracoes from "@/components/configuracoes/card-configuracoes.vue";
 import { useCardStore } from "@/stores/cardStore";
 import { useUserStore } from "@/stores/userStore";
@@ -43,7 +43,7 @@ const uState = useUserStore();
       <lista-planejamentos></lista-planejamentos>
     </card-option>
     <card-option v-if="uState.store.token"
-                 :title="'Carteiras'"
+                 :title="'Carteiras e contas'"
                  :active="cState.store.activeCard.carteirasContas"
                  @onActive="e => cState.toggleCard('carteirasContas', e)">
       <nova-carteira></nova-carteira>
