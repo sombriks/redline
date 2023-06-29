@@ -2,7 +2,7 @@ import { reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { getRedLine, setRedLine } from '@/services/redLine'
 import { useUserStore } from '@/stores/userStore'
-import { insertConta, listContas, listTiposConta, updateConta } from '@/services/api'
+import { deleteConta, insertConta, listContas, listTiposConta, updateConta } from '@/services/api'
 
 export const useContaStore = defineStore('conta-store', () => {
   const uState = useUserStore()
@@ -27,9 +27,7 @@ export const useContaStore = defineStore('conta-store', () => {
   }
 
   const salvarConta = async (conta) => {
-    console.log(conta)
     const { id } = uState.userData
-    conta.tipo_conta_id = 1 // TODO
     conta.usuario_id = id
     if (conta.id) {
       await updateConta({ id, conta })
@@ -38,5 +36,10 @@ export const useContaStore = defineStore('conta-store', () => {
     }
   }
 
-  return { store, sincronizarContas, salvarConta }
+  const removeConta = async (conta) => {
+    const { id } = uState.userData
+    await deleteConta({ id, conta })
+  }
+
+  return { store, sincronizarContas, salvarConta, removeConta }
 })
