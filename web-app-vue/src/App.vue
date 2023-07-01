@@ -31,6 +31,13 @@ const uState = useUserStore();
       <nova-movimentacao></nova-movimentacao>
     </card-option>
     <card-option v-if="uState.store.token"
+                 :title="'Carteiras e contas'"
+                 :active="cState.store.activeCard.carteirasContas"
+                 @onActive="e => cState.toggleCard('carteirasContas', e)">
+      <nova-carteira></nova-carteira>
+      <lista-carteiras></lista-carteiras>
+    </card-option>
+    <card-option v-if="uState.store.token"
                  :title="'Categorias'"
                  :active="cState.store.activeCard.categorias"
                  @onActive="e => cState.toggleCard('categorias', e)">
@@ -41,13 +48,6 @@ const uState = useUserStore();
                  :active="cState.store.activeCard.planejamentos"
                  @onActive="e => cState.toggleCard('planejamentos', e)">
       <lista-planejamentos></lista-planejamentos>
-    </card-option>
-    <card-option v-if="uState.store.token"
-                 :title="'Carteiras e contas'"
-                 :active="cState.store.activeCard.carteirasContas"
-                 @onActive="e => cState.toggleCard('carteirasContas', e)">
-      <nova-carteira></nova-carteira>
-      <lista-carteiras></lista-carteiras>
     </card-option>
     <card-option v-if="uState.store.token"
                  :title="'Configurações'"

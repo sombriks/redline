@@ -1,16 +1,18 @@
 <template>
   <ul v-if="cState.store.contas && cState.store.contas.length">
-    <li v-for="conta in contas" :key="conta.id">
-      {{ conta.descricao }} - {{ conta.tipo.descricao }} -
-      <button @click="removeConta(conta)">X</button>
-    </li>
+    <detalhe-conta
+      v-for="conta in contas"
+      :key="conta.id"
+      :conta="conta"
+      @onRemove="removeConta"
+    ></detalhe-conta>
   </ul>
   <div v-else>Não há contas para visualizar</div>
 </template>
 <script setup>
 import { useContaStore } from '@/stores/contaStore'
 import { computed, onMounted } from 'vue'
-import { deleteConta } from '@/services/api'
+import DetalheConta from '@/components/conta/detalhe-conta.vue'
 
 const cState = useContaStore()
 
