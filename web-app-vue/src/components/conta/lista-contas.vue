@@ -4,6 +4,7 @@
       v-for="conta in contas"
       :key="conta.id"
       :conta="conta"
+      @onUpdate="saveConta"
       @onRemove="removeConta"
     ></detalhe-conta>
   </ul>
@@ -28,6 +29,11 @@ const contas = computed(() => {
 onMounted(() => {
   cState.sincronizarContas()
 })
+
+const saveConta = (conta) => {
+  cState.salvarConta(conta)
+  cState.sincronizarContas()
+}
 
 const removeConta = (conta) => {
   if (confirm('confirmar deletar conta?')) cState.removeConta(conta)
