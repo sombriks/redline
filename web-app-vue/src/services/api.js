@@ -43,5 +43,7 @@ export const insertConta = async ({ id, novaConta }) =>
 export const updateConta = async ({ id, conta }) =>
   await put({ uri: `/${id}/conta/${conta.id}`, payload: conta })
 
-export const deleteConta = async ({ id, conta }) =>
-  await del({ uri: `/${id}/conta/${conta.id}` })
+export const deleteConta = async ({ id, conta }) => await del({ uri: `/${id}/conta/${conta.id}` })
+
+export const listCategorias = async ({ id, q = '', limit = 50, offset = 0 }) =>
+  await get({ uri: `/${id}/categoria?q=${q}&limit=${limit}&offset=${offset}` })
