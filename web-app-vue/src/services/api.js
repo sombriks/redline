@@ -10,9 +10,9 @@ const req = async ({ method = 'POST', uri, payload }) => {
   }
   if (token) headers['Authorization'] = `Bearer ${token}`
   const result = await fetch(url, {
-    method,
+    body: JSON.stringify(payload),
     headers,
-    body: JSON.stringify(payload)
+    method
   })
   return result.json()
 }
@@ -47,3 +47,12 @@ export const deleteConta = async ({ id, conta }) => await del({ uri: `/${id}/con
 
 export const listCategorias = async ({ id, q = '', limit = 50, offset = 0 }) =>
   await get({ uri: `/${id}/categoria?q=${q}&limit=${limit}&offset=${offset}` })
+
+export const updateCategoria = async ({ id, categoria }) =>
+  await put({ uri: `/${id}/categoria/${categoria.id}`, payload: categoria })
+
+export const insertCategoria = async ({ id, categoria }) =>
+  await post({ uri: `/${id}/categoria`, payload: categoria })
+
+export const delCategoria = async ({ id, categoria }) =>
+  await del({ uri: `/${id}/categoria/${categoria.id}` })
