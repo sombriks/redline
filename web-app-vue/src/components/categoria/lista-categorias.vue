@@ -9,15 +9,19 @@
     <li v-if="!cState.store.categorias || !cState.store.categorias.length">
       Não há categorias para exibir
     </li>
-    <li v-for="cat in cState.store.categorias" :key="cat.id">
-      {{ cat.descricao }}
-      <button @click="removeCategoria(cat)">&#128686;</button>
-    </li>
+    <detalhe-categoria
+      v-for="cat in cState.store.categorias"
+      :key="cat.id"
+      :categoria="cat"
+      @onRemove="removeCategoria"
+      @onEdit="editaCategoria"
+    ></detalhe-categoria>
   </ul>
 </template>
 <script setup>
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { onMounted, reactive } from 'vue'
+import DetalheCategoria from '@/components/categoria/detalhe-categoria.vue'
 
 const cState = useCategoriaStore()
 
@@ -36,6 +40,12 @@ const removeCategoria = async (categoria) => {
   await cState.excluirCategoria(categoria)
   await cState.sincronizarCategorias()
 }
+
+const editaCategoria = async (categoria) => {
+  await cState.salvarCategoria(categoria)
+  await cState.sincronizarCategorias()
+}
+
 onMounted(() => {
   cState.sincronizarCategorias()
 })
