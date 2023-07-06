@@ -12,7 +12,7 @@ export const movimentacaoRouter = new Router();
 movimentacaoRouter.get("/:usuario_id/movimentacao", async ctx => {
   const { usuario_id } = ctx.request.params;
   const { q = "", limit = 50, offset = 0, conta_id } = ctx.request.query;
-  if (conta_id) ctx.body = await listMovimentacaoByConta({ usuario_id, q, limit, offset });
+  if (conta_id) ctx.body = await listMovimentacaoByConta({ conta_id, q, limit, offset });
   else ctx.body = await listMovimentacaoByUsuario({ usuario_id, q, limit, offset });
 });
 

@@ -15,7 +15,9 @@ export const getRedLine = () => {
       },
       tiposConta: [],
       contas: [],
-      categorias: []
+      categorias: [],
+      movimentacoes: [],
+      tiposMovimentacao: []
     };
   } else {
     redLine = JSON.parse(lastState);

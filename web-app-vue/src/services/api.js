@@ -56,3 +56,8 @@ export const insertCategoria = async ({ id, categoria }) =>
 
 export const delCategoria = async ({ id, categoria }) =>
   await del({ uri: `/${id}/categoria/${categoria.id}` })
+
+export const lisTiposMovimentacao = async () => await get({ uri: '/tipo_movimentacao' })
+
+export const listMovimentacoes = async ({ id, q = '', limit = 50, offset = 0 }) =>
+  await get({ uri: `/${id}/movimentacao?q=${q}&limit=${limit}&offset=${offset}` })
