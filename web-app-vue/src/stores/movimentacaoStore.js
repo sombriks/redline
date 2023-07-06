@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { useUserStore } from '@/stores/userStore'
 import { reactive } from 'vue'
 import { getRedLine, setRedLine } from '@/services/redLine'
-import { lisTiposMovimentacao } from "@/services/api";
+import { lisTiposMovimentacao, listMovimentacoes } from '@/services/api'
 
 export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
   const uState = useUserStore()
@@ -19,7 +19,9 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
 
   const sincronizarMovimentacoes = async () => {
     const redLine = getRedLine()
+    const { id } = uState.userData
     store.tiposMovimentacao = await lisTiposMovimentacao()
+    store.movimentacoes = await listMovimentacoes({ id })
     setRedLine({
       ...redLine,
       tiposMovimentacao: store.tiposMovimentacao,

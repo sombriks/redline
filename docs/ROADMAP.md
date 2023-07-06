@@ -46,4 +46,13 @@ general notes
 
 - multi tenant
 - rest api with hierarchical paths
-- 
+
+## design insights
+
+- liquids
+- water levels
+- cards
+- deck
+- pills
+- controls
+- charts
