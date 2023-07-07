@@ -29,5 +29,10 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
     })
   }
 
-  return { store, sincronizarMovimentacoes }
+  const salvarMovimentacao = async (movimentacao) => {
+    const { id } = uState.userData
+    console.log(id, movimentacao)
+  }
+
+  return { store, sincronizarMovimentacoes, salvarMovimentacao }
 })
