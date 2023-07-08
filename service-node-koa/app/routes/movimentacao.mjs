@@ -1,11 +1,12 @@
 import Router from "@koa/router";
 import {
-  atualizaMovimentacao,
+  updateMovimentacao,
   findMovimentacao,
   listMovimentacaoByConta,
   listMovimentacaoByUsuario,
-  novaEntrada, novaSaida, removeMovimentacao
+  novaEntrada, novaSaida, removeMovimentacao, insertMovimentacao
 } from "../services/index.mjs";
+import { contaOwnedBy } from "../config/security/index.mjs";
 
 export const movimentacaoRouter = new Router();
 
@@ -22,30 +23,37 @@ movimentacaoRouter.get("/:usuario_id/movimentacao/:id", async ctx => {
 });
 
 movimentacaoRouter.post("/:usuario_id/entrada/:conta_id", async ctx => {
-  const { usuario_id, conta_id } = ctx.request.params;
+  const { conta_id } = ctx.request.params;
   const novaMovimentacao = ctx.request.body;
   novaMovimentacao.conta_id = conta_id;
   ctx.body = await novaEntrada(novaMovimentacao);
 });
 
 movimentacaoRouter.post("/:usuario_id/saida/:conta_id", async ctx => {
-  const { usuario_id, conta_id } = ctx.request.params;
+  const { conta_id } = ctx.request.params;
   const novaMovimentacao = ctx.request.body;
   novaMovimentacao.conta_id = conta_id;
   ctx.body = await novaSaida(novaMovimentacao);
 });
 
-movimentacaoRouter.put("/:usuario_id/movimentacao/:conta_id/:id", async ctx => {
-  const { usuario_id, conta_id, id } = ctx.request.params;
+movimentacaoRouter.post("/:usuario_id/movimentacao/:conta_id", contaOwnedBy, async ctx => {
+  const { conta_id } = ctx.request.params;
+  const novaMovimentacao = ctx.request.body;
+  novaMovimentacao.conta_id = conta_id;
+  ctx.body = await insertMovimentacao(novaMovimentacao);
+});
+
+movimentacaoRouter.put("/:usuario_id/movimentacao/:conta_id/:id", contaOwnedBy, async ctx => {
+  const { conta_id, id } = ctx.request.params;
   const movimentacao = ctx.request.body;
   movimentacao.conta_id = conta_id;
   movimentacao.id = id;
-  ctx.body = await atualizaMovimentacao({ id, movimentacao });
+  ctx.body = await updateMovimentacao({ id, movimentacao });
 });
 
 // TODO rever os mapeamentos
 // TODO checagens
-movimentacaoRouter.del("/:usuario_id/movimentacao/:conta_id/:id", async ctx => {
-  const { usuario_id, conta_id, id } = ctx.request.params;
+movimentacaoRouter.del("/:usuario_id/movimentacao/:conta_id/:id", contaOwnedBy, async ctx => {
+  const { id } = ctx.request.params;
   ctx.body = await removeMovimentacao(id);
 });

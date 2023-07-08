@@ -1,7 +1,7 @@
 import chai, { expect } from "chai";
 
 import {
-  atualizaMovimentacao,
+  updateMovimentacao,
   findMovimentacao,
   getAdmin,
   listCategorias,
@@ -80,7 +80,7 @@ describe("Movimentacao service test", () => {
     const [movimentacao] = movimentacoes;
     movimentacao.descricao = "atualizada teste";
     movimentacao.valor = 350;
-    await atualizaMovimentacao({ id: movimentacao.id, movimentacao });
+    await updateMovimentacao({ id: movimentacao.id, movimentacao });
     const result = await findMovimentacao(movimentacao.id);
     result.descricao.should.be.eq(movimentacao.descricao);
     parseInt(result.valor).should.be.eq(parseInt(movimentacao.valor));

@@ -1,6 +1,8 @@
 <template>
   <ul>
-    <li></li>
+    <li v-for="movimentacao in mState.store.movimentacoes" :key="movimentacao.id">
+      {{movimentacao.tipo?.descricao}} - {{movimentacao.descricao}} - {{movimentacao.valor}}
+    </li>
   </ul>
 </template>
 <script setup>

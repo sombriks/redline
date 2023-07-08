@@ -3,5 +3,5 @@ import {listTipoMovimentacao} from "../services/index.mjs";
 
 export const tipoMovimentacaoRouter = new Router()
 
-tipoMovimentacaoRouter.get("/tipo_movimentacao",
+tipoMovimentacaoRouter.get("/tipo-movimentacao",
   async ctx => ctx.body = await listTipoMovimentacao())

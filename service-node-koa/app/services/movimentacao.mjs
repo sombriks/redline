@@ -45,8 +45,11 @@ export const novaSaida = async ({ conta_id, valor, descricao, categoria_id, efet
       tipo_movimentacao_id: 2 // saída
     }, ["id"]);
 
-export const atualizaMovimentacao = async ({ id = -1, movimentacao }) => {
-  movimentacao.id = id
+export const insertMovimentacao = async movimentacao =>
+  knex("movimentacao").insert(movimentacao, ["id"]);
+
+export const updateMovimentacao = async ({ id = -1, movimentacao }) => {
+  movimentacao.id = id;
   return knex("movimentacao")
     .update(movimentacao)
     .where({ id });

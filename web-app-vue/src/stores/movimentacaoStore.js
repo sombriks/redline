@@ -2,7 +2,13 @@ import { defineStore } from 'pinia'
 import { useUserStore } from '@/stores/userStore'
 import { reactive } from 'vue'
 import { getRedLine, setRedLine } from '@/services/redLine'
-import { lisTiposMovimentacao, listMovimentacoes } from '@/services/api'
+import {
+  delMovimentacao,
+  insertMovimentacao,
+  lisTiposMovimentacao,
+  listMovimentacoes,
+  updateMovimentacao
+} from '@/services/api'
 
 export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
   const uState = useUserStore()
@@ -31,8 +37,16 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
 
   const salvarMovimentacao = async (movimentacao) => {
     const { id } = uState.userData
-    console.log(id, movimentacao)
+    const { conta_id } = movimentacao
+    if (movimentacao.id) await updateMovimentacao({ id, conta_id, movimentacao })
+    else await insertMovimentacao({ id, conta_id, movimentacao })
   }
 
-  return { store, sincronizarMovimentacoes, salvarMovimentacao }
+  const excluirMovimentacao = async (movimentacao) => {
+    const { id } = uState.userData
+    const { conta_id } = movimentacao
+    await delMovimentacao({ id, conta_id, movimentacao })
+  }
+
+  return { store, sincronizarMovimentacoes, salvarMovimentacao, excluirMovimentacao }
 })
