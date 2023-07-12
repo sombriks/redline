@@ -46,6 +46,7 @@ movimentacaoRouter.post("/:usuario_id/movimentacao/:conta_id", contaOwnedBy, asy
 movimentacaoRouter.put("/:usuario_id/movimentacao/:conta_id/:id", contaOwnedBy, async ctx => {
   const { conta_id, id } = ctx.request.params;
   const movimentacao = ctx.request.body;
+  movimentacao.alteracao = new Date();
   movimentacao.conta_id = conta_id;
   movimentacao.id = id;
   ctx.body = await updateMovimentacao({ id, movimentacao });
