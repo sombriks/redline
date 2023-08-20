@@ -1,14 +1,18 @@
 <template>
   <ul>
-    <li v-for="movimentacao in movimentacoes" :key="movimentacao.id">
-      {{ movimentacao.tipo?.descricao }} - {{ movimentacao.descricao }} - {{ movimentacao.valor }} -
-      <button @click="onRemove(movimentacao)">&#128686;</button>
-    </li>
+    <detalhe-movimentacao
+      v-for="movimentacao in movimentacoes"
+      :key="movimentacao.id"
+      :movimentacao="movimentacao"
+      @onRemove="onRemove"
+      @onUpdate="onUpdate"
+    ></detalhe-movimentacao>
   </ul>
 </template>
 <script setup>
-import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
 import { computed, onMounted } from 'vue'
+import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
+import DetalheMovimentacao from '@/components/movimentacao/detalhe-movimentacao.vue'
 
 const mState = useMovimentacaoStore()
 
@@ -18,7 +22,12 @@ const onRemove = async (movimentacao) => {
   await mState.sincronizarMovimentacoes()
 }
 
-const movimentacoes = computed(() => mState.store?.movimentacoes.map(m => m) || [])
+const onUpdate = async (movimentacao) => {
+  await mState.salvarMovimentacao(movimentacao)
+  await mState.sincronizarMovimentacoes()
+}
+
+const movimentacoes = computed(() => mState.store?.movimentacoes.map((m) => m) || [])
 
 onMounted(() => {
   mState.sincronizarMovimentacoes()

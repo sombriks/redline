@@ -27,6 +27,7 @@ const props = defineProps(['conta'])
 const emit = defineEmits(['onRemove', 'onUpdate'])
 
 const edit = ref(false)
+
 const contaEdit = reactive({
   descricao: props.conta.descricao,
   tipo: props.conta.tipo

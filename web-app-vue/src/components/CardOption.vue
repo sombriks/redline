@@ -15,6 +15,7 @@ const props = defineProps(["title", "active"]);
 const emit = defineEmits(["onActive"]);
 
 const card = ref(null);
+
 const onActive = () => {
   emit("onActive", !props.active);
   setTimeout(() => {
