@@ -1,9 +1,8 @@
 import Koa from "koa";
-import cors from "@koa/cors"
+import cors from "@koa/cors";
 import bodyParser from "koa-bodyparser";
 
 import {
-  categoriaRouter,
   contaRouter,
   modelocategoriaRouter,
   movimentacaoRouter,
@@ -13,17 +12,34 @@ import {
   tipoContaRouter,
   tipoMovimentacaoRouter,
   tipoRecorrenciaRouter,
-  usuarioRouter
-} from "./routes/index.mjs"
+  usuarioRouter,
 
-export const app = new Koa()
+  listCategoriasRequest,
+  findCategoriaRequest,
+  insertCategoriaRequest,
+  updateCategoriaRequest,
+  delCategoriaRequest
+} from "./controllers/index.mjs";
+import Router from "@koa/router";
+
+export const app = new Koa();
+const router = new Router();
+
+app.use(cors()).use(bodyParser());
+
+// TODO i miss path-group
+
+router.get("/:usuario_id/categoria", listCategoriasRequest);
+router.get("/:usuario_id/categoria/:id", findCategoriaRequest);
+router.post("/:usuario_id/categoria", insertCategoriaRequest);
+router.put("/:usuario_id/categoria/:id", updateCategoriaRequest);
+router.del("/:usuario_id/categoria/:id", delCategoriaRequest);
+
+app.use(router.routes()).use(router.allowedMethods());
 
 app
   .use(cors())
   .use(bodyParser())
-
-  .use(categoriaRouter.routes())
-  .use(categoriaRouter.allowedMethods())
 
   .use(contaRouter.routes())
   .use(contaRouter.allowedMethods())
@@ -53,4 +69,4 @@ app
   .use(tipoRecorrenciaRouter.allowedMethods())
 
   .use(usuarioRouter.routes())
-  .use(usuarioRouter.allowedMethods())
+  .use(usuarioRouter.allowedMethods());
