@@ -28,7 +28,7 @@ Content-Type: application/json
   "senha": "e1e2e3e4"
 }
 
-> {% client.global.set("token", response.body.json.token) %}
+> {% client.global.set("token", response.body.token) %}
 
 ### Create new user
 
@@ -42,7 +42,7 @@ Content-Type: application/json
 }
 
 
-> {% client.global.set("lastUserId", response.body.json.id) %}
+> {% client.global.set("lastUserId", response.body.id) %}
 
 ### Update user
 

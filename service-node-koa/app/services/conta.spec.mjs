@@ -1,9 +1,8 @@
 import chai, { expect } from "chai";
+import { getAdmin } from "./usuario.mjs";
+import { delConta, findConta, insertConta, listContas, resetConta, updateConta } from "./conta.mjs";
 
 chai.should();
-
-import { getAdmin } from "./usuario.mjs";
-import { resetConta, listContas, insertConta, findConta, updateConta, delConta } from "./conta.mjs";
 
 describe("Conta service tests", () => {
 

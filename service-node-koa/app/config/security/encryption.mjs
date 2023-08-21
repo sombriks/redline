@@ -12,6 +12,7 @@ export const encrypt = (plain, iv = randomBytes(16)) => {
   const ivHex = iv.toString("hex")
   return ivHex + "@" + hash
 }
+
 export const decrypt = (secret) => {
   const [ivHex, hash] = secret.split("@")
   const unKey = createDecipheriv(

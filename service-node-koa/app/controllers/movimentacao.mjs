@@ -1,13 +1,12 @@
-import Router from "@koa/router";
 import {
-  updateMovimentacao,
   findMovimentacao,
+  insertMovimentacao,
   listMovimentacaoByConta,
   listMovimentacaoByUsuario,
   novaEntrada,
   novaSaida,
   removeMovimentacao,
-  insertMovimentacao
+  updateMovimentacao
 } from "../services/index.mjs";
 
 export const listMovimentacaoRequest = async ctx => {

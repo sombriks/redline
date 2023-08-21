@@ -1,15 +1,15 @@
 import { knex } from "../db/index.mjs";
 
-export const ifAdmin = (ctx, next) => {
-  return next();
+export const ifAdmin = async (ctx, next) => {
+  return await next();
 };
 
-export const ifOwner = (ctx, next) => {
-  return next();
+export const ifOwner = async (ctx, next) => {
+  return await next();
 };
 
-export const ifAuthenticated = (ctx, next) => {
-  return next();
+export const ifAuthenticated = async (ctx, next) => {
+  return await next();
 };
 
 export const contaOwnedBy = async (ctx, next) => {

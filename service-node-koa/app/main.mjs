@@ -3,14 +3,6 @@ import cors from "@koa/cors";
 import bodyParser from "koa-bodyparser";
 
 import {
-  planejamentoRouter,
-  recorrenciaRouter,
-  statusRouter,
-  tipoContaRouter,
-  tipoMovimentacaoRouter,
-  tipoRecorrenciaRouter,
-  usuarioRouter,
-
   listCategoriasRequest,
   findCategoriaRequest,
   insertCategoriaRequest,
@@ -26,11 +18,22 @@ import {
   insertMovimentacaoRequest,
   novaSaidaRequest,
   novaEntradaRequest,
-  findMovimentacaoRequest, listMovimentacaoRequest
+  findMovimentacaoRequest,
+  listMovimentacaoRequest,
+  listPlanejamentoRequest,
+  listRecorrenciaRequest,
+  userLoginRequest,
+  userSignupRequest,
+  delUsuarioRequest
 } from "./controllers/index.mjs";
 import Router from "@koa/router";
-import { listModelocategoria } from "./services/index.mjs";
-import { contaOwnedBy } from "./config/security/index.mjs";
+import {
+  listModelocategoria,
+  listTipoConta,
+  listTipoMovimentacao,
+  listTipoRecorrencia
+} from "./services/index.mjs";
+import { contaOwnedBy, ifAuthenticated } from "./config/security/index.mjs";
 
 export const app = new Koa();
 const router = new Router();
@@ -41,49 +44,40 @@ app.use(cors()).use(bodyParser());
 
 router.get("/modelocategoria", async ctx => ctx.body = await listModelocategoria());
 
-router.get("/:usuario_id/categoria", listCategoriasRequest);
-router.get("/:usuario_id/categoria/:id", findCategoriaRequest);
-router.post("/:usuario_id/categoria", insertCategoriaRequest);
-router.put("/:usuario_id/categoria/:id", updateCategoriaRequest);
-router.del("/:usuario_id/categoria/:id", delCategoriaRequest);
+router.get("/tipo-conta", async ctx => ctx.body = await listTipoConta());
 
-router.get("/:usuario_id/conta", listContasRequest);
-router.get("/:usuario_id/conta/:id", findContaRequest);
-router.post("/:usuario_id/conta", insertContaRequest);
-router.put("/:usuario_id/conta/:id", updateContaRequest);
-router.del("/:usuario_id/conta/:id", delContaRequest);
+router.get("/tipo-movimentacao", async ctx => ctx.body = await listTipoMovimentacao());
 
-router.get("/:usuario_id/movimentacao", listMovimentacaoRequest);
-router.get("/:usuario_id/movimentacao/:id", contaOwnedBy, findMovimentacaoRequest);
-router.post("/:usuario_id/entrada/:conta_id", contaOwnedBy, novaEntradaRequest);
-router.post("/:usuario_id/saida/:conta_id", contaOwnedBy, novaSaidaRequest);
-router.post("/:usuario_id/movimentacao/:conta_id", contaOwnedBy, insertMovimentacaoRequest);
-router.put("/:usuario_id/movimentacao/:conta_id/:id", contaOwnedBy, updateMovimentacaoRequest);
-router.del("/:usuario_id/movimentacao/:conta_id/:id", contaOwnedBy, removeMovimentacaoRequest);
+router.get("/tipo_recorrencia", async ctx => ctx.body = await listTipoRecorrencia());
+
+router.get("/status", async ctx => ctx.body = "ONLINE");
+
+router.post("/login", userLoginRequest);
+router.post("/signup", userSignupRequest);
+router.del("/:usuario_id/removeAccount", ifAuthenticated, delUsuarioRequest);
+
+router.get("/:usuario_id/categoria", ifAuthenticated, listCategoriasRequest);
+router.get("/:usuario_id/categoria/:id", ifAuthenticated, findCategoriaRequest);
+router.post("/:usuario_id/categoria", ifAuthenticated, insertCategoriaRequest);
+router.put("/:usuario_id/categoria/:id", ifAuthenticated, updateCategoriaRequest);
+router.del("/:usuario_id/categoria/:id", ifAuthenticated, delCategoriaRequest);
+
+router.get("/:usuario_id/conta", ifAuthenticated, listContasRequest);
+router.get("/:usuario_id/conta/:id", ifAuthenticated, findContaRequest);
+router.post("/:usuario_id/conta", ifAuthenticated, insertContaRequest);
+router.put("/:usuario_id/conta/:id", ifAuthenticated, updateContaRequest);
+router.del("/:usuario_id/conta/:id", ifAuthenticated, delContaRequest);
+
+router.get("/:usuario_id/movimentacao", ifAuthenticated, listMovimentacaoRequest);
+router.get("/:usuario_id/movimentacao/:id", ifAuthenticated, findMovimentacaoRequest);
+router.post("/:usuario_id/movimentacao/:conta_id", ifAuthenticated, contaOwnedBy, insertMovimentacaoRequest);
+router.post("/:usuario_id/entrada/:conta_id", ifAuthenticated, contaOwnedBy, novaEntradaRequest);
+router.post("/:usuario_id/saida/:conta_id", ifAuthenticated, contaOwnedBy, novaSaidaRequest);
+router.put("/:usuario_id/movimentacao/:conta_id/:id", ifAuthenticated, contaOwnedBy, updateMovimentacaoRequest);
+router.del("/:usuario_id/movimentacao/:conta_id/:id", ifAuthenticated, contaOwnedBy, removeMovimentacaoRequest);
+
+router.get("/:usuario_id/planejamento", ifAuthenticated, listPlanejamentoRequest);
+
+router.get("/:usuario_id/recorrencia", ifAuthenticated, listRecorrenciaRequest);
 
 app.use(router.routes()).use(router.allowedMethods());
-
-app
-  .use(cors())
-  .use(bodyParser())
-
-  .use(planejamentoRouter.routes())
-  .use(planejamentoRouter.allowedMethods())
-
-  .use(recorrenciaRouter.routes())
-  .use(recorrenciaRouter.allowedMethods())
-
-  .use(statusRouter.routes())
-  .use(statusRouter.allowedMethods())
-
-  .use(tipoContaRouter.routes())
-  .use(tipoContaRouter.allowedMethods())
-
-  .use(tipoMovimentacaoRouter.routes())
-  .use(tipoMovimentacaoRouter.allowedMethods())
-
-  .use(tipoRecorrenciaRouter.routes())
-  .use(tipoRecorrenciaRouter.allowedMethods())
-
-  .use(usuarioRouter.routes())
-  .use(usuarioRouter.allowedMethods());
