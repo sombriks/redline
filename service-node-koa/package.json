@@ -32,7 +32,7 @@
     "jsonwebtoken": "^9.0.0",
     "knex": "^2.4.2",
     "koa": "^2.14.1",
-    "koa-api-builder": "^0.2.0",
+    "koa-api-builder": "^0.2.1",
     "koa-bodyparser": "^4.4.0",
     "koa-jwt": "^4.0.4",
     "pg": "^8.11.0"
