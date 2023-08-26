@@ -1,22 +1,51 @@
+#
+# Some sample requests
+# https://www.jetbrains.com/help/idea/2023.2/http-response-handling-examples.html#checking-response-headers-body
+#
+
 ### List modelocategoria
 
 GET {{url}}/modelocategoria
 Content-Type: application/json
+
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+%}
 
 ### List tipo conta
 
 GET {{url}}/tipo-conta
 Content-Type: application/json
 
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+%}
+
 ### List tipo movimentacao
 
 GET {{url}}/tipo-movimentacao
 Content-Type: application/json
 
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+%}
+
 ### List tipo recorrencia
 
 GET {{url}}/tipo-recorrencia
 Content-Type: application/json
+
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+%}
 
 ### Attempt to admin login
 
@@ -28,7 +57,12 @@ Content-Type: application/json
   "senha": "e1e2e3e4"
 }
 
-> {% client.global.set("token", response.body.token) %}
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+    client.global.set("token", response.body.token);
+  });
+%}
 
 ### Create new user
 
@@ -41,8 +75,12 @@ Content-Type: application/json
   "senha": "e1e2e3e4"
 }
 
-
-> {% client.global.set("lastUserId", response.body.id) %}
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  client.global.set("lastUserId", response.body.id);
+  });
+%}
 
 ### Update user
 
@@ -56,6 +94,12 @@ Authorization: `Bearer {{token}}`
   "senha": "e2e3e4e5"
 }
 
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+%}
+
 ### List users
 
 ### Check user categories
@@ -63,6 +107,12 @@ Authorization: `Bearer {{token}}`
 GET {{url}}/{{lastUserId}}/categoria
 Content-Type: application/json
 Authorization: `Bearer {{token}}`
+
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+%}
 
 
 ### Create new user category
@@ -75,6 +125,12 @@ Authorization: `Bearer {{token}}`
   "usuario_id": "{{lastUserId}}",
   "descricao": "NOVA"
 }
+
+> {%
+  client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+  });
+%}
 
 ### Remove user
 

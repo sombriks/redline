@@ -48,7 +48,7 @@ router.get("/tipo-conta", async ctx => ctx.body = await listTipoConta());
 
 router.get("/tipo-movimentacao", async ctx => ctx.body = await listTipoMovimentacao());
 
-router.get("/tipo_recorrencia", async ctx => ctx.body = await listTipoRecorrencia());
+router.get("/tipo-recorrencia", async ctx => ctx.body = await listTipoRecorrencia());
 
 router.get("/status", async ctx => ctx.body = "ONLINE");
 
