@@ -27,7 +27,7 @@ const del = ({ uri }) => req({ method: 'DELETE', uri })
 
 export const login = async (user) => await post({ uri: '/login', payload: user })
 
-export const createUser = async (newUser) => await req({ uri: '/signup', payload: newUser })
+export const createUser = async (newUser) => await post({ uri: '/signup', payload: newUser })
 
 export const removeAccount = async ({ id, email, senha }) =>
   await del({ uri: `/${id}/removeAccount?email=${email}&senha=${senha}` })

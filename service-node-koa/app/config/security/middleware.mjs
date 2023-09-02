@@ -1,4 +1,5 @@
 import { knex } from "../db/index.mjs";
+import { verify } from "./encryption.mjs";
 
 export const ifAdmin = async (ctx, next) => {
   return await next();
@@ -9,7 +10,18 @@ export const ifOwner = async (ctx, next) => {
 };
 
 export const ifAuthenticated = async (ctx, next) => {
-  return await next();
+  const authHeader = ctx.request.header["authorization"];
+  if (!authHeader) ctx.throw(401, "Missing auth header");
+  const token = authHeader.replace("Bearer ", "");
+  try {
+    const details = verify(token);
+    if(!details.iat)
+      ctx.throw(401, "Something strange with this token", e);
+    // TODO more checks
+    return await next();
+  } catch (e) {
+    ctx.throw(401, "Something strange with this token", e);
+  }
 };
 
 export const contaOwnedBy = async (ctx, next) => {
