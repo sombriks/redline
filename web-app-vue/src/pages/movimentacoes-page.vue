@@ -3,9 +3,8 @@
 </script>
 
 <template>
-<h1>Auth</h1>
+<h1>Movimentações</h1>
 </template>
-
 <style scoped>
 
 </style>
