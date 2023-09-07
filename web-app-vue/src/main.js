@@ -13,6 +13,7 @@ import App from './App.vue'
 import './assets/main.css'
 
 const vuetify = createVuetify({
+  theme: { defaultTheme: 'dark' },
   blueprint: md3,
   defaults: {
     global: {

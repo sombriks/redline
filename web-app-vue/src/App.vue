@@ -18,7 +18,7 @@ const menu = [
     <v-main class="d-flex align-center justify-center" style="min-height: 300px">
       <router-view></router-view>
     </v-main>
-    <v-bottom-navigation v-if="userStore.store.token" :elevation="24" active bg-color="black" mode="shift">
+    <v-bottom-navigation v-if="userStore.store.token" :elevation="24" active mode="shift">
       <router-link v-for="m in menu" :key="m.label" :to="m.path">
         <v-btn :value="m.label">
           <v-icon>{{m.icon}}</v-icon>
