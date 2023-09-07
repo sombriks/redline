@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import {useUserStore} from '@/stores/userStore'
 import AuthPage from '@/pages/auth-page.vue'
 import NovaMovimentacaoPage from '@/pages/nova-movimentacao-page.vue'
 import CategoriasPage from '@/pages/categorias-page.vue'
@@ -22,13 +23,13 @@ const routes = [
 
 export const router = createRouter({
   routes,
-  history: createWebHashHistory()
+  history: createWebHashHistory(),
 })
 
-const isAuthenticated = false // TODO check token
 
 router.beforeEach(async (to) => {
-  if (!isAuthenticated && to.path !== '/auth') {
+  const userStore = useUserStore()
+  if (!userStore.isLogged() && to.path !== '/auth') {
     return { path: '/auth' }
   }
 })

@@ -1,9 +1,9 @@
 <script setup>
-
+import CardLogin from "@/components/usuario/card-login.vue";
 </script>
 
 <template>
-<h1>Auth</h1>
+  <card-login></card-login>
 </template>
 
 <style scoped>

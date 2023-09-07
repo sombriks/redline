@@ -33,5 +33,7 @@ export const useUserStore = defineStore("user-store", () => {
     logout();
   };
 
-  return { store, userData, setToken, doLogin, doCreateUser, logout, deleteAccount };
+  const isLogged = () => store.token != null
+
+  return { store, userData, setToken, doLogin, doCreateUser, logout, deleteAccount, isLogged };
 });
