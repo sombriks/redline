@@ -29,7 +29,7 @@ export const router = createRouter({
 
 router.beforeEach(async (to) => {
   const userStore = useUserStore()
-  if (!userStore.isLogged() && to.path !== '/auth') {
+  if (!userStore.store.token && to.path !== '/auth') {
     return { path: '/auth' }
   }
 })

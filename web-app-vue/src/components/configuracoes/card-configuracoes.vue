@@ -15,22 +15,25 @@
 import { ref } from "vue";
 
 import { useUserStore } from "@/stores/userStore";
+import { router } from "@/routes/router";
 
 const wantDelete = ref(false);
 const pwd = ref("");
 
 const uStore = useUserStore();
 
-const logout = () => {
+const logout = async () => {
   uStore.logout();
+  await router.push("/")
 };
 
-const deleteAccount = () => {
+const deleteAccount = async () => {
   const user = {
     email: uStore.userData.email,
     senha: pwd.value
   };
-  uStore.deleteAccount(user);
+  await uStore.deleteAccount(user);
+  await router.push("/")
 };
 </script>
 <style scoped></style>

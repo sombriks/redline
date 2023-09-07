@@ -1,9 +1,10 @@
 <script setup>
 
+import CardConfiguracoes from "@/components/configuracoes/card-configuracoes.vue";
 </script>
 
 <template>
-<h1>Config</h1>
+<card-configuracoes></card-configuracoes>
 </template>
 
 <style scoped>
