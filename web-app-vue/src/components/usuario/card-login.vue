@@ -5,11 +5,10 @@
       <v-text-field :rules=[requiredRule] v-model="email" label="Email" required type="email"></v-text-field>
       <v-text-field :rules=[requiredRule] v-model="senha" label="Senha" required type="password"></v-text-field>
       <hr />
-      <v-btn v-if="!createMode" type="submit">Login</v-btn>
-      <v-btn type="button" @click="createMode = !createMode">
+      <v-btn aria-roledescription='create-mode' type="button" @click="createMode = !createMode">
         {{ createMode ? 'Cancelar' : 'Criar conta' }}
       </v-btn>
-      <v-btn v-if="createMode" type="submit">Criar</v-btn>
+      <v-btn type="submit">{{createMode ? 'Criar conta' : 'Login'}}</v-btn>
     </v-form>
   </v-card>
 </template>
