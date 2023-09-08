@@ -40,7 +40,29 @@
       <v-text-field
         :rules="[requiredRule]"
         v-model="contaEdit.descricao"
-        label="Nome"
+        label="Descrição"
+      ></v-text-field>
+      <v-text-field
+        v-if="contaEdit.tipo_conta_id == 3"
+        :rules="[dayOfMonthRule]"
+        v-model="contaEdit.dia_fechamento"
+        label="Fechamento"
+        prepend-inner-icon="mdi-calendar-check"
+      ></v-text-field>
+      <v-text-field
+        v-if="contaEdit.tipo_conta_id == 3"
+        :rules="[dayOfMonthRule]"
+        v-model="contaEdit.dia_vencimento"
+        label="Vencimento"
+        prepend-inner-icon="mdi-calendar-alert"
+      ></v-text-field>
+      <v-text-field
+        v-if="contaEdit.tipo_conta_id == 3"
+        :rules="[numberRule]"
+        type="number"
+        v-model="contaEdit.limite"
+        label="Limite"
+        prepend-inner-icon="mdi-cash-100"
       ></v-text-field>
       <v-container>
         <v-row align="center">
@@ -71,7 +93,7 @@
 <script setup>
 import { computed, reactive, ref } from 'vue'
 import { useContaStore } from '@/stores/contaStore'
-import { requiredRule } from '@/form-rules/basic-rules'
+import { dayOfMonthRule, numberRule, requiredRule } from "@/form-rules/basic-rules";
 
 const cState = useContaStore()
 
@@ -92,6 +114,7 @@ const contaIcon = computed(() => {
 })
 
 const doUpdate = async () => {
+  if(!valid.value) return
   emit('onSave', contaEdit)
   edit.value = !edit.value
 }
