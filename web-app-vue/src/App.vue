@@ -1,5 +1,6 @@
 <script setup>
 import { useUserStore } from "@/stores/userStore";
+import { ref } from "vue";
 
 const userStore = useUserStore()
 const menu = [
@@ -11,21 +12,31 @@ const menu = [
   { label: 'Recorrências', icon: 'mdi-history', path: '/recorrencias' },
   { label: 'Configurações', icon: 'mdi-cog-outline', path: '/config' },
 ]
+const show = ref(false)
 </script>
 
 <template>
   <v-layout class="rounded rounded-md">
+    <v-app-bar :collapse="!show" v-if="userStore.store.token" title="redline">
+      <template v-slot:prepend>
+        <v-app-bar-nav-icon icon="mdi-pulse" color="red" @click="show = !show"></v-app-bar-nav-icon>
+      </template>
+    </v-app-bar>
+    <v-navigation-drawer v-if="userStore.store.token" v-model="show">
+      <v-list>
+        <v-list-item v-for="m in menu" :key="m.label">
+            <template v-slot:prepend>
+              <v-icon color="red-lighten-3" :icon="m.icon"></v-icon>
+            </template>
+            <v-list-item-title>
+              <router-link :to="m.path">{{m.label}}</router-link>
+            </v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
     <v-main class="d-flex align-center justify-center" style="min-height: 300px">
       <router-view></router-view>
     </v-main>
-    <v-bottom-navigation v-if="userStore.store.token" :elevation="24" active mode="shift">
-      <router-link v-for="m in menu" :key="m.label" :to="m.path">
-        <v-btn :value="m.label">
-          <v-icon>{{m.icon}}</v-icon>
-          <span>{{m.label}}</span>
-        </v-btn>
-      </router-link>
-    </v-bottom-navigation>
   </v-layout>
 </template>
 

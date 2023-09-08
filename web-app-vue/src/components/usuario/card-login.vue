@@ -1,14 +1,14 @@
 <template>
-  <v-card :title="createMode ? 'Criar conta' : 'Login'">
+  <v-card :title="createMode ? 'Criar conta' : 'Login'" elevation="24">
     <v-form v-model="valid" @submit.prevent.stop="doLogin" class="auth-form">
       <v-text-field :rules=[requiredRule] v-if="createMode" v-model="nome" label="Nome" required></v-text-field>
       <v-text-field :rules=[requiredRule] v-model="email" label="Email" required type="email"></v-text-field>
       <v-text-field :rules=[requiredRule] v-model="senha" label="Senha" required type="password"></v-text-field>
       <hr />
-      <v-btn aria-roledescription='create-mode' type="button" @click="createMode = !createMode">
+      <v-btn type="submit">{{createMode ? 'Criar conta' : 'Login'}}</v-btn>
+      <v-btn variant="tonal" aria-roledescription='create-mode' type="button" @click="createMode = !createMode">
         {{ createMode ? 'Cancelar' : 'Criar conta' }}
       </v-btn>
-      <v-btn type="submit">{{createMode ? 'Criar conta' : 'Login'}}</v-btn>
     </v-form>
   </v-card>
 </template>
@@ -16,6 +16,7 @@
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { router } from "@/routes/router";
+import { requiredRule } from "@/form-rules/basic-rules";
 
 const nome = ref('')
 const email = ref('')
@@ -23,11 +24,6 @@ const senha = ref('')
 const createMode = ref(false)
 const valid = ref(false)
 const uState = useUserStore()
-
-const requiredRule = value => {
-  if(value) return true
-  return "Required field"
-}
 
 const doLogin = async () => {
   if(!valid.value) return

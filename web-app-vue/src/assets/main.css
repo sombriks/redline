@@ -1,5 +1,11 @@
 @import './base.css';
 
+/* TODO it should come from vuetify color pack */
+/* https://vuetifyjs.com/en/styles/colors/#material-colors */
+:root {
+  --red-lighten-3: #EF9A9A;
+}
+
 #app {
   display: flex;
   flex-direction: column;
@@ -8,17 +14,10 @@
   min-height: 100vh;
 }
 
-a,
-.green {
+a {
+  color: var(--red-lighten-3);
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
   transition: 0.4s;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
 }
 
 @media (min-width: 1024px) {

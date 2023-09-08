@@ -72,7 +72,3 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-hr, .container{
-  border: 1px solid red;
-}

@@ -1,9 +1,10 @@
 <script setup>
 
+import ListaCategorias from "@/components/categoria/lista-categorias.vue";
 </script>
 
 <template>
-<h1>Categorias</h1>
+<lista-categorias></lista-categorias>
 </template>
 
 <style scoped>
