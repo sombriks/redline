@@ -1,11 +1,7 @@
 <script setup>
 
+import ListaContas from "@/components/conta/lista-contas.vue";
 </script>
-
 <template>
-<h1>Contas</h1>
+  <lista-contas></lista-contas>
 </template>
-
-<style scoped>
-
-</style>
