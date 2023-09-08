@@ -34,7 +34,7 @@
         :items="cState.store.tiposConta"
         item-title="descricao"
         item-value="id"
-        :prepend-icon="contaIcon"
+        :prepend-inner-icon="contaIcon"
       >
       </v-select>
       <v-text-field
@@ -96,8 +96,3 @@ const doUpdate = async () => {
   edit.value = !edit.value
 }
 </script>
-<style scoped>
-form {
-  display: inline-block;
-}
-</style>
