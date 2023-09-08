@@ -17,10 +17,11 @@ const show = ref(false)
 
 <template>
   <v-layout class="rounded rounded-md">
-    <v-app-bar :collapse="!show" v-if="userStore.store.token" title="redline">
+    <v-app-bar :collapse="!show" v-if="userStore.store.token">
       <template v-slot:prepend>
         <v-app-bar-nav-icon icon="mdi-pulse" color="red" @click="show = !show"></v-app-bar-nav-icon>
       </template>
+      <v-app-bar-title><span class="red">redline</span></v-app-bar-title>
     </v-app-bar>
     <v-navigation-drawer v-if="userStore.store.token" v-model="show">
       <v-list>
@@ -40,4 +41,8 @@ const show = ref(false)
   </v-layout>
 </template>
 
-<style scoped></style>
+<style scoped>
+.red {
+  color: red;
+}
+</style>

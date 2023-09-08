@@ -3,38 +3,46 @@
     v-if="!edit"
     rounded
     variant="outlined"
+    :color="props.categoria?.cor || 'green-accent-2'"
     class="ma-2"
     size="x-large"
-    append-icon="mdi-playlist-edit"
+    :append-icon="props.categoria.id ? 'mdi-playlist-edit' : 'mdi-playlist-plus'"
     @click="edit = !edit"
   >
-    {{ catEdit.descricao }}
+    {{ props.categoria.descricao }}
   </v-chip>
   <v-card v-if="edit" elevation="24" min-width="300px" class="ma-2">
     <v-form v-model="valid" @submit.prevent.stop="doEdit">
+      <v-color-picker v-model="catEdit.cor"></v-color-picker>
       <v-text-field :rules="[requiredRule]" v-model="catEdit.descricao" label="Nome"></v-text-field>
       <v-container>
         <v-row align="center">
-          <v-btn class="ma-2" type="submit">Salvar</v-btn>
-          <v-btn variant="tonal" class="ma-2" type="button" @click="edit = !edit">Cancelar</v-btn>
+          <v-btn class="ma-2" color="green" type="submit" icon="mdi-check"></v-btn>
+          <v-btn
+            variant="tonal"
+            color="orange"
+            class="ma-2"
+            type="button"
+            @click="edit = !edit"
+            icon="mdi-close"
+          ></v-btn>
+          <v-spacer></v-spacer>
+          <v-btn
+            v-if="catEdit.id"
+            variant="tonal"
+            color="red"
+            class="ma-2"
+            type="button"
+            @click="emit('onRemove', catEdit)"
+            icon="mdi-trash-can-outline"
+          ></v-btn>
         </v-row>
       </v-container>
     </v-form>
   </v-card>
-  <!--  <li>-->
-  <!--    <span v-if="!edit" @click="edit = !edit">-->
-  <!--      {{ props.categoria.descricao }}-->
-  <!--      <button @click="emit('onRemove', props.categoria)">&#128686;</button>-->
-  <!--    </span>-->
-  <!--    <form v-if="edit" @submit.prevent.stop="doEdit">-->
-  <!--      <input required placeholder="Descrição" v-model="catEdit.descricao" />-->
-  <!--      <button type="submit">&#9989;</button>-->
-  <!--      <button type="button" @click="edit = !edit">&#10060;</button>-->
-  <!--    </form>-->
-  <!--  </li>-->
 </template>
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref } from "vue";
 import { requiredRule } from '@/form-rules/basic-rules'
 
 const props = defineProps(['categoria'])
@@ -47,10 +55,7 @@ const valid = ref(false)
 
 const doEdit = () => {
   if (!valid.value) return
-  emit('onEdit', {
-    ...props.categoria,
-    descricao: catEdit.descricao
-  })
+  emit('onEdit', catEdit)
   edit.value = false
 }
 </script>

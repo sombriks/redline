@@ -1,208 +1,170 @@
---
--- ESQUEMA REDLINE FINANCE
---
-
-DROP TABLE IF EXISTS PLANEJAMENTO;
-DROP TABLE IF EXISTS MOVIMENTACAO;
-DROP TABLE IF EXISTS CONTA;
-DROP TABLE IF EXISTS RECORRENCIA;
-DROP TABLE IF EXISTS CATEGORIA;
-DROP TABLE IF EXISTS MODELOCATEGORIA;
-DROP TABLE IF EXISTS TIPO_CONTA;
-DROP TABLE IF EXISTS TIPO_RECORRENCIA;
-DROP TABLE IF EXISTS TIPO_MOVIMENTACAO;
-DROP TABLE IF EXISTS USUARIO;
-
-CREATE TABLE USUARIO
+create table knex_migrations
 (
-    ID        INTEGER                          NOT NULL AUTO_INCREMENT,
-    NOME      VARCHAR(255)                     NOT NULL,
-    EMAIL     VARCHAR(255)                     NOT NULL,
-    SENHA     VARCHAR(255)                     NOT NULL,
-    CRIACAO   TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    ALTERACAO TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    CONSTRAINT USUARIO_PK PRIMARY KEY (ID),
-    CONSTRAINT USUARIO_EMAIL_UK UNIQUE (ID)
+    id             integer not null
+        primary key autoincrement,
+    name           varchar(255),
+    batch          integer,
+    migration_time datetime
 );
 
-CREATE TABLE TIPO_MOVIMENTACAO
+create table knex_migrations_lock
 (
-    ID        INTEGER                          NOT NULL AUTO_INCREMENT,
-    DESCRICAO VARCHAR(255)                     NOT NULL,
-    CRIACAO   TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    ALTERACAO TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    CONSTRAINT TIPO_MOVIMENTACAO_PK PRIMARY KEY (ID),
-    CONSTRAINT TIPO_MOVIMENTACAO_DESCRICAO_UQ UNIQUE (DESCRICAO)
+    "index"   integer not null
+        primary key autoincrement,
+    is_locked integer
 );
 
-INSERT INTO TIPO_MOVIMENTACAO (ID, DESCRICAO)
-VALUES (1, 'ENTRADA'),
-       (2, 'SAIDA');
-
-CREATE TABLE TIPO_RECORRENCIA
+create table modelocategoria
 (
-    ID        INTEGER                          NOT NULL AUTO_INCREMENT,
-    DESCRICAO VARCHAR(255)                     NOT NULL,
-    CRIACAO   TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    ALTERACAO TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    CONSTRAINT TIPO_RECORRENCIA_PK PRIMARY KEY (ID),
-    CONSTRAINT TIPO_RECORRENCIA_DESCRICAO_UQ UNIQUE (DESCRICAO)
+    id        integer                                not null
+        primary key autoincrement,
+    descricao varchar(255)                           not null,
+    cor       varchar(255) default '#f00'            not null,
+    criacao   datetime     default CURRENT_TIMESTAMP not null,
+    alteracao datetime     default CURRENT_TIMESTAMP not null
 );
 
-INSERT INTO TIPO_RECORRENCIA (ID, DESCRICAO)
-VALUES (1, 'MENSAL'),
-       (2, 'ANUAL'),
-       (3, 'DIARIA');
+create unique index modelocategoria_descricao_unique
+    on modelocategoria (descricao);
 
-CREATE TABLE TIPO_CONTA
+create table tipo_conta
 (
-    ID        INTEGER                          NOT NULL AUTO_INCREMENT,
-    DESCRICAO VARCHAR(255)                     NOT NULL,
-    CRIACAO   TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    ALTERACAO TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    CONSTRAINT TIPO_CONTA_PK PRIMARY KEY (ID),
-    CONSTRAINT TIPO_CONTA_DESCRICAO_UQ UNIQUE (DESCRICAO)
+    id        integer                            not null
+        primary key,
+    descricao varchar(255)                       not null,
+    criacao   datetime default CURRENT_TIMESTAMP not null,
+    alteracao datetime default CURRENT_TIMESTAMP not null
 );
 
-INSERT INTO TIPO_CONTA (ID, DESCRICAO)
-VALUES (1, 'CARTEIRA'),
-       (2, 'BANCO'),
-       (3, 'CARTAO');
+create unique index tipo_conta_descricao_unique
+    on tipo_conta (descricao);
 
-CREATE TABLE MODELOCATEGORIA
+create table tipo_movimentacao
 (
-    ID        INTEGER                          NOT NULL AUTO_INCREMENT,
-    DESCRICAO VARCHAR(255)                     NOT NULL,
-    CRIACAO   TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    ALTERACAO TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    CONSTRAINT MODELOCATEGORIA_PK PRIMARY KEY (ID),
-    CONSTRAINT MODELOCATEGORIA_DESCRICAO_UQ UNIQUE (DESCRICAO)
+    id        integer                            not null
+        primary key,
+    descricao varchar(255)                       not null,
+    criacao   datetime default CURRENT_TIMESTAMP not null,
+    alteracao datetime default CURRENT_TIMESTAMP not null
 );
 
-INSERT INTO MODELOCATEGORIA (DESCRICAO)
-VALUES ('SALARIO'),
-       ('BONUS'),
-       ('EXTRA'),
-       ('OUTROS'),
-       ('GANHOS'),
-       ('MERCADO'),
-       ('RESTAURANTE'),
-       ('DELIVERY'),
-       ('ALUGUEL'),
-       ('INTERNET'),
-       ('TELEFONE'),
-       ('VESTUARIO'),
-       ('TRANSPORTE'),
-       ('ASSINATURAS'),
-       ('SERVICOS'),
-       ('INVESTIMENTOS'),
-       ('IMPREVISTOS'),
-       ('ELETRONICOS'),
-       ('LAZER'),
-       ('SAUDE'),
-       ('RESERVA');
+create unique index tipo_movimentacao_descricao_unique
+    on tipo_movimentacao (descricao);
 
-CREATE TABLE CATEGORIA
+create table tipo_recorrencia
 (
-    ID         INTEGER      NOT NULL AUTO_INCREMENT,
-    DESCRICAO  VARCHAR(255) NOT NULL,
-    CRIACAO    TIMESTAMP    NOT NULL DEFAULT LOCALTIMESTAMP,
-    ALTERACAO  TIMESTAMP             DEFAULT LOCALTIMESTAMP NOT NULL,
-    USUARIO_ID INTEGER      NOT NULL,
-    CONSTRAINT CATEGORIA_PK PRIMARY KEY (ID),
-    CONSTRAINT CATEGORIA_DESCRICAO_UQ UNIQUE (DESCRICAO, USUARIO_ID),
-    CONSTRAINT CATEGORIA_USUARIO_FK
-        FOREIGN KEY (USUARIO_ID)
-            REFERENCES USUARIO (ID)
-            ON DELETE CASCADE
+    id        integer                            not null
+        primary key,
+    descricao varchar(255)                       not null,
+    criacao   datetime default CURRENT_TIMESTAMP not null,
+    alteracao datetime default CURRENT_TIMESTAMP not null
 );
 
-CREATE TABLE RECORRENCIA
+create unique index tipo_recorrencia_descricao_unique
+    on tipo_recorrencia (descricao);
+
+create table usuario
 (
-    ID                  INTEGER                          NOT NULL AUTO_INCREMENT,
-    DESCRICAO           VARCHAR(255)                     NOT NULL,
-    VALOR               NUMERIC(10, 2)                   NOT NULL,
-    CRIACAO             TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    ALTERACAO           TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    INICIAL             TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    FINAL               TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    TIPO_RECORRENCIA_ID INTEGER                          NOT NULL,
-    USUARIO_ID          INTEGER                          NOT NULL,
-    CONSTRAINT RECORRENCIA_PK PRIMARY KEY (ID),
-    CONSTRAINT RECORRENCIA_TIPO_RECORRENCIA_FK
-        FOREIGN KEY (TIPO_RECORRENCIA_ID)
-            REFERENCES TIPO_RECORRENCIA (ID),
-    CONSTRAINT RECORRENCIA_USUARIO_ID
-        FOREIGN KEY (USUARIO_ID)
-            REFERENCES USUARIO (ID)
-            ON DELETE CASCADE
+    id        integer                            not null
+        primary key autoincrement,
+    nome      varchar(255)                       not null,
+    email     varchar(255)                       not null,
+    senha     varchar(255)                       not null,
+    admin     boolean  default '0'               not null,
+    criacao   datetime default CURRENT_TIMESTAMP not null,
+    alteracao datetime default CURRENT_TIMESTAMP not null
 );
 
-CREATE TABLE CONTA
+create table categoria
 (
-    ID             INTEGER                          NOT NULL AUTO_INCREMENT,
-    DESCRICAO      VARCHAR(255)                     NOT NULL,
-    ATIVA          BOOLEAN                          NOT NULL DEFAULT TRUE,
-    CRIACAO        TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    ALTERACAO      TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    USUARIO_ID     INTEGER                          NOT NULL,
-    TIPO_CONTA_ID  INTEGER                          NOT NULL,
-    DIA_FECHAMENTO INTEGER,
-    DIA_VENCIMENTO INTEGER,
-    LIMITE         NUMERIC(10, 2),
-    CONSTRAINT CONTA_PK PRIMARY KEY (ID),
-    CONSTRAINT CONTA_USUARIO_FK
-        FOREIGN KEY (USUARIO_ID)
-            REFERENCES USUARIO (ID)
-            ON DELETE CASCADE,
-    CONSTRAINT CONTA_TIPO_CONTA_FK
-        FOREIGN KEY (TIPO_CONTA_ID)
-            REFERENCES TIPO_CONTA (ID)
+    id         integer                                not null
+        primary key autoincrement,
+    descricao  varchar(255)                           not null,
+    cor        varchar(255) default '#f00'            not null,
+    criacao    datetime     default CURRENT_TIMESTAMP not null,
+    alteracao  datetime     default CURRENT_TIMESTAMP not null,
+    usuario_id integer                                not null
+        references usuario
+            on delete cascade
 );
 
-CREATE TABLE MOVIMENTACAO
+create unique index categoria_descricao_usuario_id_unique
+    on categoria (descricao, usuario_id);
+
+create table conta
 (
-    ID                   INTEGER                          NOT NULL AUTO_INCREMENT,
-    DESCRICAO            VARCHAR(255)                     NOT NULL,
-    VALOR                NUMERIC(10, 2)                   NOT NULL,
-    CRIACAO              TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    ALTERACAO            TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    VENCIMENTO           TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    EFETIVADA            TIMESTAMP,
-    TIPO_MOVIMENTACAO_ID INTEGER                          NOT NULL,
-    CONTA_ID             INTEGER                          NOT NULL,
-    CATEGORIA_ID         INTEGER,
-    RECORRENCIA_ID       INTEGER,
-    CONSTRAINT MOVIMENTACAO_PK PRIMARY KEY (ID),
-    CONSTRAINT MOVIMENTACAO_TIPO_MOVIMENTACAO_FK
-        FOREIGN KEY (TIPO_MOVIMENTACAO_ID)
-            REFERENCES TIPO_MOVIMENTACAO (ID),
-    CONSTRAINT MOVIMENTACAO_CONTA_FK
-        FOREIGN KEY (CONTA_ID)
-            REFERENCES CONTA (ID)
-            ON DELETE CASCADE,
-    CONSTRAINT MOVIMENTACAO_CATEGORIA_FK
-        FOREIGN KEY (CATEGORIA_ID)
-            REFERENCES CATEGORIA (ID),
-    CONSTRAINT MOVIMENTACAO_RECORRENCIA_FK
-        FOREIGN KEY (RECORRENCIA_ID)
-            REFERENCES RECORRENCIA (ID)
-            ON DELETE CASCADE
+    id             integer                                not null
+        primary key autoincrement,
+    descricao      varchar(255)                           not null,
+    ativa          boolean      default '1'               not null,
+    cor            varchar(255) default '#f00'            not null,
+    criacao        datetime     default CURRENT_TIMESTAMP not null,
+    alteracao      datetime     default CURRENT_TIMESTAMP not null,
+    usuario_id     integer                                not null
+        references usuario
+            on delete cascade,
+    tipo_conta_id  integer                                not null
+        references tipo_conta,
+    dia_fechamento integer,
+    dia_vencimento integer,
+    limite         float
 );
 
-CREATE TABLE PLANEJAMENTO
+create table planejamento
 (
-    ID           INTEGER                          NOT NULL AUTO_INCREMENT,
-    DESCRICAO    VARCHAR(255)                     NOT NULL,
-    CRIACAO      TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    ALTERACAO    TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    INICIAL      TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    FINAL        TIMESTAMP DEFAULT LOCALTIMESTAMP NOT NULL,
-    LIMITE       NUMERIC(10, 2)                   NOT NULL,
-    CATEGORIA_ID INTEGER                          NOT NULL,
-    CONSTRAINT PLANEJAMENTO_PK PRIMARY KEY (ID),
-    CONSTRAINT PLANEJAMENTO_CATEGORIA_FK
-        FOREIGN KEY (CATEGORIA_ID)
-            REFERENCES CATEGORIA (ID)
-            ON DELETE CASCADE
+    id           integer                            not null
+        primary key autoincrement,
+    descricao    varchar(255)                       not null,
+    criacao      datetime default CURRENT_TIMESTAMP not null,
+    alteracao    datetime default CURRENT_TIMESTAMP not null,
+    inicial      datetime default CURRENT_TIMESTAMP not null,
+    final        datetime default CURRENT_TIMESTAMP not null,
+    categoria_id integer                            not null
+        references categoria
+            on delete cascade,
+    limite       float                              not null
 );
+
+create table recorrencia
+(
+    id                  integer                            not null
+        primary key autoincrement,
+    descricao           varchar(255)                       not null,
+    valor               float                              not null,
+    criacao             datetime default CURRENT_TIMESTAMP not null,
+    alteracao           datetime default CURRENT_TIMESTAMP not null,
+    inicial             datetime default CURRENT_TIMESTAMP not null,
+    final               datetime default CURRENT_TIMESTAMP not null,
+    tipo_recorrencia_id integer                            not null
+        references tipo_recorrencia,
+    usuario_id          integer                            not null
+        references usuario
+            on delete cascade
+);
+
+create table movimentacao
+(
+    id                   integer                            not null
+        primary key autoincrement,
+    descricao            varchar(255)                       not null,
+    valor                float                              not null,
+    criacao              datetime default CURRENT_TIMESTAMP not null,
+    alteracao            datetime default CURRENT_TIMESTAMP not null,
+    vencimento           datetime default CURRENT_TIMESTAMP not null,
+    efetivada            datetime,
+    tipo_movimentacao_id integer                            not null
+        references tipo_movimentacao,
+    conta_id             integer                            not null
+        references conta
+            on delete cascade,
+    categoria_id         integer
+                                                            references categoria
+                                                                on delete set null,
+    recorrencia_id       integer
+        references recorrencia
+            on delete cascade
+);
+
+create unique index usuario_email_unique
+    on usuario (email);
+

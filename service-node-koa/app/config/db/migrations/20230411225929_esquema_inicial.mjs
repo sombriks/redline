@@ -40,12 +40,14 @@ export const up = async (knex) => {
     .createTable("modelocategoria", tb => {
       tb.increments("id")
       tb.string("descricao").notNullable().unique()
+      tb.string("cor").notNullable().defaultTo("#f00")
       tb.timestamp("criacao").notNullable().defaultTo(knex.fn.now())
       tb.timestamp("alteracao").notNullable().defaultTo(knex.fn.now())
     })
     .createTable("categoria", tb => {
       tb.increments("id")
       tb.string("descricao").notNullable()
+      tb.string("cor").notNullable().defaultTo("#f00")
       tb.timestamp("criacao").notNullable().defaultTo(knex.fn.now())
       tb.timestamp("alteracao").notNullable().defaultTo(knex.fn.now())
       tb.integer("usuario_id").notNullable().unsigned()
@@ -69,6 +71,7 @@ export const up = async (knex) => {
       tb.increments("id")
       tb.string("descricao").notNullable()
       tb.boolean("ativa").notNullable().defaultTo(true)
+      tb.string("cor").notNullable().defaultTo("#f00")
       tb.timestamp("criacao").notNullable().defaultTo(knex.fn.now())
       tb.timestamp("alteracao").notNullable().defaultTo(knex.fn.now())
       tb.integer("usuario_id").notNullable().unsigned()

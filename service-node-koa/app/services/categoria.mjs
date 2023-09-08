@@ -2,15 +2,15 @@ import { knex } from "../config/db/index.mjs";
 
 export const resetCategorias = async ({ usuario_id = -1 }) => {
   await knex("categoria").where({ usuario_id }).del();
-  const modelos = await knex("modelocategoria");
+  const modelos = await knex("modelocategoria").orderBy("criacao");
   return knex("categoria").insert(modelos
-    .map(({ descricao }) => ({ usuario_id, descricao })));
+    .map(({ descricao, cor }) => ({ usuario_id, descricao, cor })));
 };
 
 export const listCategorias = async ({ usuario_id, q = "", limit = 100, offset = 0 }) =>
   knex("categoria").where({ usuario_id })
     .andWhereLike("descricao", `%${q}%`)
-    .orderBy("descricao")
+    .orderBy("criacao")
     .offset(offset)
     .limit(limit);
 
