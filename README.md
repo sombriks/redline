@@ -6,4 +6,4 @@ https://lazerhawk.bandcamp.com/album/redline
 
 ## project board
 
-https://sombriks.youtrack.cloud/projects/11dddd48-8cd7-4b24-961c-29fbb018ad28
+https://sombriks.atlassian.net/jira/software/projects/RED/boards/2
