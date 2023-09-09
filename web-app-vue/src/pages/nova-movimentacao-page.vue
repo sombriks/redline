@@ -1,9 +1,10 @@
 <script setup>
 
+import NovaMovimentacao from "@/components/movimentacao/nova-movimentacao.vue";
 </script>
 
 <template>
-<h1>Nova movimentação</h1>
+  <nova-movimentacao></nova-movimentacao>
 </template>
 
 <style scoped>

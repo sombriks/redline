@@ -1,22 +1,45 @@
 <template>
   <v-card :title="createMode ? 'Criar conta' : 'Login'" elevation="24">
     <v-form v-model="valid" @submit.prevent.stop="doLogin" class="auth-form">
-      <v-text-field :rules=[requiredRule] v-if="createMode" v-model="nome" label="Nome" required></v-text-field>
-      <v-text-field :rules=[requiredRule] v-model="email" label="Email" required type="email"></v-text-field>
-      <v-text-field :rules=[requiredRule] v-model="senha" label="Senha" required type="password"></v-text-field>
-      <hr />
-      <v-btn type="submit">{{createMode ? 'Criar conta' : 'Login'}}</v-btn>
-      <v-btn variant="tonal" aria-roledescription='create-mode' type="button" @click="createMode = !createMode">
+      <v-text-field
+        :rules="[requiredRule]"
+        v-if="createMode"
+        v-model="nome"
+        label="Nome"
+        required
+      ></v-text-field>
+      <v-text-field
+        :rules="[requiredRule]"
+        v-model="email"
+        label="Email"
+        required
+        type="email"
+      ></v-text-field>
+      <v-text-field
+        :rules="[requiredRule]"
+        v-model="senha"
+        label="Senha"
+        required
+        type="password"
+      ></v-text-field>
+      <v-divider></v-divider>
+      <v-btn type="submit">{{ createMode ? 'Criar conta' : 'Login' }}</v-btn>
+      <v-btn
+        variant="tonal"
+        aria-roledescription="create-mode"
+        type="button"
+        @click="createMode = !createMode"
+      >
         {{ createMode ? 'Cancelar' : 'Criar conta' }}
       </v-btn>
     </v-form>
   </v-card>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, defineEmits } from 'vue'
 import { useUserStore } from '@/stores/userStore'
-import { router } from "@/routes/router";
-import { requiredRule } from "@/form-rules/basic-rules";
+import { router } from '@/routes/router'
+import { requiredRule } from '@/form-rules/basic-rules'
 
 const nome = ref('')
 const email = ref('')
@@ -25,8 +48,10 @@ const createMode = ref(false)
 const valid = ref(false)
 const uState = useUserStore()
 
+const emit = defineEmits(['onLogin'])
+
 const doLogin = async () => {
-  if(!valid.value) return
+  if (!valid.value) return
   try {
     if (createMode.value) {
       await uState.doCreateUser({
@@ -38,7 +63,7 @@ const doLogin = async () => {
     const result = await uState.doLogin({ email: email.value, senha: senha.value })
     // TODO guardar informação do usuário logado
     uState.setToken(result.token)
-    await router.push("/")
+    emit('onLogin')
   } catch (e) {
     console.log(e)
     alert('Algo deu errado')
