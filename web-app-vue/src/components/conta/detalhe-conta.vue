@@ -1,31 +1,13 @@
 <template>
-  <!--  <li>-->
-  <!--    <span v-if="!edit"> {{ props.conta.tipo.descricao }} - {{ props.conta.descricao }} </span>-->
-  <!--    <form @submit.prevent.stop="doUpdate" v-if="edit">-->
-  <!--      <select v-model="contaEdit.tipo" required>-->
-  <!--        <option v-for="t in contaStore.store.tiposConta" :key="t.id" :value="t">-->
-  <!--          {{ t.descricao }}-->
-  <!--        </option>-->
-  <!--      </select>-->
-  <!--      <input v-model="contaEdit.descricao" />-->
-  <!--      <button type="submit">&#9989;</button>-->
-  <!--    </form>-->
-  <!--    <button v-if="!edit" @click="edit = !edit">✏️</button>-->
-  <!--    <button v-if="edit" @click="edit = !edit">&#10060;</button>-->
-  <!--    <button v-if="!edit" @click="emit('onRemove', props.conta)">&#128686;</button>-->
-  <!--  </li>-->
-  <v-chip
+  <chip-conta
     v-if="!edit"
-    rounded
-    variant="outlined"
-    :color="props.conta?.cor || 'green-accent-2'"
     class="ma-2"
     size="x-large"
-    :prepend-icon="contaIcon"
+    :conta="props.conta"
+    :color="props.conta?.cor || 'green-accent-2'"
     :append-icon="props.conta.id ? 'mdi-playlist-edit' : 'mdi-playlist-plus'"
     @click="edit = !edit"
-    >{{ props.conta.descricao }}
-  </v-chip>
+  ></chip-conta>
   <v-card v-if="edit" elevation="24" min-width="300px" class="ma-2">
     <v-form v-model="valid" @submit.prevent.stop="doUpdate">
       <v-color-picker v-model="contaEdit.cor"></v-color-picker>
@@ -93,7 +75,8 @@
 <script setup>
 import { computed, reactive, ref } from 'vue'
 import { useContaStore } from '@/stores/contaStore'
-import { dayOfMonthRule, numberRule, requiredRule } from "@/form-rules/basic-rules";
+import { dayOfMonthRule, numberRule, requiredRule } from '@/form-rules/basic-rules'
+import ChipConta from '../shared/chip-conta.vue'
 
 const cState = useContaStore()
 
@@ -114,7 +97,7 @@ const contaIcon = computed(() => {
 })
 
 const doUpdate = async () => {
-  if(!valid.value) return
+  if (!valid.value) return
   emit('onSave', contaEdit)
   edit.value = !edit.value
 }
