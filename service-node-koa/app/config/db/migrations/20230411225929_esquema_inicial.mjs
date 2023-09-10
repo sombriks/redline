@@ -78,9 +78,9 @@ export const up = async (knex) => {
         .references("usuario.id").onDelete("cascade")
       tb.integer("tipo_conta_id").notNullable().unsigned()
         .references("tipo_conta.id")
-      tb.integer("dia_fechamento")
-      tb.integer("dia_vencimento")
-      tb.decimal("limite", 10, 2)
+      tb.integer("dia_fechamento").defaultTo(5)
+      tb.integer("dia_vencimento").defaultTo(15)
+      tb.decimal("limite", 10, 2).defaultTo(5000)
     })
     .createTable("movimentacao", tb => {
       tb.increments("id")

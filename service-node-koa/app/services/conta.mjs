@@ -9,7 +9,8 @@ export const resetConta = async ({ usuario_id }) => {
     tipo_conta_id: t.id,
     descricao: `${t.descricao} PADRÃO`,
     dia_fechamento: 5,
-    dia_vencimento: 15
+    dia_vencimento: 15,
+    limite: 5000
   }));
 
   return knex("conta").insert(novas, ["id"]);

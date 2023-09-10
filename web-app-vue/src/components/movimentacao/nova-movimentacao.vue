@@ -23,6 +23,14 @@
           ></v-text-field>
         </v-row>
         <v-row align="center">
+          <!-- descrição -->
+          <v-text-field
+            :rules="[requiredRule]"
+            v-model="novaMovimentacao.descricao"
+            label="Descrição"
+          ></v-text-field>
+        </v-row>
+        <v-row align="center">
           <!-- conta -->
           <v-autocomplete
             v-model="novaMovimentacao.conta_id"
@@ -36,9 +44,14 @@
             <template v-slot:chip="{ props, item }">
               <chip-conta v-bind="props" :conta="item.raw" :color="item.raw.cor"></chip-conta>
             </template>
-            <template v-slot:item="{props, item}">
+            <template v-slot:item="{ props, item }">
               <v-list-item>
-                <chip-conta class="ma-2" v-bind="props" :conta="item.raw" :color="item.raw.cor"></chip-conta>
+                <chip-conta
+                  class="ma-2"
+                  v-bind="props"
+                  :conta="item.raw"
+                  :color="item.raw.cor"
+                ></chip-conta>
               </v-list-item>
             </template>
           </v-autocomplete>
@@ -51,13 +64,24 @@
             item-title="descricao"
             item-value="id"
             label="Categoria"
-            chips>
+            chips
+          >
             <template v-slot:chip="{ props, item }">
-              <v-chip v-bind="props" variant="outlined" rounded :color="item.raw.cor">{{item.raw.descricao}}</v-chip>
+              <v-chip v-bind="props" variant="outlined" rounded :color="item.raw.cor">{{
+                item.raw.descricao
+              }}</v-chip>
             </template>
-            <template v-slot:item="{props, item}">
+            <template v-slot:item="{ props, item }">
               <v-list-item>
-                <v-chip class="ma-2" v-bind="props" variant="outlined" rounded :color="item.raw.cor">{{item.raw.descricao}}</v-chip>
+                <v-chip
+                  class="ma-2"
+                  v-bind="props"
+                  variant="outlined"
+                  rounded
+                  :color="item.raw.cor"
+                >
+                  {{ item.raw.descricao }}
+                </v-chip>
               </v-list-item>
             </template>
           </v-autocomplete>
@@ -66,16 +90,8 @@
           <!-- efetivada (data) -->
           <button-date label="Pagamento" v-model="novaMovimentacao.efetivada"></button-date>
         </v-row>
-        <v-row align="center">
-          <!-- descrição -->
-          <v-text-field
-            :rules="[requiredRule]"
-            v-model="novaMovimentacao.descricao"
-            label="Descrição"
-          ></v-text-field>
-        </v-row>
-        <v-row align="center">
-          <!-- vencimento (dia do cartão se conta cartão, livre se conta bancária, o mesmo que efetivada se conta carteira) -->
+        <v-row align="center" v-if="contaSelecionada?.tipo_conta_id == 3">
+          <!-- vencimento (dia do cartão se conta cartão) -->
           <button-date label="Vencimento" v-model="novaMovimentacao.vencimento"></button-date>
         </v-row>
         <v-row align="center">
@@ -102,18 +118,18 @@
 </template>
 <script setup>
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
-import { onMounted, reactive, ref, watch } from "vue";
+import { onMounted, reactive, ref, watch } from 'vue'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { numberRule, requiredRule } from '@/form-rules/basic-rules'
 import ChipConta from '../shared/chip-conta.vue'
-import ButtonDate from "../shared/button-date.vue";
+import ButtonDate from '../shared/button-date.vue'
 
 const contaState = useContaStore()
 const categoriaState = useCategoriaStore()
 const movimentacaoState = useMovimentacaoStore()
 
-const reset = () => ({
+const resetMovimentacao = () => ({
   descricao: '',
   valor: 10,
   criacao: new Date(),
@@ -126,7 +142,11 @@ const reset = () => ({
   recorrencia_id: null
 })
 
-const novaMovimentacao = reactive(reset())
+const resetConta = () => ({})
+
+const novaMovimentacao = reactive(resetMovimentacao())
+
+const contaSelecionada = reactive(resetConta())
 
 const valid = ref(false)
 
@@ -136,26 +156,37 @@ const sync = async () => {
   await movimentacaoState.sincronizarMovimentacoes()
 }
 
-watch(() => novaMovimentacao.conta_id, () => {
-  const conta = contaState.store.contas
-    .find(c => c.id == novaMovimentacao?.conta_id);
-  if (conta?.tipo_conta_id == 3) { // cartão de crédito
-    const date = new Date()
-    date.setDate(conta.dia_vencimento)
-    novaMovimentacao.vencimento = date
+watch(
+  () => novaMovimentacao.conta_id,
+  () => {
+    const conta = contaState.store.contas.find((c) => c.id == novaMovimentacao?.conta_id)
+    Object.assign(contaSelecionada, conta)
+    if (conta?.tipo_conta_id == 3) {
+      // cartão de crédito
+      const date = new Date()
+      date.setDate(conta.dia_vencimento)
+      const dateFechamento = new Date()
+      dateFechamento.setDate(conta.dia_fechamento)
+      if (dateFechamento > new Date()) {
+        date.setMonth(date.getMonth() + 1)
+      }
+      novaMovimentacao.vencimento = date
+    }
   }
-})
+)
 
 const salvarMovimentacao = async () => {
-  if(!valid.value) return
+  if (!valid.value) return
   await movimentacaoState.salvarMovimentacao(novaMovimentacao)
   await sync()
-  Object.assign(novaMovimentacao, reset())
-  alert("Salvo!")
+  Object.assign(novaMovimentacao, resetMovimentacao())
+  Object.assign(contaSelecionada, resetConta())
+  alert('Salvo!')
 }
 
 const cancelar = () => {
-  Object.assign(novaMovimentacao, reset())
+  Object.assign(novaMovimentacao, resetMovimentacao())
+  Object.assign(contaSelecionada, resetConta())
 }
 
 onMounted(sync)
