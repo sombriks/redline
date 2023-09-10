@@ -8,8 +8,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node -r dotenv-flow/config index.mjs",
     "dev:service": "cross-env NODE_ENV=development nodemon -r dotenv-flow/config",
-    "test": "cross-env NODE_ENV=test mocha -r dotenv-flow/config -r app/config/_test_hooks.mjs --recursive app/**/*.spec.mjs",
-    "test:coverage": "c8 npm run test",
+    "test:service": "cross-env NODE_ENV=test mocha -r dotenv-flow/config -r app/config/_test_hooks.mjs --recursive app/**/*.spec.mjs",
+    "test:service:coverage": "c8 npm run test:service",
     "migrate:make": "knex migrate:make --knexfile app/config/db/knexfile.cjs -x mjs -- ",
     "migrate:latest": "knex migrate:latest --knexfile app/config/db/knexfile.cjs",
     "migrate:rollback": "knex migrate:rollback --knexfile app/config/db/knexfile.cjs"

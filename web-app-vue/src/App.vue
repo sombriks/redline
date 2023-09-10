@@ -1,7 +1,7 @@
 <script setup>
-import { useUserStore } from "@/stores/userStore";
-import { ref } from "vue";
-import { router } from "@/routes/router";
+import { useUserStore } from '@/stores/userStore'
+import { ref } from 'vue'
+import { router } from '@/routes/router'
 
 const userStore = useUserStore()
 const menu = [
@@ -11,7 +11,7 @@ const menu = [
   { label: 'Histórico', icon: 'mdi-clipboard-text-search-outline', path: '/historico' },
   { label: 'Planejamento', icon: 'mdi-clipboard-edit-outline', path: '/planejamento' },
   { label: 'Recorrências', icon: 'mdi-history', path: '/recorrencias' },
-  { label: 'Configurações', icon: 'mdi-cog-outline', path: '/config' },
+  { label: 'Configurações', icon: 'mdi-cog-outline', path: '/config' }
 ]
 const show = ref(false)
 </script>
@@ -27,12 +27,12 @@ const show = ref(false)
     <v-navigation-drawer v-if="userStore.store.token" v-model="show">
       <v-list>
         <v-list-item v-for="m in menu" :key="m.label" :active="m.path == $route.path">
-            <template v-slot:prepend>
-              <v-icon color="red-lighten-3" :icon="m.icon"></v-icon>
-            </template>
-            <v-list-item-title>
-              <router-link :to="m.path">{{m.label}}</router-link>
-            </v-list-item-title>
+          <template v-slot:prepend>
+            <v-icon color="red-lighten-3" :icon="m.icon"></v-icon>
+          </template>
+          <v-list-item-title>
+            <router-link :to="m.path">{{ m.label }}</router-link>
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
