@@ -3,20 +3,31 @@ import { knex } from "../config/db/index.mjs";
 export const findMovimentacao = async id =>
   knex("movimentacao").where({ id }).first();
 
-export const listMovimentacaoByUsuario = async ({ usuario_id = -1, q = "", limit = 50, offset = 0 }) =>
+export const listMovimentacaoByUsuario = async ({
+                                                  usuario_id = -1,
+                                                  q = "",
+                                                  limit = 50,
+                                                  offset = 0,
+                                                  sort = "vencimento",
+                                                  direction = "desc"
+                                                }) =>
   knex("movimentacao")
     .whereIn("conta_id",
       knex("conta").where({ usuario_id }).select("id"))
     .andWhereLike("descricao", `%${q}%`)
-    .orderBy("id")
+    .orderBy(sort, direction)
     .offset(offset)
     .limit(limit);
 
-export const listMovimentacaoByConta = async ({ conta_id = -1, q = "", limit = 50, offset = 0 }) =>
+export const listMovimentacaoByConta = async ({
+                                                conta_id = -1, q = "", limit = 50, offset = 0,
+                                                sort = "vencimento",
+                                                direction = "desc"
+                                              }) =>
   knex("movimentacao")
     .where({ conta_id })
     .andWhereLike("descricao", `%${q}%`)
-    .orderBy("id")
+    .orderBy(sort, direction)
     .offset(offset)
     .limit(limit);
 
