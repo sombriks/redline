@@ -31,11 +31,15 @@
             item-title="descricao"
             item-value="id"
             label="Conta"
-            @change="verificaConta"
             chips
           >
             <template v-slot:chip="{ props, item }">
               <chip-conta v-bind="props" :conta="item.raw" :color="item.raw.cor"></chip-conta>
+            </template>
+            <template v-slot:item="{props, item}">
+              <v-list-item>
+                <chip-conta class="ma-2" v-bind="props" :conta="item.raw" :color="item.raw.cor"></chip-conta>
+              </v-list-item>
             </template>
           </v-autocomplete>
         </v-row>
@@ -49,7 +53,12 @@
             label="Categoria"
             chips>
             <template v-slot:chip="{ props, item }">
-              <v-chip v-bind="props" variant="outlined" rounded :color="item.raw.cor"></v-chip>
+              <v-chip v-bind="props" variant="outlined" rounded :color="item.raw.cor">{{item.raw.descricao}}</v-chip>
+            </template>
+            <template v-slot:item="{props, item}">
+              <v-list-item>
+                <v-chip class="ma-2" v-bind="props" variant="outlined" rounded :color="item.raw.cor">{{item.raw.descricao}}</v-chip>
+              </v-list-item>
             </template>
           </v-autocomplete>
         </v-row>
@@ -93,7 +102,7 @@
 </template>
 <script setup>
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from "vue";
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { numberRule, requiredRule } from '@/form-rules/basic-rules'
@@ -127,17 +136,15 @@ const sync = async () => {
   await movimentacaoState.sincronizarMovimentacoes()
 }
 
-const verificaConta = () => {
-  if(novaMovimentacao.conta_id) {
-    const conta = contaState.store.contas
-      .find(c => c.id == novaMovimentacao.conta_id);
-    if (conta.tipo_conta_id == 3) { // cartão de crédito
-      const date = new Date()
-      date.setDate(conta.dia_vencimento)
-      novaMovimentacao.vencimento = date
-    }
+watch(() => novaMovimentacao.conta_id, () => {
+  const conta = contaState.store.contas
+    .find(c => c.id == novaMovimentacao?.conta_id);
+  if (conta?.tipo_conta_id == 3) { // cartão de crédito
+    const date = new Date()
+    date.setDate(conta.dia_vencimento)
+    novaMovimentacao.vencimento = date
   }
-}
+})
 
 const salvarMovimentacao = async () => {
   if(!valid.value) return

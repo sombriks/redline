@@ -7,7 +7,7 @@ import ConfigPage from '@/pages/config-page.vue'
 import PlanejamentoPage from '@/pages/planejamento-page.vue'
 import RecorrenciasPage from '@/pages/recorrencias-page.vue'
 import ContasPage from '@/pages/contas-page.vue'
-import MovimentacoesPage from '@/pages/movimentacoes-page.vue'
+import HistoricoPage from '@/pages/historico-page.vue'
 
 const routes = [
   { path: '/', redirect: '/nova-movimentacao' },
@@ -15,7 +15,7 @@ const routes = [
   { component: CategoriasPage, path: '/categorias' },
   { component: ConfigPage, path: '/config' },
   { component: ContasPage, path: '/contas' },
-  { component: MovimentacoesPage, path: '/movimentacoes' },
+  { component: HistoricoPage, path: '/historico' },
   { component: NovaMovimentacaoPage, path: '/nova-movimentacao' },
   { component: PlanejamentoPage, path: '/planejamento' },
   { component: RecorrenciasPage, path: '/recorrencias' }

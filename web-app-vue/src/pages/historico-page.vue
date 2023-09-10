@@ -1,10 +1,11 @@
 <script setup>
-
 import ListaMovimentacoes from "@/components/movimentacao/lista-movimentacoes.vue";
 </script>
 
 <template>
-<lista-movimentacoes></lista-movimentacoes>
+  <h1>Histórico</h1>
+
+<!--<lista-movimentacoes></lista-movimentacoes>-->
 </template>
 <style scoped>
 

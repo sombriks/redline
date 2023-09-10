@@ -16,8 +16,6 @@ import {
   removeMovimentacaoRequest,
   updateMovimentacaoRequest,
   insertMovimentacaoRequest,
-  novaSaidaRequest,
-  novaEntradaRequest,
   findMovimentacaoRequest,
   listMovimentacaoRequest,
   listPlanejamentoRequest,
