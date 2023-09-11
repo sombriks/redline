@@ -87,6 +87,10 @@
           </v-autocomplete>
         </v-row>
         <v-row align="center">
+          <!-- efetivada? -->
+          <v-checkbox v-model="contaEfetivada" label="Paga?"></v-checkbox>
+        </v-row>
+        <v-row align="center" v-if="contaEfetivada">
           <!-- efetivada (data) -->
           <button-date label="Pagamento" v-model="novaMovimentacao.efetivada"></button-date>
         </v-row>
@@ -135,7 +139,7 @@ const resetMovimentacao = () => ({
   criacao: new Date(),
   alteracao: new Date(),
   vencimento: new Date(),
-  efetivada: new Date(),
+  efetivada: null,
   tipo_movimentacao_id: 2,
   conta_id: null,
   categoria_id: null,
@@ -147,6 +151,8 @@ const resetConta = () => ({})
 const novaMovimentacao = reactive(resetMovimentacao())
 
 const contaSelecionada = reactive(resetConta())
+
+const contaEfetivada = ref(false)
 
 const valid = ref(false)
 
@@ -175,6 +181,10 @@ watch(
   }
 )
 
+watch(() => contaEfetivada.value, () => {
+  if(!contaEfetivada.value) novaMovimentacao.efetivada = null
+})
+
 const salvarMovimentacao = async () => {
   if (!valid.value) return
   await movimentacaoState.salvarMovimentacao(novaMovimentacao)
@@ -187,6 +197,7 @@ const salvarMovimentacao = async () => {
 const cancelar = () => {
   Object.assign(novaMovimentacao, resetMovimentacao())
   Object.assign(contaSelecionada, resetConta())
+  contaEfetivada.value = false
 }
 
 onMounted(sync)

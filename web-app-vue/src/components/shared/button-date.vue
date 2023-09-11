@@ -16,7 +16,7 @@ const doSave = () => {
 <template>
   <div v-if="!show" class="ma-2">{{props.label}}</div>
   <v-btn v-if="!show" class="ma-2" variant="outlined" @click="show = !show">
-    {{ props.modelValue?.toLocaleDateString() }}
+    {{ props.modelValue?.toLocaleDateString() || 'Selecionar data' }}
   </v-btn>
   <v-date-picker v-if="show" v-model="date" @click:cancel="show=!show" @click:save="doSave"></v-date-picker>
 </template>
