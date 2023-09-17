@@ -2,6 +2,7 @@
   <v-list min-width="300px">
     <v-list-item v-for="movimentacao in movimentacoes" :key="movimentacao.id">
       <v-list-item-title>
+        <!-- TODO criar o detalhe movimentação agora -->
 <!--        <v-chip class="ma-2" variant="outlined" rounded>{{ ajeitaData(movimentacao.vencimento) }}</v-chip>-->
         <v-chip variant="outlined" class="ma-1" rounded :color="movimentacao.tipo_movimentacao_id == 1 ? 'green' : 'red'">
           R$ {{ movimentacao.valor }}</v-chip>
