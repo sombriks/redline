@@ -41,9 +41,3 @@ const show = ref(false)
     </v-main>
   </v-layout>
 </template>
-
-<style scoped>
-.red {
-  color: red;
-}
-</style>

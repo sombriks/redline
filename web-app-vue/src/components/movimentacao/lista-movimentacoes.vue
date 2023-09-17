@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid  style="width: 100%;">
     <v-row align="center">
       <h1>Histórico</h1>
     </v-row>
