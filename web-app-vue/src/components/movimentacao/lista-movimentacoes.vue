@@ -1,22 +1,20 @@
 <template>
   <v-list min-width="300px">
-    <v-list-item v-for="movimentacao in movimentacoes" :key="movimentacao.id"
-    :color="movimentacao.tipo_movimentacao_id == 1 ? 'green' : 'red'">
+    <v-list-item v-for="movimentacao in movimentacoes" :key="movimentacao.id">
       <v-list-item-title>
-        <span> {{ movimentacao.valor }}</span>
+<!--        <v-chip class="ma-2" variant="outlined" rounded>{{ ajeitaData(movimentacao.vencimento) }}</v-chip>-->
+        <v-chip variant="outlined" class="ma-1" rounded :color="movimentacao.tipo_movimentacao_id == 1 ? 'green' : 'red'">
+          R$ {{ movimentacao.valor }}</v-chip>
+        <v-chip variant="outlined" class="ma-1" rounded>{{movimentacao.descricao}}</v-chip>
+        <v-chip variant="outlined" class="ma-1" rounded :color="!!movimentacao.efetivada ? 'green' : 'red'">
+          <v-icon :icon="!!movimentacao.efetivada ? 'mdi-check' : 'mdi-close'"/> </v-chip>
       </v-list-item-title>
-      <v-list-item-subtitle>
-        <span>{{ ajeitaData(movimentacao.vencimento) }}</span>
-      </v-list-item-subtitle>
-      <v-list-item-subtitle>
-        {{ movimentacao.descricao }}
-      </v-list-item-subtitle>
     </v-list-item>
   </v-list>
 </template>
 <script setup>
-import { computed, onMounted } from 'vue'
-import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
+import {computed, onMounted} from 'vue'
+import {useMovimentacaoStore} from '@/stores/movimentacaoStore'
 import DetalheMovimentacao from '@/components/movimentacao/detalhe-movimentacao.vue'
 
 const mState = useMovimentacaoStore()

@@ -87,16 +87,16 @@
           </v-autocomplete>
         </v-row>
         <v-row align="center">
+          <!-- vencimento (dia do cartão se conta cartão) -->
+          <button-date label="Vencimento" v-model="novaMovimentacao.vencimento"></button-date>
+        </v-row>
+        <v-row align="center">
           <!-- efetivada? -->
           <v-checkbox v-model="contaEfetivada" label="Paga?"></v-checkbox>
         </v-row>
         <v-row align="center" v-if="contaEfetivada">
           <!-- efetivada (data) -->
-          <button-date label="Pagamento" v-model="novaMovimentacao.efetivada"></button-date>
-        </v-row>
-        <v-row align="center" v-if="contaSelecionada?.tipo_conta_id == 3">
-          <!-- vencimento (dia do cartão se conta cartão) -->
-          <button-date label="Vencimento" v-model="novaMovimentacao.vencimento"></button-date>
+          <button-date label="Efetivada" v-model="novaMovimentacao.efetivada"></button-date>
         </v-row>
         <v-row align="center">
           <!-- recorrência (painel estendido) pra criar recorrência // criar depois //-->
@@ -173,7 +173,7 @@ watch(
       date.setDate(conta.dia_vencimento)
       const dateFechamento = new Date()
       dateFechamento.setDate(conta.dia_fechamento)
-      if (dateFechamento > new Date()) {
+      if (dateFechamento <= new Date()) {
         date.setMonth(date.getMonth() + 1)
       }
       novaMovimentacao.vencimento = date
