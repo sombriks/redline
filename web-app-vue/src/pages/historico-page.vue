@@ -3,12 +3,6 @@ import ListaMovimentacoes from '@/components/movimentacao/lista-movimentacoes.vu
 </script>
 
 <template>
-  <v-card elevation="24" title="Histórico">
-    <v-container>
-      <v-row>
-        <lista-movimentacoes></lista-movimentacoes>
-      </v-row>
-    </v-container>
-  </v-card>
+  <lista-movimentacoes></lista-movimentacoes>
 </template>
 <style scoped></style>
