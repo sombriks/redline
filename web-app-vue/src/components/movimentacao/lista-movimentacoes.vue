@@ -10,23 +10,7 @@
       <v-divider></v-divider>
     </v-row>
     <v-row align="center" v-for="movimentacao in movimentacoes" :key="movimentacao.id">
-
-      <v-chip variant="outlined" class="ma-1" rounded :color="!!movimentacao.efetivada ? 'green' : 'red'">
-        <v-icon :icon="!!movimentacao.efetivada ? 'mdi-check' : 'mdi-close'"/>
-      </v-chip>
-
-      <v-chip variant="outlined" class="ma-1" rounded
-              :color="movimentacao.tipo_movimentacao_id == 1 ? 'green' : 'red'">
-        R$ {{ movimentacao.valor }}
-      </v-chip>
-
-      <v-chip variant="outlined" class="ma-1" rounded>{{ movimentacao.descricao }}</v-chip>
-    </v-row>
-    <v-row align="center">
-    </v-row>
-    <v-row align="center">
-    </v-row>
-    <v-row align="center">
+      <detalhe-movimentacao :movimentacao="movimentacao"/>
     </v-row>
   </v-container>
   <!--  <v-list min-width="300px">-->
