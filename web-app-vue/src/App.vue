@@ -1,18 +1,10 @@
 <script setup>
 import { useUserStore } from '@/stores/userStore'
 import { ref } from 'vue'
-import { router } from '@/routes/router'
+import { routes } from '@/routes/router'
 
 const userStore = useUserStore()
-const menu = [
-  { label: 'Nova movimentação', icon: 'mdi-currency-usd', path: '/nova-movimentacao' },
-  { label: 'Contas', icon: 'mdi-card-account-details', path: '/contas' },
-  { label: 'Categorias', icon: 'mdi-playlist-check', path: '/categorias' },
-  { label: 'Histórico', icon: 'mdi-clipboard-text-search-outline', path: '/historico' },
-  { label: 'Planejamento', icon: 'mdi-clipboard-edit-outline', path: '/planejamento' },
-  { label: 'Recorrências', icon: 'mdi-history', path: '/recorrencias' },
-  { label: 'Configurações', icon: 'mdi-cog-outline', path: '/config' }
-]
+const menu = routes.filter(r => r.label)
 const show = ref(false)
 </script>
 

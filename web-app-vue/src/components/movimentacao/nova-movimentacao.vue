@@ -5,9 +5,6 @@
         <v-row align="center">
           <!-- tipo de movimentação (entrada / saída) -->
           <v-radio-group v-model="novaMovimentacao.tipo_movimentacao_id" inline>
-            <template v-slot:label>
-              <div>Tipo de movimentação</div>
-            </template>
             <v-radio :value="1" label="Entrada"></v-radio>
             <v-radio :value="2" label="Saída"></v-radio>
           </v-radio-group>

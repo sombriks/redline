@@ -8,17 +8,19 @@ import PlanejamentoPage from '@/pages/planejamento-page.vue'
 import RecorrenciasPage from '@/pages/recorrencias-page.vue'
 import ContasPage from '@/pages/contas-page.vue'
 import HistoricoPage from '@/pages/historico-page.vue'
+import DashboardPage from "@/pages/dashboard-page.vue";
 
-const routes = [
-  { path: '/', redirect: '/nova-movimentacao' },
+export const routes = [
   { component: AuthPage, path: '/auth' },
-  { component: CategoriasPage, path: '/categorias' },
-  { component: ConfigPage, path: '/config' },
-  { component: ContasPage, path: '/contas' },
-  { component: HistoricoPage, path: '/historico' },
-  { component: NovaMovimentacaoPage, path: '/nova-movimentacao' },
-  { component: PlanejamentoPage, path: '/planejamento' },
-  { component: RecorrenciasPage, path: '/recorrencias' }
+  { path: '/', redirect: '/nova-movimentacao' },
+  { component: DashboardPage, path: '/dashboard', label: 'Dashboard', icon: 'mdi-chart-bar' },
+  { component: NovaMovimentacaoPage, path: '/nova-movimentacao', label: 'Nova movimentação', icon: 'mdi-currency-usd' },
+  { component: ContasPage, path: '/contas', label: 'Contas', icon: 'mdi-card-account-details' },
+  { component: CategoriasPage, path: '/categorias', label: 'Categorias', icon: 'mdi-playlist-check' },
+  { component: HistoricoPage, path: '/historico', label: 'Histórico', icon: 'mdi-clipboard-text-search-outline' },
+  { component: PlanejamentoPage, path: '/planejamento', label: 'Planejamento', icon: 'mdi-clipboard-edit-outline' },
+  { component: RecorrenciasPage, path: '/recorrencias', label: 'Recorrências', icon: 'mdi-history' },
+  { component: ConfigPage, path: '/config', label: 'Configurações', icon: 'mdi-cog-outline' },
 ]
 
 export const router = createRouter({

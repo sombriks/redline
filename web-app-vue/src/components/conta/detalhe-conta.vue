@@ -18,18 +18,6 @@
         item-value="id"
         :prepend-inner-icon="contaIcon"
       >
-<!--        <template v-slot:item="{ props, item }">-->
-<!--          <v-list-item v-bind="props">-->
-<!--            <template v-slot:prepend>-->
-<!--              <v-icon v-if="item.id == 1" icon="mdi-wallet"></v-icon>-->
-<!--              <v-icon v-if="item.id == 2" icon="mdi-bank"></v-icon>-->
-<!--              <v-icon v-if="item.id == 3" icon="mdi-credit-card"></v-icon>-->
-<!--            </template>-->
-<!--            <template v-slot:title>-->
-<!--              {{ item.raw.descricao }}-->
-<!--            </template>-->
-<!--          </v-list-item>-->
-<!--        </template>-->
       </v-select>
       <v-text-field
         :rules="[requiredRule]"
