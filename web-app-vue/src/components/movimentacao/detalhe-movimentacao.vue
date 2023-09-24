@@ -1,35 +1,48 @@
 <template>
-  <div>
-    <div>
+  <v-expansion-panel>
+    <v-expansion-panel-title>
+      <v-chip variant="outlined" class="ma-1" rounded size="large">
+        {{ parseISO(props.movimentacao.vencimento).toLocaleDateString() }}
+      </v-chip>
       <v-chip
         variant="outlined"
         class="ma-1"
         rounded
+        size="large"
+        :color="props.movimentacao.tipo_movimentacao_id === 1 ? 'green' : 'red'"
+      >
+        R$ {{ movimentacao.valor }}
+      </v-chip>
+      <v-spacer></v-spacer>
+      <v-chip
+        variant="outlined"
+        class="ma-1"
+        rounded
+        size="large"
         :title="props.movimentacao.efetivada || 'Pagamento pendente'"
         :color="!!props.movimentacao.efetivada ? 'green' : 'red'"
       >
         <v-icon :icon="!!props.movimentacao.efetivada ? 'mdi-check' : 'mdi-close'" />
       </v-chip>
-
-      <v-chip variant="outlined" class="ma-1" rounded
-      >{{ parseISO(props.movimentacao.vencimento).toLocaleDateString() }}
+    </v-expansion-panel-title>
+    <v-expansion-panel-text>
+      <v-chip v-if="conta" variant="outlined" class="ma-1" rounded size="large" :color="conta.cor">
+        {{ conta.descricao }}
       </v-chip>
-
       <v-chip
+        v-if="categoria"
         variant="outlined"
         class="ma-1"
         rounded
-        :color="props.movimentacao.tipo_movimentacao_id === 1 ? 'green' : 'red'"
-      >
-        R$ {{ movimentacao.valor }}
+        size="large"
+        :color="categoria.cor"
+        >{{ categoria.descricao }}
       </v-chip>
-      <v-chip variant="outlined" class="ma-1" rounded>{{ props.movimentacao.descricao }}</v-chip>
-      <v-chip v-if="conta" variant="outlined" class="ma-1" rounded :color="conta.cor">{{ conta.descricao }}</v-chip>
-      <v-chip v-if="categoria" variant="outlined" class="ma-1" rounded :color="categoria.cor">{{ categoria.descricao }}</v-chip>
-    </div>
-    <v-divider color="red"></v-divider>
-  </div>
-
+      <v-chip variant="outlined" class="ma-1" rounded size="large">
+        {{ props.movimentacao.descricao }}
+      </v-chip>
+    </v-expansion-panel-text>
+  </v-expansion-panel>
 </template>
 <script setup>
 import { parseISO } from 'date-fns'
