@@ -19,7 +19,7 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
       tiposMovimentacao: redLine?.tiposMovimentacao || [],
       movimentacoes: redLine?.movimentacoes || [],
       filtrosMovimentacao: redLine?.filtrosMovimentacao || {
-        tipo_movimentacao: null,
+        tipo_movimentacao_id: null,
         offset: 0,
         limit: 50,
         id: null,
