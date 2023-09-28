@@ -45,6 +45,18 @@
           </v-radio-group>
         </v-row>
         <v-row align="center">
+          <v-radio-group inline v-model="filtro.limit">
+            <template v-slot:label>
+              <div>Máximo de resultados</div>
+            </template>
+            <v-radio :value="1000" label="1000"></v-radio>
+            <v-radio :value="50" label="50"></v-radio>
+            <v-radio :value="5" label="5"></v-radio>
+          </v-radio-group>
+        </v-row>
+        <v-row align="center">
+        </v-row>
+        <v-row align="center">
         </v-row>
         <v-row align="center">
           <v-btn class="ma-2" color="green" type="submit" icon="mdi-check"></v-btn>
@@ -72,7 +84,8 @@ const movimentacaoStore = useMovimentacaoStore()
 const drawer = ref(false)
 
 const filtro = reactive({
-  tipo_movimentacao_id: null
+  tipo_movimentacao_id: null,
+  limit: 1000
 })
 
 const movimentacoes = computed(() => movimentacaoStore.store?.movimentacoes.map((m) => m) || [])
