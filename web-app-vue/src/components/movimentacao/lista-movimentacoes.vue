@@ -31,7 +31,7 @@
       </v-expansion-panels>
     </v-row>
   </v-container>
-  <v-navigation-drawer v-model="drawer" location="bottom" temporary>
+  <v-navigation-drawer v-model="drawer" location="bottom" temporary width="375">
     <v-form @submit.prevent="aplicarFiltro">
       <v-container>
         <v-row align="center">
@@ -55,6 +55,8 @@
           </v-radio-group>
         </v-row>
         <v-row align="center">
+          <button-date label="Data inicial" v-model="filtro.dataInicio"></button-date>
+          <button-date label="Data final" v-model="filtro.dataFim"></button-date>
         </v-row>
         <v-row align="center">
         </v-row>
@@ -78,6 +80,7 @@
 import {computed, onMounted, reactive, ref} from 'vue'
 import {useMovimentacaoStore} from '@/stores/movimentacaoStore'
 import DetalheMovimentacao from '@/components/movimentacao/detalhe-movimentacao.vue'
+import ButtonDate from "@/components/shared/button-date.vue";
 
 const movimentacaoStore = useMovimentacaoStore()
 
@@ -85,7 +88,9 @@ const drawer = ref(false)
 
 const filtro = reactive({
   tipo_movimentacao_id: null,
-  limit: 1000
+  limit: 1000,
+  dataInicio: null,
+  dataFim: null
 })
 
 const movimentacoes = computed(() => movimentacaoStore.store?.movimentacoes.map((m) => m) || [])
