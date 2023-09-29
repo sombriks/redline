@@ -31,7 +31,7 @@
       </v-expansion-panels>
     </v-row>
   </v-container>
-  <v-navigation-drawer v-model="drawer" location="bottom" temporary width="375">
+  <v-navigation-drawer v-model="drawer" location="bottom" :width="sheetHeight">
     <v-form @submit.prevent="aplicarFiltro">
       <v-container>
         <v-row align="center">
@@ -99,6 +99,8 @@ onMounted(() => {
   movimentacaoStore.sincronizarMovimentacoes()
   Object.assign(filtro, movimentacaoStore.store.filtrosMovimentacao)
 })
+
+const sheetHeight = computed(() => window.innerHeight < window.innerWidth ? window.innerHeight : window.innerWidth)
 
 const aplicarFiltro = () => {
   console.log("filtro!")
