@@ -62,8 +62,21 @@ export const delCategoria = async ({id, categoria}) =>
 
 export const lisTiposMovimentacao = async () => await get({uri: '/tipo-movimentacao'})
 
-export const listMovimentacoes = async ({id, q = '', tipo_movimentacao_id = undefined, limit = 50, offset = 0}) =>
-  await get({uri: uriParams({uri: `/${id}/movimentacao`, params: {id, q, tipo_movimentacao_id, limit, offset}})})
+export const listMovimentacoes = async ({
+                                          id,
+                                          q = '',
+                                          tipo_movimentacao_id = undefined,
+                                          dataInicio = undefined,
+                                          dataFim = undefined,
+                                          limit = 50,
+                                          offset = 0
+                                        }) =>
+  await get({
+    uri: uriParams({
+      uri: `/${id}/movimentacao`,
+      params: {id, q, tipo_movimentacao_id, dataInicio, dataFim, limit, offset}
+    })
+  })
 
 export const insertMovimentacao = async ({id, conta_id, movimentacao}) =>
   await post({uri: `/${id}/movimentacao/${conta_id}`, payload: movimentacao})

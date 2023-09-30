@@ -20,6 +20,8 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
       movimentacoes: redLine?.movimentacoes || [],
       filtrosMovimentacao: redLine?.filtrosMovimentacao || {
         tipo_movimentacao_id: null,
+        dataInicio: null,
+        dataFim: null,
         offset: 0,
         limit: 50,
         id: null,

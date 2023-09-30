@@ -4,25 +4,36 @@ export const findMovimentacao = async id =>
   knex("movimentacao").where({id}).first();
 
 export const listMovimentacaoByUsuario = async ({
-                                                  usuario_id = -1,
                                                   q = "",
+                                                  usuario_id = -1,
+                                                  tipo_movimentacao_id,
+                                                  dataInicio,
+                                                  dataFim,
                                                   limit = 50,
                                                   offset = 0,
-                                                  tipo_movimentacao_id,
                                                   sort = "vencimento",
                                                   direction = "desc"
                                                 }) => {
 
   const whereParams = {}
+  let query = knex("movimentacao")
+    .whereLike("descricao", `%${q}%`)
   if (tipo_movimentacao_id && tipo_movimentacao_id !== "null") {
     whereParams.tipo_movimentacao_id = tipo_movimentacao_id
   }
+  if (dataInicio
+    && dataInicio !== "null"
+    && dataInicio !== "undefined"
+    && dataFim
+    && dataFim !== "null"
+    && dataFim !== "undefined") {
+    query = query.whereBetween("vencimento", [new Date(dataInicio), new Date(dataFim)])
+  }
 
-  return knex("movimentacao")
+  return query
     .where(whereParams)
     .whereIn("conta_id",
       knex("conta").where({usuario_id}).select("id"))
-    .andWhereLike("descricao", `%${q}%`)
     .orderBy(sort, direction)
     .offset(offset)
     .limit(limit);
@@ -30,22 +41,34 @@ export const listMovimentacaoByUsuario = async ({
 
 
 export const listMovimentacaoByConta = async ({
-                                                conta_id = -1,
                                                 q = "",
+                                                conta_id = -1,
+                                                tipo_movimentacao_id,
+                                                dataInicio,
+                                                dataFim,
                                                 limit = 50,
                                                 offset = 0,
-                                                tipo_movimentacao_id,
                                                 sort = "vencimento",
                                                 direction = "desc"
                                               }) => {
+
   const whereParams = {conta_id}
+  let query = knex("movimentacao")
+    .whereLike("descricao", `%${q}%`)
   if (tipo_movimentacao_id && tipo_movimentacao_id !== "null") {
     whereParams.tipo_movimentacao_id = tipo_movimentacao_id
   }
+  if (dataInicio
+    && dataInicio !== "null"
+    && dataInicio !== "undefined"
+    && dataFim
+    && dataFim !== "null"
+    && dataFim !== "undefined") {
+    query = query.whereBetween("vencimento", [new Date(dataInicio), new Date(dataFim)])
+  }
 
-  return knex("movimentacao")
+  return query
     .where(whereParams)
-    .andWhereLike("descricao", `%${q}%`)
     .orderBy(sort, direction)
     .offset(offset)
     .limit(limit);

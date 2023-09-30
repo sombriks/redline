@@ -31,13 +31,18 @@
       </v-expansion-panels>
     </v-row>
   </v-container>
-  <v-navigation-drawer v-model="drawer" location="bottom" :width="sheetHeight">
+  <v-navigation-drawer v-model="drawer" location="bottom" width="yes">
     <v-form @submit.prevent="aplicarFiltro">
       <v-container>
         <v-row align="center">
+          <br/>
+          <br/>
+          <br/>
+        </v-row>
+        <v-row align="center">
           <v-radio-group inline v-model="filtro.tipo_movimentacao_id">
             <template v-slot:label>
-              <div>Tipo de movimentação</div>
+              <div>Tipo movimentação</div>
             </template>
             <v-radio :value="null" label="Tudo"></v-radio>
             <v-radio :value="1" label="Entrada"></v-radio>
@@ -47,12 +52,18 @@
         <v-row align="center">
           <v-radio-group inline v-model="filtro.limit">
             <template v-slot:label>
-              <div>Máximo de resultados</div>
+              <div>Máximo resultados</div>
             </template>
             <v-radio :value="1000" label="1000"></v-radio>
             <v-radio :value="50" label="50"></v-radio>
             <v-radio :value="5" label="5"></v-radio>
           </v-radio-group>
+        </v-row>
+        <v-row align="center">
+        </v-row>
+        <v-row align="center">
+        </v-row>
+        <v-row align="center">
         </v-row>
         <v-row align="center">
           <button-date label="Data inicial" v-model="filtro.dataInicio"></button-date>
@@ -99,8 +110,6 @@ onMounted(() => {
   movimentacaoStore.sincronizarMovimentacoes()
   Object.assign(filtro, movimentacaoStore.store.filtrosMovimentacao)
 })
-
-const sheetHeight = computed(() => window.innerHeight < window.innerWidth ? window.innerHeight : window.innerWidth)
 
 const aplicarFiltro = () => {
   console.log("filtro!")
