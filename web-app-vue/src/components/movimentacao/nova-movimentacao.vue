@@ -124,6 +124,7 @@ import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { numberRule, requiredRule } from '@/form-rules/basic-rules'
 import ChipConta from '../shared/chip-conta.vue'
+import { router } from "@/routes/router"
 import ButtonDate from '../shared/button-date.vue'
 
 const contaState = useContaStore()
@@ -188,7 +189,7 @@ const salvarMovimentacao = async () => {
   await sync()
   Object.assign(novaMovimentacao, resetMovimentacao())
   Object.assign(contaSelecionada, resetConta())
-  alert('Salvo!')
+  router.push('/historico')
 }
 
 const cancelar = () => {
