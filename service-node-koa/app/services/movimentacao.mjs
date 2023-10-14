@@ -27,7 +27,7 @@ export const listMovimentacaoByUsuario = async ({
     && dataFim
     && dataFim !== "null"
     && dataFim !== "undefined") {
-    query = query.whereBetween("vencimento", [new Date(dataInicio), new Date(dataFim)])
+    query = query.whereBetween("vencimento", [new Date(dataInicio).toISOString(), new Date(dataFim).toISOString()])
   }
 
   return query
@@ -64,7 +64,7 @@ export const listMovimentacaoByConta = async ({
     && dataFim
     && dataFim !== "null"
     && dataFim !== "undefined") {
-    query = query.whereBetween("vencimento", [new Date(dataInicio), new Date(dataFim)])
+    query = query.whereBetween("vencimento", [new Date(dataInicio).toISOString(), new Date(dataFim).toISOString()])
   }
 
   return query

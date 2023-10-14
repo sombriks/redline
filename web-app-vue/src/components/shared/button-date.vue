@@ -9,6 +9,7 @@ const show = ref(false)
 
 
 const prepareDate = (date) => {
+  if(!date) return date
   if(date.toLocaleDateString) return date
   else return parseISO(date)
 }
@@ -24,9 +25,9 @@ const doSave = () => {
 <template>
   <div class="the-date">
     <div v-if="!show" class="ma-2">{{props.label}}</div>
-    <v-btn v-if="!show" class="ma-2" variant="outlined" @click="show = !show">
+    <v-chip v-if="!show" class="ma-2" rounded variant="outlined" @click="show = !show">
       {{ date && date.toLocaleDateString() || 'Selecionar data' }}
-    </v-btn>
+    </v-chip>
     <v-date-picker v-if="show" v-model="date" @click:cancel="show=!show" @click:save="doSave"></v-date-picker>
   </div>
 </template>
