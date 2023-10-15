@@ -11,9 +11,36 @@ import {
 
 export const listMovimentacaoRequest = async ctx => {
   const {usuario_id} = ctx.request.params;
-  const {q = "", conta_id, tipo_movimentacao_id, dataInicio, dataFim, limit = 50, offset = 0} = ctx.request.query;
-  if (conta_id) ctx.body = await listMovimentacaoByConta({q, conta_id, tipo_movimentacao_id, dataInicio, dataFim, limit, offset});
-  else ctx.body = await listMovimentacaoByUsuario({q, usuario_id, tipo_movimentacao_id, dataInicio, dataFim, limit, offset});
+  const {
+    q = "",
+    conta_id,
+    tipo_movimentacao_id,
+    categoria_id,
+    dataInicio,
+    dataFim,
+    limit = 50,
+    offset = 0
+  } = ctx.request.query;
+  if (conta_id) ctx.body = await listMovimentacaoByConta({
+    q,
+    conta_id,
+    tipo_movimentacao_id,
+    categoria_id,
+    dataInicio,
+    dataFim,
+    limit,
+    offset
+  });
+  else ctx.body = await listMovimentacaoByUsuario({
+    q,
+    usuario_id,
+    tipo_movimentacao_id,
+    categoria_id,
+    dataInicio,
+    dataFim,
+    limit,
+    offset
+  });
 };
 
 export const findMovimentacaoRequest = async ctx => {

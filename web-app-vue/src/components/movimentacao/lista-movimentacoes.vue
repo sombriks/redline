@@ -40,9 +40,37 @@
       <v-form @submit.prevent="aplicarFiltro">
         <v-container>
           <v-row align="center">
-            <br/>
-            <br/>
-            <br/>
+            <h1>Filtrar histórico</h1>
+          </v-row>
+          <v-row align="center">
+            <!-- categoria -->
+            <v-autocomplete
+                v-model="filtro.categoria_id"
+                :items="categoriaStore.store.categorias"
+                item-title="descricao"
+                item-value="id"
+                label="Categoria"
+                chips
+            >
+              <template v-slot:chip="{ props, item }">
+                <v-chip v-bind="props" variant="outlined" rounded :color="item.raw.cor">{{
+                    item.raw.descricao
+                  }}</v-chip>
+              </template>
+              <template v-slot:item="{ props, item }">
+                <v-list-item>
+                  <v-chip
+                      class="ma-2"
+                      v-bind="props"
+                      variant="outlined"
+                      rounded
+                      :color="item.raw.cor"
+                  >
+                    {{ item.raw.descricao }}
+                  </v-chip>
+                </v-list-item>
+              </template>
+            </v-autocomplete>
           </v-row>
           <v-row align="center">
             <v-radio-group inline v-model="filtro.tipo_movimentacao_id">
@@ -79,6 +107,12 @@
           <v-row align="center">
           </v-row>
           <v-row align="center">
+          </v-row>
+          <v-row align="center">
+          </v-row>
+          <v-row align="center">
+          </v-row>
+          <v-row align="center">
             <v-btn class="ma-2" color="green" type="submit" icon="mdi-check"></v-btn>
             <v-spacer></v-spacer>
             <v-btn
@@ -101,16 +135,19 @@ import {useMovimentacaoStore} from '@/stores/movimentacaoStore'
 import DetalheMovimentacao from '@/components/movimentacao/detalhe-movimentacao.vue'
 import ButtonDate from "@/components/shared/button-date.vue";
 import {router} from "@/routes/router"
+import {useCategoriaStore} from "@/stores/categoriaStore";
 
 const movimentacaoStore = useMovimentacaoStore()
+const categoriaStore = useCategoriaStore()
 
 const drawer = ref(false)
 
 const filtro = reactive({
   tipo_movimentacao_id: null,
-  limit: 1000,
+  categoria_id: null,
   dataInicio: null,
-  dataFim: null
+  dataFim: null,
+  limit: 1000,
 })
 
 const movimentacoes = computed(() => movimentacaoStore.store?.movimentacoes.map((m) => m) || [])
@@ -124,7 +161,6 @@ const aplicarFiltro = () => {
   movimentacaoStore.aplicarFiltro(filtro)
   movimentacaoStore.sincronizarMovimentacoes()
   drawer.value = false
-
 }
 
 const limpaPeriodo = () => {

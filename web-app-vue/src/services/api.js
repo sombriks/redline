@@ -66,6 +66,7 @@ export const listMovimentacoes = async ({
                                           id,
                                           q = '',
                                           tipo_movimentacao_id = undefined,
+                                          categoria_id = undefined,
                                           dataInicio = undefined,
                                           dataFim = undefined,
                                           limit = 50,
@@ -74,7 +75,7 @@ export const listMovimentacoes = async ({
   await get({
     uri: uriParams({
       uri: `/${id}/movimentacao`,
-      params: {id, q, tipo_movimentacao_id, dataInicio, dataFim, limit, offset}
+      params: {id, q, tipo_movimentacao_id, categoria_id, dataInicio, dataFim, limit, offset}
     })
   })
 

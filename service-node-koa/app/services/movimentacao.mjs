@@ -7,6 +7,7 @@ export const listMovimentacaoByUsuario = async ({
                                                   q = "",
                                                   usuario_id = -1,
                                                   tipo_movimentacao_id,
+                                                  categoria_id,
                                                   dataInicio,
                                                   dataFim,
                                                   limit = 50,
@@ -20,6 +21,9 @@ export const listMovimentacaoByUsuario = async ({
     .whereLike("descricao", `%${q}%`)
   if (tipo_movimentacao_id && tipo_movimentacao_id !== "null") {
     whereParams.tipo_movimentacao_id = tipo_movimentacao_id
+  }
+  if (categoria_id && categoria_id !== "null") {
+    whereParams.categoria_id = categoria_id
   }
   if (dataInicio
     && dataInicio !== "null"
@@ -44,6 +48,7 @@ export const listMovimentacaoByConta = async ({
                                                 q = "",
                                                 conta_id = -1,
                                                 tipo_movimentacao_id,
+                                                categoria_id,
                                                 dataInicio,
                                                 dataFim,
                                                 limit = 50,
@@ -57,6 +62,9 @@ export const listMovimentacaoByConta = async ({
     .whereLike("descricao", `%${q}%`)
   if (tipo_movimentacao_id && tipo_movimentacao_id !== "null") {
     whereParams.tipo_movimentacao_id = tipo_movimentacao_id
+  }
+  if (categoria_id && categoria_id !== "null") {
+    whereParams.categoria_id = categoria_id
   }
   if (dataInicio
     && dataInicio !== "null"
