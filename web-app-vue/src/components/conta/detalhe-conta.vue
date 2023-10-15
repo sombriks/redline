@@ -49,6 +49,7 @@
       <v-container>
         <v-row align="center">
           <v-btn class="ma-2" color="green" type="submit" icon="mdi-check"></v-btn>
+          <v-spacer v-if="!contaEdit.id"></v-spacer>
           <v-btn
             variant="tonal"
             color="orange"
@@ -57,7 +58,7 @@
             @click="edit = !edit"
             icon="mdi-close"
           ></v-btn>
-          <v-spacer></v-spacer>
+          <v-spacer v-if="contaEdit.id"></v-spacer>
           <v-btn
             v-if="contaEdit.id"
             variant="tonal"

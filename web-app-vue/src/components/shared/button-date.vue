@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import {ref, watch} from "vue";
 import {parseISO} from "date-fns";
 
 const props = defineProps(['modelValue', 'label'])
@@ -9,8 +9,8 @@ const show = ref(false)
 
 
 const prepareDate = (date) => {
-  if(!date) return date
-  if(date.toLocaleDateString) return date
+  if (!date) return date
+  if (date.toLocaleDateString) return date
   else return parseISO(date)
 }
 
@@ -20,11 +20,15 @@ const doSave = () => {
   emit('update:modelValue', date)
   show.value = false
 }
+
+watch(() => props.modelValue, () => {
+  date.value = prepareDate(props.modelValue)
+})
 </script>
 
 <template>
   <div class="the-date">
-    <div v-if="!show" class="ma-2">{{props.label}}</div>
+    <div v-if="!show" class="ma-2">{{ props.label }}</div>
     <v-chip v-if="!show" class="ma-2" rounded variant="outlined" @click="show = !show">
       {{ date && date.toLocaleDateString() || 'Selecionar data' }}
     </v-chip>

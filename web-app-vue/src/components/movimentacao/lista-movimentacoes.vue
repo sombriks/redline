@@ -34,7 +34,7 @@
       </v-expansion-panels>
     </v-row>
   </v-container>
-  <v-dialog v-model="drawer" fullscreen>
+  <v-dialog v-model="drawer" fullscreen transition="dialog-bottom-transition">
     <v-card>
 
       <v-form @submit.prevent="aplicarFiltro">
@@ -59,9 +59,10 @@
               <template v-slot:label>
                 <div>Máximo resultados</div>
               </template>
+              <v-radio :value="10000" label="10000"></v-radio>
               <v-radio :value="1000" label="1000"></v-radio>
+              <v-radio :value="100" label="100"></v-radio>
               <v-radio :value="50" label="50"></v-radio>
-              <v-radio :value="5" label="5"></v-radio>
             </v-radio-group>
           </v-row>
           <v-row align="center">
@@ -73,6 +74,7 @@
           <v-row align="center">
             <button-date label="Data inicial" v-model="filtro.dataInicio"></button-date>
             <button-date label="Data final" v-model="filtro.dataFim"></button-date>
+            <v-btn icon="mdi-close" title="Limpar"  variant="outlined" @click="limpaPeriodo"></v-btn>
           </v-row>
           <v-row align="center">
           </v-row>
@@ -98,7 +100,7 @@ import {computed, onMounted, reactive, ref} from 'vue'
 import {useMovimentacaoStore} from '@/stores/movimentacaoStore'
 import DetalheMovimentacao from '@/components/movimentacao/detalhe-movimentacao.vue'
 import ButtonDate from "@/components/shared/button-date.vue";
-import { router } from "@/routes/router"
+import {router} from "@/routes/router"
 
 const movimentacaoStore = useMovimentacaoStore()
 
@@ -119,11 +121,15 @@ onMounted(() => {
 })
 
 const aplicarFiltro = () => {
-  console.log("filtro!")
   movimentacaoStore.aplicarFiltro(filtro)
   movimentacaoStore.sincronizarMovimentacoes()
   drawer.value = false
 
+}
+
+const limpaPeriodo = () => {
+  filtro.dataInicio = null
+  filtro.dataFim = null
 }
 
 </script>
