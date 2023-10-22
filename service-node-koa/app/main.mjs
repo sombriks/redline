@@ -1,6 +1,8 @@
 import Koa from "koa";
 import cors from "@koa/cors";
+import logger from "koa-logger";
 import bodyParser from "koa-bodyparser";
+
 
 import {
   listCategoriasRequest,
@@ -38,7 +40,7 @@ import ApiBuilder from "koa-api-builder";
 export const app = new Koa();
 const router = new Router();
 
-app.use(cors()).use(bodyParser());
+app.use(cors()).use(bodyParser()).use(logger());
 
 ApiBuilder({ router }).path(b => {
   b.get("/status", async ctx => ctx.body = "ONLINE");

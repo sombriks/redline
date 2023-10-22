@@ -36,9 +36,8 @@
   </v-card>
 </template>
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
-import { router } from '@/routes/router'
 import { requiredRule } from '@/form-rules/basic-rules'
 
 const nome = ref('')
