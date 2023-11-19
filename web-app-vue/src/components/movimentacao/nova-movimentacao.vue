@@ -102,10 +102,10 @@
           <v-divider></v-divider>
         </v-row>
         <v-row align="center">
-          <v-btn class="ma-2" color="green" type="submit" icon="mdi-check"></v-btn>
+          <v-btn variant="outlined" class="ma-2" color="green" type="submit" icon="mdi-check"></v-btn>
           <v-spacer></v-spacer>
           <v-btn
-            variant="tonal"
+            variant="outlined"
             color="orange"
             class="ma-2"
             type="button"

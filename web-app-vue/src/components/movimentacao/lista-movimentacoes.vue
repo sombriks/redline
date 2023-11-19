@@ -142,7 +142,6 @@
           <v-row align="center">
             <!-- ações -->
             <v-btn class="ma-2" color="green" type="submit" icon="mdi-check"></v-btn>
-            <v-spacer></v-spacer>
             <v-btn
               variant="tonal"
               color="orange"
