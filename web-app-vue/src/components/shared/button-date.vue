@@ -1,22 +1,16 @@
 <script setup>
 import { ref, watch } from 'vue'
-import { parseISO } from 'date-fns'
+import { prepareDate } from '@/services/formaters'
 
 const props = defineProps(['modelValue', 'label'])
 const emit = defineEmits(['update:modelValue'])
 
 const show = ref(false)
 
-const prepareDate = (date) => {
-  if (!date) return date
-  if (date.toLocaleDateString) return date
-  else return parseISO(date)
-}
-
 const date = ref(prepareDate(props.modelValue))
 
 const doSave = () => {
-  emit('update:modelValue', date)
+  emit('update:modelValue', date.value)
   show.value = false
 }
 
@@ -42,6 +36,7 @@ watch(
               <template #actions>
                 <v-row align="center">
                   <v-spacer></v-spacer>
+                  <v-btn variant="outlined" class="ma-2" color="green" type="submit" icon="mdi-check"></v-btn>
                   <v-btn
                     variant="outlined"
                     color="orange"
@@ -50,7 +45,6 @@ watch(
                     @click="show = !show"
                     icon="mdi-close"
                   ></v-btn>
-                  <v-btn variant="outlined" class="ma-2" color="green" type="submit" icon="mdi-check"></v-btn>
                 </v-row>
               </template>
             </v-date-picker>

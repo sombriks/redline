@@ -22,6 +22,15 @@
       <v-divider thickness="5"></v-divider>
     </v-row>
     <v-row align="center">
+      <!-- filtros ativos -->
+      <i>Max {{filtro.limit}} resultados</i>
+      <i v-if="filtro.tipo_movimentacao_id == 1">, entradas</i>
+      <i v-if="filtro.tipo_movimentacao_id == 2">, saídas</i>
+      <i v-if="filtro.dataFim">, de {{intervalo.inicio}} até {{intervalo.fim}}</i>
+      <span>&nbsp;</span>
+
+    </v-row>
+    <v-row align="center">
       <p v-if="!movimentacoes.length">Não há movimentações para exibir</p>
       <v-expansion-panels>
         <detalhe-movimentacao
@@ -137,7 +146,7 @@
             <!-- período -->
             <button-date label="Data inicial" v-model="filtro.dataInicio"></button-date>
             <button-date label="Data final" v-model="filtro.dataFim"></button-date>
-            <v-btn icon="mdi-close" title="Limpar" variant="outlined" @click="limpaPeriodo"></v-btn>
+            <v-btn icon="mdi-history" title="Restaurar" variant="outlined" @click="restauraPeriodo"></v-btn>
           </v-row>
           <v-row align="center">
             <!-- ações -->
@@ -163,9 +172,10 @@ import DetalheMovimentacao from '@/components/movimentacao/detalhe-movimentacao.
 import ButtonDate from '@/components/shared/button-date.vue'
 import { router } from '@/routes/router'
 import { useCategoriaStore } from '@/stores/categoriaStore'
-import { requiredRule } from '@/form-rules/basic-rules'
 import ChipConta from '@/components/shared/chip-conta.vue'
 import { useContaStore } from '@/stores/contaStore'
+import { prepareDate } from '@/services/formaters'
+import { endOfMonth, format, startOfMonth } from 'date-fns'
 
 const movimentacaoStore = useMovimentacaoStore()
 const categoriaStore = useCategoriaStore()
@@ -176,13 +186,18 @@ const drawer = ref(false)
 const filtro = reactive({
   tipo_movimentacao_id: null,
   categoria_id: null,
-  dataInicio: null,
+  dataInicio: startOfMonth(new Date()),
   conta_id: null,
-  dataFim: null,
+  dataFim: endOfMonth(new Date()),
   limit: 1000
 })
 
 const movimentacoes = computed(() => movimentacaoStore.store?.movimentacoes.map((m) => m) || [])
+
+const intervalo = computed(() => ({
+  inicio: filtro.dataInicio && format(prepareDate(filtro.dataInicio),"yyyy-MM-dd"),
+  fim: filtro.dataFim && format(prepareDate(filtro.dataFim),"yyyy-MM-dd")
+}))
 
 onMounted(() => {
   movimentacaoStore.sincronizarMovimentacoes()
@@ -203,9 +218,9 @@ const limpaConta = () => {
   filtro.conta_id = null
 }
 
-const limpaPeriodo = () => {
-  filtro.dataInicio = null
-  filtro.dataFim = null
+const restauraPeriodo = () => {
+  filtro.dataInicio = startOfMonth(new Date())
+  filtro.dataFim = endOfMonth(new Date())
 }
 </script>
 <style scoped>

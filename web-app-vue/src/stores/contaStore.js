@@ -42,5 +42,7 @@ export const useContaStore = defineStore('conta-store', () => {
     await deleteConta({ id, conta })
   }
 
-  return { store, sincronizarContas, salvarConta, removeConta }
+  const getConta = id => store.contas.find(c => c.id == id)
+
+  return { store, sincronizarContas, salvarConta, removeConta, getConta }
 })

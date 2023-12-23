@@ -2,7 +2,7 @@
 * @type { Object.<string, import("knex").Knex.Config> }
 */
 const _cfg = {
-  client: 'better-sqlite3',
+  client: 'sqlite3',
   useNullAsDefault: true,
   connection: {
     filename: `${__dirname}/../../../redline.sqlite3`,
