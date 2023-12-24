@@ -41,6 +41,9 @@
       <v-chip variant="outlined" class="ma-1" rounded size="large">
         {{ props.movimentacao.descricao }}
       </v-chip>
+      <v-btn variant="outlined" rounded @click="router.push(`/editar-movimentacao/${props.movimentacao.id}`)" size="large">
+        <v-icon icon="mdi-circle-edit-outline" />
+      </v-btn>
     </v-expansion-panel-text>
   </v-expansion-panel>
 </template>
@@ -49,6 +52,7 @@ import { parseISO } from 'date-fns'
 import { ref, watchEffect } from 'vue'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
+import { router } from "@/routes/router";
 
 const props = defineProps(['movimentacao'])
 

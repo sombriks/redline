@@ -8,6 +8,7 @@ import PlanejamentoPage from '@/pages/planejamento-page.vue'
 import RecorrenciasPage from '@/pages/recorrencias-page.vue'
 import ContasPage from '@/pages/contas-page.vue'
 import HistoricoPage from '@/pages/historico-page.vue'
+import EditarMovimentacaoPage from '@/pages/editar-movimentacao-page.vue'
 import DashboardPage from "@/pages/dashboard-page.vue";
 
 export const routes = [
@@ -18,6 +19,7 @@ export const routes = [
   { component: ContasPage, path: '/contas', label: 'Contas', icon: 'mdi-card-account-details' },
   { component: CategoriasPage, path: '/categorias', label: 'Categorias', icon: 'mdi-playlist-check' },
   { component: HistoricoPage, path: '/historico', label: 'Histórico', icon: 'mdi-clipboard-text-search-outline' },
+  { component: EditarMovimentacaoPage, path: '/editar-movimentacao/:id'},
   { component: PlanejamentoPage, path: '/planejamento', label: 'Planejamento', icon: 'mdi-clipboard-edit-outline' },
   { component: RecorrenciasPage, path: '/recorrencias', label: 'Recorrências', icon: 'mdi-history' },
   { component: ConfigPage, path: '/config', label: 'Configurações', icon: 'mdi-cog-outline' },
