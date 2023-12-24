@@ -11,7 +11,7 @@
         size="large"
         :color="props.movimentacao.tipo_movimentacao_id === 1 ? 'green' : 'red'"
       >
-        R$ {{ movimentacao.valor }}
+        {{ valor }}
       </v-chip>
       <v-spacer></v-spacer>
       <v-chip
@@ -49,10 +49,11 @@
 </template>
 <script setup>
 import { parseISO } from 'date-fns'
-import { ref, watchEffect } from 'vue'
+import {computed, ref, watchEffect} from 'vue'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
-import { router } from "@/routes/router";
+import { router } from "@/services/router";
+import {prepareMoney} from "@/services/formaters";
 
 const props = defineProps(['movimentacao'])
 
@@ -61,6 +62,8 @@ const categoriaStore = useCategoriaStore()
 
 const conta = ref(null)
 const categoria = ref(null)
+
+const valor = computed(() => prepareMoney(props.movimentacao?.valor))
 
 watchEffect(() => {
   if (props.movimentacao) {

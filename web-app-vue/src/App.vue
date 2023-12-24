@@ -1,7 +1,7 @@
 <script setup>
 import { useUserStore } from '@/stores/userStore'
 import { ref } from 'vue'
-import { routes } from '@/routes/router'
+import { routes } from '@/services/router'
 
 const userStore = useUserStore()
 const menu = routes.filter(r => r.label)

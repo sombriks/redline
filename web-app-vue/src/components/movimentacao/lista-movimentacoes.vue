@@ -25,8 +25,9 @@
         class="ma-2"
         rounded
         size="large"
-        :color="saldo >=0 ? 'green-accent-2' : 'red-accent-2'"
-      >Saldo: {{statusFiltro.saldo}}</v-chip>
+        :color="saldo >= 0 ? 'green-accent-2' : 'red-accent-2'"
+        >Saldo estimado: {{ statusFiltro.saldo }}
+      </v-chip>
       <v-divider thickness="5"></v-divider>
     </v-row>
     <v-row align="center">
@@ -60,72 +61,25 @@
           </v-row>
           <v-row class="alinha">
             <!-- categoria -->
-            <v-autocomplete
-              class="alinha-item"
-              v-model="filtro.categoria_id"
-              :items="categoriaStore.store.categorias"
-              item-title="descricao"
-              item-value="id"
-              label="Categoria"
-              chips
-            >
-              <template v-slot:chip="{ props, item }">
-                <v-chip v-bind="props" variant="outlined" rounded :color="item.raw.cor"
-                  >{{ item.raw.descricao }}
-                </v-chip>
-              </template>
-              <template v-slot:item="{ props, item }">
-                <v-list-item>
-                  <v-chip
-                    class="ma-2"
-                    v-bind="props"
-                    variant="outlined"
-                    rounded
-                    :color="item.raw.cor"
-                  >
-                    {{ item.raw.descricao }}
-                  </v-chip>
-                </v-list-item>
-              </template>
-            </v-autocomplete>
+            <categoria-autocomplete v-model="filtro.categoria_id" />
             <v-btn
               class="alinha-item"
               icon="mdi-close"
               title="Limpar"
               variant="outlined"
+              color="orange"
               @click="limpaCategoria"
             ></v-btn>
           </v-row>
           <v-row class="alinha">
-            <!-- conta -->
-            <v-autocomplete
-              class="alinha-item"
-              v-model="filtro.conta_id"
-              :items="contaStore.store.contas"
-              item-title="descricao"
-              item-value="id"
-              label="Conta"
-              chips
-            >
-              <template v-slot:chip="{ props, item }">
-                <chip-conta v-bind="props" :conta="item.raw" :color="item.raw.cor"></chip-conta>
-              </template>
-              <template v-slot:item="{ props, item }">
-                <v-list-item>
-                  <chip-conta
-                    class="ma-2"
-                    v-bind="props"
-                    :conta="item.raw"
-                    :color="item.raw.cor"
-                  ></chip-conta>
-                </v-list-item>
-              </template>
-            </v-autocomplete>
+            <!-- filtro.conta_id -->
+            <conta-autocomplete v-model="filtro.conta_id" />
             <v-btn
               class="alinha-item"
               icon="mdi-close"
               title="Limpar"
               variant="outlined"
+              color="orange"
               @click="limpaConta"
             ></v-btn>
           </v-row>
@@ -169,16 +123,22 @@
             <button-date label="Data final" v-model="filtro.dataFim"></button-date>
             <v-btn
               icon="mdi-history"
-              title="Restaurar"
+              title="Restaurar para mês atual"
               variant="outlined"
               @click="restauraPeriodo"
             ></v-btn>
           </v-row>
           <v-row align="center">
             <!-- ações -->
-            <v-btn class="ma-2" color="green" type="submit" icon="mdi-check"></v-btn>
             <v-btn
-              variant="tonal"
+              class="ma-2"
+              variant="outlined"
+              color="green"
+              type="submit"
+              icon="mdi-check"
+            ></v-btn>
+            <v-btn
+              variant="outlined"
               color="orange"
               class="ma-2"
               type="button"
@@ -195,13 +155,14 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
 import DetalheMovimentacao from '@/components/movimentacao/detalhe-movimentacao.vue'
-import ButtonDate from '@/components/shared/button-date.vue'
-import { router } from '@/routes/router'
+import ButtonDate from '@/shared/button-date.vue'
+import { router } from '@/services/router'
 import { useCategoriaStore } from '@/stores/categoriaStore'
-import ChipConta from '@/components/shared/chip-conta.vue'
 import { useContaStore } from '@/stores/contaStore'
-import { prepareDate, prepareMoney } from "@/services/formaters";
+import { prepareDate, prepareMoney } from '@/services/formaters'
 import { endOfMonth, format, startOfMonth } from 'date-fns'
+import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
+import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
 
 const movimentacaoStore = useMovimentacaoStore()
 const categoriaStore = useCategoriaStore()

@@ -22,6 +22,16 @@ export const listMovimentacaoByConta = async (params) => {
   return prepareMovimentacaoQuery(params, {conta_id});
 };
 
+/**
+ * apply common filters to movitentação query
+ *
+ * @param params common parameters to query, such as
+ *
+ * @param params.q general query for part of description
+ *
+ * @param whereParams
+ * @returns {Knex.QueryBuilder<TRecord, TResult>}
+ */
 const prepareMovimentacaoQuery = (params, whereParams = {}) => {
   const {
     q = '',

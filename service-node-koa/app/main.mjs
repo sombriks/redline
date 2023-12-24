@@ -1,6 +1,7 @@
 import Koa from "koa";
 import cors from "@koa/cors";
-import logger from "koa-logger";
+import Cabin from "cabin";
+import Signale from "signale/signale.js";
 import bodyParser from "koa-bodyparser";
 
 
@@ -33,16 +34,18 @@ import {
   listTipoMovimentacao,
   listTipoRecorrencia
 } from "./services/index.mjs";
-import { contaOwnedBy, ifAuthenticated } from "./config/security/index.mjs";
+import {contaOwnedBy, ifAuthenticated} from "./config/security/index.mjs";
 
 import ApiBuilder from "koa-api-builder";
 
 export const app = new Koa();
 const router = new Router();
 
-app.use(cors()).use(bodyParser()).use(logger());
+const cabin = new Cabin({logger: new Signale()})
 
-ApiBuilder({ router }).path(b => {
+app.use(cors()).use(bodyParser()).use(cabin.middleware);
+
+ApiBuilder({router}).path(b => {
   b.get("/status", async ctx => ctx.body = "ONLINE");
   b.get("/tipo-conta", async ctx => ctx.body = await listTipoConta());
   b.get("/modelocategoria", async ctx => ctx.body = await listModelocategoria());

@@ -15,7 +15,7 @@
 import { ref } from "vue";
 
 import { useUserStore } from "@/stores/userStore";
-import { router } from "@/routes/router";
+import { router } from "@/services/router";
 
 const wantDelete = ref(false);
 const pwd = ref("");
