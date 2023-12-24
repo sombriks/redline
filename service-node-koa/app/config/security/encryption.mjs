@@ -26,6 +26,8 @@ export const decrypt = (secret) => {
 
 export const sign = payload => {
   // TODO what else to add to payload?
+  payload.iat = new Date().getTime()/1000
+  payload.exp = 86400 + new Date().getTime()/1000
   return {token: jwt.sign(payload, process.env.SECRET)}
 }
 

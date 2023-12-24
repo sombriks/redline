@@ -3,7 +3,7 @@ import {verify} from "./encryption.mjs";
 
 export const extractDetails = ctx => {
   const authHeader = ctx.request.header["authorization"];
-  if (!authHeader) ctx.throw(401, "Missing auth header");
+  if (!authHeader) ctx.throw(401, {message: "Missing auth header"});
   const token = authHeader.replace("Bearer ", "");
   return verify(token);
 }
@@ -18,8 +18,13 @@ export const ifOwner = async (ctx, next) => {
 
 export const ifAuthenticated = async (ctx, next) => {
   const details = extractDetails(ctx)
-  if (!details.iat)
-    ctx.throw(401, "Something strange with this token")
+  // console.log(details)
+  // console.log(new Date(details.exp * 1000))
+  if (!details.iat || !details.exp)
+    ctx.throw(401, {message: "Something strange with this token"})
+  if (new Date().getTime() > new Date(details.exp * 1000))
+    ctx.throw(401, {message: "Token expired"})
+  // ctx.throw(401, {message:"test"})
   return await next()
 };
 

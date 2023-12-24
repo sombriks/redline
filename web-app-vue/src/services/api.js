@@ -1,5 +1,5 @@
-// base api calls
 import { useUserStore } from '@/stores/userStore'
+import {useRouter} from "vue-router";
 
 const uriParams = ({ uri, params }) =>
   `${uri}?${Object.keys(params)
@@ -9,18 +9,30 @@ const uriParams = ({ uri, params }) =>
 
 const req = async ({ method = 'POST', uri, payload }) => {
   const token = useUserStore().store.token
+  const { router } = await import('./router')
   const url = `${import.meta.env.VITE_API_URL}${uri}`
   const headers = {
     'Content-Type': 'application/json',
     Accept: 'application/json'
   }
   if (token) headers['Authorization'] = `Bearer ${token}`
-  const result = await fetch(url, {
-    body: JSON.stringify(payload),
-    headers,
-    method
-  })
-  return result.json()
+  try {
+    const result = await fetch(url, {
+      body: JSON.stringify(payload),
+      headers,
+      method
+    })
+    if(result.status < 400)
+      return result.json()
+    else {
+      throw result
+    }
+  } catch (e) {
+    if(e.status === 401) {
+      router.push('/auth')
+    }
+    throw new Error(`${e.status} - ${await e.text()}`)
+  }
 }
 
 const get = ({ uri }) => req({ method: 'GET', uri })

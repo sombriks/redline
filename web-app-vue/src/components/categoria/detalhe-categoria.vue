@@ -17,10 +17,10 @@
       <v-text-field :rules="[requiredRule]" v-model="catEdit.descricao" label="Nome"></v-text-field>
       <v-container>
         <v-row align="center">
-          <v-btn class="ma-2" color="green" type="submit" icon="mdi-check"></v-btn>
+          <v-btn class="ma-2" variant="outlined" color="green" type="submit" icon="mdi-check"></v-btn>
           <v-spacer v-if="!catEdit.id"></v-spacer>
           <v-btn
-            variant="tonal"
+            variant="outlined"
             color="orange"
             class="ma-2"
             type="button"
@@ -30,7 +30,7 @@
           <v-spacer v-if="catEdit.id"></v-spacer>
           <v-btn
             v-if="catEdit.id"
-            variant="tonal"
+            variant="outlined"
             color="red"
             class="ma-2"
             type="button"
