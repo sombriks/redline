@@ -11,39 +11,10 @@ import {
 
 export const listMovimentacaoRequest = async ctx => {
   const {usuario_id} = ctx.request.params;
-  const {
-    q = "",
-    conta_id,
-    tipo_movimentacao_id,
-    categoria_id,
-    efetivada,
-    dataInicio,
-    dataFim,
-    limit = 50,
-    offset = 0
-  } = ctx.request.query;
-  if (conta_id) ctx.body = await listMovimentacaoByConta({
-    q,
-    conta_id,
-    tipo_movimentacao_id,
-    categoria_id,
-    efetivada,
-    dataInicio,
-    dataFim,
-    limit,
-    offset
-  });
-  else ctx.body = await listMovimentacaoByUsuario({
-    q,
-    usuario_id,
-    tipo_movimentacao_id,
-    categoria_id,
-    efetivada,
-    dataInicio,
-    dataFim,
-    limit,
-    offset
-  });
+  // TODO validar
+  const params = {...ctx.request.query, usuario_id}
+  if (ctx.request.query.conta_id) ctx.body = await listMovimentacaoByConta(params);
+  else ctx.body = await listMovimentacaoByUsuario(params);
 };
 
 export const findMovimentacaoRequest = async ctx => {
