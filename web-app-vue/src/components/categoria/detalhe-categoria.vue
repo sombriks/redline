@@ -44,7 +44,7 @@
 </template>
 <script setup>
 import { reactive, ref } from "vue";
-import { requiredRule } from '@/form-rules/basic-rules'
+import { requiredRule } from '@/services/basic-rules'
 
 const props = defineProps(['categoria'])
 const emit = defineEmits(['onRemove', 'onEdit'])

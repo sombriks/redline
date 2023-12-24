@@ -3,7 +3,7 @@ import { useUserStore } from '@/stores/userStore'
 
 const uriParams = ({ uri, params }) =>
   `${uri}?${Object.keys(params)
-    .filter((k) => params[k])
+    .filter((k) => null !== params[k] && undefined !== params[k])
     .map((k) => `${k}=${params[k]}`)
     .join('&')}`
 
@@ -71,6 +71,7 @@ export const listMovimentacoes = async ({
   dataInicio = undefined,
   conta_id = undefined,
   dataFim = undefined,
+  efetivada = undefined,
   offset = 0,
   limit = 50,
   id,
@@ -83,6 +84,7 @@ export const listMovimentacoes = async ({
         tipo_movimentacao_id,
         categoria_id,
         dataInicio,
+        efetivada,
         conta_id,
         dataFim,
         offset,

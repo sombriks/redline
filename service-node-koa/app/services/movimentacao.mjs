@@ -1,13 +1,14 @@
-import {knex} from "../config/db/index.mjs";
+import { knex } from "../config/db/index.mjs";
 
 export const findMovimentacao = async id =>
-  knex("movimentacao").where({id}).first();
+  knex("movimentacao").where({ id }).first();
 
 export const listMovimentacaoByUsuario = async ({
                                                   q = "",
                                                   usuario_id = -1,
                                                   tipo_movimentacao_id,
                                                   categoria_id,
+                                                  efetivada,
                                                   dataInicio,
                                                   dataFim,
                                                   limit = 50,
@@ -16,14 +17,14 @@ export const listMovimentacaoByUsuario = async ({
                                                   direction = "desc"
                                                 }) => {
 
-  const whereParams = {}
+  const whereParams = {};
   let query = knex("movimentacao")
-    .whereLike("descricao", `%${q}%`)
+    .whereLike("descricao", `%${q}%`);
   if (tipo_movimentacao_id && tipo_movimentacao_id !== "null") {
-    whereParams.tipo_movimentacao_id = tipo_movimentacao_id
+    whereParams.tipo_movimentacao_id = tipo_movimentacao_id;
   }
   if (categoria_id && categoria_id !== "null") {
-    whereParams.categoria_id = categoria_id
+    whereParams.categoria_id = categoria_id;
   }
   if (dataInicio
     && dataInicio !== "null"
@@ -31,17 +32,20 @@ export const listMovimentacaoByUsuario = async ({
     && dataFim
     && dataFim !== "null"
     && dataFim !== "undefined") {
-    query = query.whereBetween("vencimento", [new Date(dataInicio).toISOString(), new Date(dataFim).toISOString()])
+    query = query.whereBetween("vencimento", [new Date(dataInicio).toISOString(), new Date(dataFim).toISOString()]);
   }
+
+  if (efetivada == "true") query = query.whereNotNull("efetivada");
+  else if (efetivada == "false") query = query.whereNull("efetivada");
 
   return query
     .where(whereParams)
     .whereIn("conta_id",
-      knex("conta").where({usuario_id}).select("id"))
+      knex("conta").where({ usuario_id }).select("id"))
     .orderBy(sort, direction)
     .offset(offset)
     .limit(limit);
-}
+};
 
 
 export const listMovimentacaoByConta = async ({
@@ -49,6 +53,7 @@ export const listMovimentacaoByConta = async ({
                                                 conta_id = -1,
                                                 tipo_movimentacao_id,
                                                 categoria_id,
+                                                efetivada,
                                                 dataInicio,
                                                 dataFim,
                                                 limit = 50,
@@ -57,14 +62,14 @@ export const listMovimentacaoByConta = async ({
                                                 direction = "desc"
                                               }) => {
 
-  const whereParams = {conta_id}
+  const whereParams = { conta_id };
   let query = knex("movimentacao")
-    .whereLike("descricao", `%${q}%`)
+    .whereLike("descricao", `%${q}%`);
   if (tipo_movimentacao_id && tipo_movimentacao_id !== "null") {
-    whereParams.tipo_movimentacao_id = tipo_movimentacao_id
+    whereParams.tipo_movimentacao_id = tipo_movimentacao_id;
   }
   if (categoria_id && categoria_id !== "null") {
-    whereParams.categoria_id = categoria_id
+    whereParams.categoria_id = categoria_id;
   }
   if (dataInicio
     && dataInicio !== "null"
@@ -72,20 +77,23 @@ export const listMovimentacaoByConta = async ({
     && dataFim
     && dataFim !== "null"
     && dataFim !== "undefined") {
-    query = query.whereBetween("vencimento", [new Date(dataInicio).toISOString(), new Date(dataFim).toISOString()])
+    query = query.whereBetween("vencimento", [new Date(dataInicio).toISOString(), new Date(dataFim).toISOString()]);
   }
+
+  if (efetivada == "true") query = query.whereNotNull("efetivada");
+  else if (efetivada == "false") query = query.whereNull("efetivada");
 
   return query
     .where(whereParams)
     .orderBy(sort, direction)
     .offset(offset)
     .limit(limit);
-}
+};
 
 
 // TODO mais opções de listagem por período
 
-export const novaEntrada = async ({conta_id, valor, descricao, categoria_id, efetivada}) =>
+export const novaEntrada = async ({ conta_id, valor, descricao, categoria_id, efetivada }) =>
   knex("movimentacao")
     .insert({
       conta_id,
@@ -97,7 +105,7 @@ export const novaEntrada = async ({conta_id, valor, descricao, categoria_id, efe
     }, ["id"]);
 
 
-export const novaSaida = async ({conta_id, valor, descricao, categoria_id, efetivada}) =>
+export const novaSaida = async ({ conta_id, valor, descricao, categoria_id, efetivada }) =>
   knex("movimentacao")
     .insert({
       conta_id,
@@ -111,14 +119,14 @@ export const novaSaida = async ({conta_id, valor, descricao, categoria_id, efeti
 export const insertMovimentacao = async movimentacao =>
   knex("movimentacao").insert(movimentacao, ["id"]);
 
-export const updateMovimentacao = async ({id = -1, movimentacao}) => {
+export const updateMovimentacao = async ({ id = -1, movimentacao }) => {
   movimentacao.id = id;
   return knex("movimentacao")
     .update(movimentacao)
-    .where({id});
+    .where({ id });
 };
 
 export const removeMovimentacao = async (id = -1) =>
   knex("movimentacao")
-    .where({id})
+    .where({ id })
     .del();

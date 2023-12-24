@@ -5,14 +5,6 @@ export const getRedLine = () => {
   if (!lastState) {
     redLine = {
       token: null,
-      activeCard: {
-        login: false,
-        movimentacao: false,
-        categorias: false,
-        planejamentos: false,
-        carteirasContas: false,
-        configuracoes: false
-      },
       tiposConta: [],
       contas: [],
       categorias: [],

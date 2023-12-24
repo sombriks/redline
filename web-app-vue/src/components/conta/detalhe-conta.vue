@@ -76,7 +76,7 @@
 <script setup>
 import { computed, reactive, ref } from 'vue'
 import { useContaStore } from '@/stores/contaStore'
-import { dayOfMonthRule, numberRule, requiredRule } from '@/form-rules/basic-rules'
+import { dayOfMonthRule, numberRule, requiredRule } from '@/services/basic-rules'
 import ChipConta from '../shared/chip-conta.vue'
 
 const cState = useContaStore()

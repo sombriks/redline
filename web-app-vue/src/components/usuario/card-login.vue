@@ -38,7 +38,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
-import { requiredRule } from '@/form-rules/basic-rules'
+import { requiredRule } from '@/services/basic-rules'
 
 const nome = ref('')
 const email = ref('')

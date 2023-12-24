@@ -34,7 +34,7 @@ export const useCategoriaStore = defineStore('categoria-store', () => {
     await delCategoria({ id, categoria })
   }
 
-  const getCategorias = id => store.categorias.find(c => c.id == id)
+  const getCategoria = id => store.categorias.find(c => c.id == id)
 
-  return { store, sincronizarCategorias, salvarCategoria, excluirCategoria, getCategorias }
+  return { store, sincronizarCategorias, salvarCategoria, excluirCategoria, getCategoria }
 })

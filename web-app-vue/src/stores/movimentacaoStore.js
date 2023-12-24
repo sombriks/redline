@@ -1,7 +1,7 @@
-import {defineStore} from 'pinia'
-import {useUserStore} from '@/stores/userStore'
-import {reactive} from 'vue'
-import {getRedLine, setRedLine} from '@/services/redLine'
+import { defineStore } from 'pinia'
+import { useUserStore } from '@/stores/userStore'
+import { reactive } from 'vue'
+import { getRedLine, setRedLine } from '@/services/redLine'
 import {
   delMovimentacao,
   insertMovimentacao,
@@ -20,6 +20,7 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
       movimentacoes: redLine?.movimentacoes || [],
       filtrosMovimentacao: redLine?.filtrosMovimentacao || {
         tipo_movimentacao_id: null,
+        efetivada: null,
         dataInicio: null,
         dataFim: null,
         offset: 0,
@@ -34,9 +35,9 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
 
   const sincronizarMovimentacoes = async () => {
     const redLine = getRedLine()
-    store.filtrosMovimentacao.id = uState.userData.id;
+    store.filtrosMovimentacao.id = uState.userData.id
     store.tiposMovimentacao = await lisTiposMovimentacao()
-    store.movimentacoes = await listMovimentacoes({...store.filtrosMovimentacao})
+    store.movimentacoes = await listMovimentacoes({ ...store.filtrosMovimentacao })
     setRedLine({
       ...redLine,
       tiposMovimentacao: store.tiposMovimentacao,
@@ -45,23 +46,45 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
   }
 
   const salvarMovimentacao = async (movimentacao) => {
-    const {id} = uState.userData
-    const {conta_id} = movimentacao
-    if (movimentacao.id) await updateMovimentacao({id, conta_id, movimentacao})
-    else await insertMovimentacao({id, conta_id, movimentacao})
+    const { id } = uState.userData
+    const { conta_id } = movimentacao
+    if (movimentacao.id) await updateMovimentacao({ id, conta_id, movimentacao })
+    else await insertMovimentacao({ id, conta_id, movimentacao })
   }
 
   const excluirMovimentacao = async (movimentacao) => {
-    const {id} = uState.userData
-    const {conta_id} = movimentacao
-    await delMovimentacao({id, conta_id, movimentacao})
+    const { id } = uState.userData
+    const { conta_id } = movimentacao
+    await delMovimentacao({ id, conta_id, movimentacao })
   }
 
-  const aplicarFiltro = filtro => {
+  const aplicarFiltro = (filtro) => {
     Object.assign(store.filtrosMovimentacao, filtro)
     const redLine = getRedLine()
-    setRedLine({...redLine, ...store})
+    setRedLine({ ...redLine, ...store })
   }
 
-  return {store, sincronizarMovimentacoes, salvarMovimentacao, excluirMovimentacao, aplicarFiltro}
+  const calcula = (m) => {
+    const v = parseFloat(m.valor)
+    if (m.tipo_movimentacao_id == 1) return v
+    return -v
+  }
+
+  const saldo = () => {
+    return store.movimentacoes.reduce(
+      (p, c) => {
+        return { valor: calcula(p) + calcula(c), tipo_movimentacao_id: 1 }
+      },
+      { valor: 0 }
+    ).valor
+  }
+
+  return {
+    store,
+    sincronizarMovimentacoes,
+    salvarMovimentacao,
+    excluirMovimentacao,
+    aplicarFiltro,
+    saldo
+  }
 })

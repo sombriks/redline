@@ -19,16 +19,26 @@
       <v-btn variant="outlined" rounded @click="drawer = !drawer" size="large">
         <v-icon icon="mdi-dots-vertical" />
       </v-btn>
+      <v-spacer></v-spacer>
+      <v-chip
+        variant="outlined"
+        class="ma-2"
+        rounded
+        size="large"
+        :color="saldo >=0 ? 'green-accent-2' : 'red-accent-2'"
+      >Saldo: {{statusFiltro.saldo}}</v-chip>
       <v-divider thickness="5"></v-divider>
     </v-row>
     <v-row align="center">
       <!-- filtros ativos -->
-      <i>Max {{filtro.limit}} resultados</i>
-      <i v-if="filtro.tipo_movimentacao_id == 1">, entradas</i>
-      <i v-if="filtro.tipo_movimentacao_id == 2">, saídas</i>
-      <i v-if="filtro.dataFim">, de {{intervalo.inicio}} até {{intervalo.fim}}</i>
-      <span>&nbsp;</span>
-
+      <i>Max {{ filtro.limit }} resultados,&nbsp;</i>
+      <i v-if="filtro.tipo_movimentacao_id == 1">somente entradas,&nbsp;</i>
+      <i v-if="filtro.tipo_movimentacao_id == 2">somente saídas,&nbsp;</i>
+      <i v-if="filtro.efetivada == true">somente efetivadas,&nbsp;</i>
+      <i v-if="filtro.efetivada == false">somente pendentes,&nbsp;</i>
+      <i v-if="filtro.categoria_id">categoria {{ statusFiltro.categoria?.descricao }},&nbsp;</i>
+      <i v-if="filtro.conta_id">conta {{ statusFiltro.conta?.descricao }},&nbsp;</i>
+      <i v-if="filtro.dataFim">de {{ statusFiltro.inicio }} até {{ statusFiltro.fim }}&nbsp;</i>
     </v-row>
     <v-row align="center">
       <p v-if="!movimentacoes.length">Não há movimentações para exibir</p>
@@ -131,10 +141,21 @@
             </v-radio-group>
           </v-row>
           <v-row align="center">
+            <!-- situação -->
+            <v-radio-group inline v-model="filtro.efetivada">
+              <template v-slot:label>
+                <div>Situação</div>
+              </template>
+              <v-radio :value="null" label="Tudo"></v-radio>
+              <v-radio :value="true" label="Efetivada"></v-radio>
+              <v-radio :value="false" label="Pendente"></v-radio>
+            </v-radio-group>
+          </v-row>
+          <v-row align="center">
             <!-- paginação -->
             <v-radio-group inline v-model="filtro.limit">
               <template v-slot:label>
-                <div>Máximo resultados</div>
+                <div>Máximo de resultados</div>
               </template>
               <v-radio :value="10000" label="10000"></v-radio>
               <v-radio :value="1000" label="1000"></v-radio>
@@ -146,7 +167,12 @@
             <!-- período -->
             <button-date label="Data inicial" v-model="filtro.dataInicio"></button-date>
             <button-date label="Data final" v-model="filtro.dataFim"></button-date>
-            <v-btn icon="mdi-history" title="Restaurar" variant="outlined" @click="restauraPeriodo"></v-btn>
+            <v-btn
+              icon="mdi-history"
+              title="Restaurar"
+              variant="outlined"
+              @click="restauraPeriodo"
+            ></v-btn>
           </v-row>
           <v-row align="center">
             <!-- ações -->
@@ -174,7 +200,7 @@ import { router } from '@/routes/router'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import ChipConta from '@/components/shared/chip-conta.vue'
 import { useContaStore } from '@/stores/contaStore'
-import { prepareDate } from '@/services/formaters'
+import { prepareDate, prepareMoney } from "@/services/formaters";
 import { endOfMonth, format, startOfMonth } from 'date-fns'
 
 const movimentacaoStore = useMovimentacaoStore()
@@ -185,6 +211,7 @@ const drawer = ref(false)
 
 const filtro = reactive({
   tipo_movimentacao_id: null,
+  efetivada: null,
   categoria_id: null,
   dataInicio: startOfMonth(new Date()),
   conta_id: null,
@@ -194,9 +221,14 @@ const filtro = reactive({
 
 const movimentacoes = computed(() => movimentacaoStore.store?.movimentacoes.map((m) => m) || [])
 
-const intervalo = computed(() => ({
-  inicio: filtro.dataInicio && format(prepareDate(filtro.dataInicio),"yyyy-MM-dd"),
-  fim: filtro.dataFim && format(prepareDate(filtro.dataFim),"yyyy-MM-dd")
+const saldo = computed(() => movimentacaoStore.saldo())
+
+const statusFiltro = computed(() => ({
+  inicio: filtro.dataInicio && format(prepareDate(filtro.dataInicio), 'yyyy-MM-dd'),
+  fim: filtro.dataFim && format(prepareDate(filtro.dataFim), 'yyyy-MM-dd'),
+  categoria: filtro.categoria_id && categoriaStore.getCategoria(filtro.categoria_id),
+  conta: filtro.conta_id && contaStore.getConta(filtro.conta_id),
+  saldo: prepareMoney(saldo.value)
 }))
 
 onMounted(() => {
@@ -227,6 +259,7 @@ const restauraPeriodo = () => {
 .alinha {
   display: flex;
 }
+
 .alinha-item {
   margin: 5px;
 }

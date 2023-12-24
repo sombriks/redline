@@ -122,7 +122,7 @@ import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
 import { onMounted, reactive, ref, watch } from 'vue'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
-import { numberRule, requiredRule } from '@/form-rules/basic-rules'
+import { numberRule, requiredRule } from '@/services/basic-rules'
 import ChipConta from '../shared/chip-conta.vue'
 import { router } from "@/routes/router"
 import ButtonDate from '../shared/button-date.vue'
