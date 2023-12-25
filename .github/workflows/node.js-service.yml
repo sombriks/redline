@@ -56,6 +56,6 @@ jobs:
         file: infrastructure/Dockerfile
         platforms: linux/amd64,linux/arm64
         tags: |
-          ghcr.io/sombriks/redline-api:latest
+          ghcr.io/sombriks/redline/redline-api:latest
 #          ghcr.io/sombriks/redline-api:${{env.TAG}}
 
