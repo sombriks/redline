@@ -51,9 +51,9 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
+        push: true
         file: infrastructure/Dockerfile
         platforms: linux/amd64,linux/arm64
-        push: true
         tags: |
           ghcr.io/sombriks/redline-api:latest
 #          ghcr.io/sombriks/redline-api:${{env.TAG}}
