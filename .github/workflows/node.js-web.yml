@@ -5,7 +5,7 @@ name: Node.js CI - frontend
 
 on:
   push:
-    branches: [ "*" ]
+    branches: [ "main" ]
 
 defaults:
   run:
