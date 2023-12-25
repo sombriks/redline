@@ -67,6 +67,7 @@ const clear = () => {
 }
 
 watch(props, () => {
+  console.log(props)
   date.value = prepareDate(props.modelValue)
 })
 </script>

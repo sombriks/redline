@@ -67,7 +67,7 @@
             color="orange"
             class="ma-2"
             type="button"
-            @click="cancelar"
+            @click="router.push('/historico')"
             icon="mdi-close"
           ></v-btn>
         </v-row>
@@ -152,12 +152,6 @@ const salvarMovimentacao = async () => {
   Object.assign(novaMovimentacao, resetMovimentacao())
   Object.assign(contaSelecionada, resetConta())
   router.push('/historico')
-}
-
-const cancelar = () => {
-  Object.assign(novaMovimentacao, resetMovimentacao())
-  Object.assign(contaSelecionada, resetConta())
-  contaEfetivada.value = false
 }
 
 onMounted(sync)

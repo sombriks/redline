@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { useUserStore } from '@/stores/userStore'
 import { reactive } from 'vue'
+import { endOfMonth, format, startOfMonth } from 'date-fns'
 import { getRedLine, setRedLine } from '@/services/redLine'
 import {
   delMovimentacao,
@@ -21,8 +22,8 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
       filtrosMovimentacao: redLine?.filtrosMovimentacao || {
         tipo_movimentacao_id: null,
         efetivada: null,
-        dataInicio: null,
-        dataFim: null,
+        dataInicio: startOfMonth(new Date()),
+        dataFim: endOfMonth(new Date()),
         offset: 0,
         limit: 50,
         id: null,

@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import {useUserStore} from '@/stores/userStore'
+import { useUserStore } from '@/stores/userStore'
 import AuthPage from '@/pages/auth-page.vue'
 import NovaMovimentacaoPage from '@/pages/nova-movimentacao-page.vue'
 import CategoriasPage from '@/pages/categorias-page.vue'
@@ -13,13 +13,13 @@ import DashboardPage from "@/pages/dashboard-page.vue";
 
 export const routes = [
   { component: AuthPage, path: '/auth' },
-  { path: '/', redirect: '/nova-movimentacao' },
+  { path: '/', redirect: '/historico' },
   { component: DashboardPage, path: '/dashboard', label: 'Dashboard', icon: 'mdi-chart-bar' },
   { component: NovaMovimentacaoPage, path: '/nova-movimentacao', label: 'Nova movimentação', icon: 'mdi-currency-usd' },
   { component: ContasPage, path: '/contas', label: 'Contas', icon: 'mdi-card-account-details' },
   { component: CategoriasPage, path: '/categorias', label: 'Categorias', icon: 'mdi-playlist-check' },
   { component: HistoricoPage, path: '/historico', label: 'Histórico', icon: 'mdi-clipboard-text-search-outline' },
-  { component: EditarMovimentacaoPage, path: '/editar-movimentacao/:id'},
+  { component: EditarMovimentacaoPage, path: '/editar-movimentacao/:id' },
   { component: PlanejamentoPage, path: '/planejamento', label: 'Planejamento', icon: 'mdi-clipboard-edit-outline' },
   { component: RecorrenciasPage, path: '/recorrencias', label: 'Recorrências', icon: 'mdi-history' },
   { component: ConfigPage, path: '/config', label: 'Configurações', icon: 'mdi-cog-outline' },
