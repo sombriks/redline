@@ -35,10 +35,12 @@ jobs:
   prepare-tag:
     runs-on: ubuntu-latest
     steps:
-      - name: Prepare release timestamp
-        id: step1
-        run: |
-          echo "CI_TAG=$(date +'%0Y.%0m.%0d')-${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Prepare release timestamp
+      id: step1
+      run: |
+        echo "CI_TAG=$(date +'%0Y.%0m.%0d')-${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
     outputs:
       ci_tag: ${{ steps.step1.outputs.CI_TAG }}
   publish-docker-image:
@@ -68,4 +70,3 @@ jobs:
         tags: |
           ghcr.io/sombriks/redline/redline-api:latest
           ghcr.io/sombriks/redline-api:${{needs.prepare-tag.outputs.ci_tag}}
-
