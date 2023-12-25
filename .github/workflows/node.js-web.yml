@@ -58,13 +58,13 @@ jobs:
       uses: docker/setup-buildx-action@v3
     - name: Build and push
       uses: docker/build-push-action@v5
+      env:
+        VITE_API_URL: ${{vars.VITE_API_URL}}
       with:
         push: true
         context: "{{defaultContext}}:web-app-vue"
         file: infrastructure/Dockerfile
         platforms: linux/amd64,linux/arm64
-        env:
-          VITE_API_URL: ${{vars.VITE_API_URL}}
         tags: |
           ghcr.io/sombriks/redline/redline-app:latest
           ghcr.io/sombriks/redline/redline-app:${{needs.prepare-tag.outputs.ci_tag}}
