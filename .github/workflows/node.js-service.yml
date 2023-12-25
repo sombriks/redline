@@ -69,4 +69,4 @@ jobs:
         platforms: linux/amd64,linux/arm64
         tags: |
           ghcr.io/sombriks/redline/redline-api:latest
-          ghcr.io/sombriks/redline-api:${{needs.prepare-tag.outputs.ci_tag}}
+          ghcr.io/sombriks/redline/redline-api:${{needs.prepare-tag.outputs.ci_tag}}
