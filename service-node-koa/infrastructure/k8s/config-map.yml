@@ -1,0 +1,9 @@
+##
+## config-map should not be managed here
+##
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  name: config-map-redline-api
+#data:
+#  PG_CONNECTION_URL: "postgres://postgres:postgres@db-service-2:5432/redline"

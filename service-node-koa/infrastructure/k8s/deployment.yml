@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-redline-api
+  labels:
+    app: redline-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: redline-api
+  template:
+    metadata:
+      labels:
+        app: redline-api
+    spec:
+      containers:
+        - name: redline-api
+          image: ghcr.io/sombriks/redline/redline-api:2023.12.26-5e24b06
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: '3000'
+            - name: NODE_ENV
+              value: production
+            - name: PG_CONNECTION_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map-redline-api
+                  key: PG_CONNECTION_URL
