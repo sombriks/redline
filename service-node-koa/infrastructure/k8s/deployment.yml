@@ -16,12 +16,10 @@ spec:
     spec:
       containers:
         - name: redline-api
-          image: ghcr.io/sombriks/redline/redline-api:2023.12.26-5e24b06
+          image: ghcr.io/sombriks/redline/redline-api:2023.12.27-c5ffaad
           ports:
             - containerPort: 3000
           env:
-            - name: PORT
-              value: '3000'
             - name: NODE_ENV
               value: production
             - name: PG_CONNECTION_URL
