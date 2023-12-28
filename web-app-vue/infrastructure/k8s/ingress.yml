@@ -14,5 +14,5 @@ spec:
               service:
                 name: service-redline-app
                 port:
-                  number: 3000
+                  number: 5000
 
