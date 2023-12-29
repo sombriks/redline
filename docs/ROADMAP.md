@@ -8,8 +8,8 @@ general notes
 - [X] service api
 - [X] service tests
 - [X] web client
+- [X] publish
 - [ ] web client tests
-- [ ] publish
 - [ ] mobile app client
 
 ## app sections

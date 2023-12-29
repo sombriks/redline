@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: stateful-set-redline-db
+  labels:
+    app: db-redline
+spec:
+  serviceName: db-redline
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-redline
+  template:
+    metadata:
+      labels:
+        app: db-redline
+    spec:
+      containers:
+        - name: db-redline
+          image: postgres:15-alpine
+          env:
+            - name: POSTGRES_DB
+              value: "redline"
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              value: "postgres"
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: vol-redline
+  volumeClaimTemplates:
+    - metadata:
+        name: vol-redline
+      spec:
+        accessModes:
+          - ReadWriteMany
+        resources:
+          requests:
+            storage: 1Gi
+
