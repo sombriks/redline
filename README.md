@@ -1,7 +1,6 @@
 # [Redline](https://github.com/sombriks/redline)
 
-[![Node.js CI - backend](https://github.com/sombriks/redline/actions/workflows/node.js-service.yml/badge.svg)](https://github.com/sombriks/redline/actions/workflows/node.js-service.yml)
-[![Node.js CI - frontend](https://github.com/sombriks/redline/actions/workflows/node.js-web.yml/badge.svg)](https://github.com/sombriks/redline/actions/workflows/node.js-web.yml)
+[![Node.js CI/CD](https://github.com/sombriks/redline/actions/workflows/node.js.yml/badge.svg)](https://github.com/sombriks/redline/actions/workflows/node.js.yml)
 
 Study project - Yet another personal finance app
 
