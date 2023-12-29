@@ -11,3 +11,11 @@ spec:
   local:
     path: /home/opc/sample-pv
   persistentVolumeReclaimPolicy: Retain
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - spekkio
