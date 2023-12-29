@@ -35,7 +35,7 @@ spec:
         name: vol-redline
       spec:
         accessModes:
-          - ReadWriteMany
+          - ReadWriteOnce # if PV can only be used by the local node
         resources:
           requests:
             storage: 1Gi
