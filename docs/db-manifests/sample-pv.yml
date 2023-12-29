@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sample-pv
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 2Gi
+  storageClassName: local-path
+  local:
+    path: /home/opc/sample-pv
+  persistentVolumeReclaimPolicy: Retain
