@@ -94,7 +94,6 @@ jobs:
         tags: |
           ghcr.io/sombriks/redline/redline-app:latest
           ghcr.io/sombriks/redline/redline-app:${{needs.prepare-tag.outputs.ci_tag}}
-
   publish-docker-image-backend:
     permissions: write-all
     runs-on: ubuntu-latest
@@ -122,12 +121,36 @@ jobs:
           tags: |
             ghcr.io/sombriks/redline/redline-api:latest
             ghcr.io/sombriks/redline/redline-api:${{needs.prepare-tag.outputs.ci_tag}}
-
-
   update-iac-manifests:
     permissions: write-all
     runs-on: ubuntu-latest
     needs: [prepare-tag, publish-docker-image-frontend, publish-docker-image-backend]
     steps:
-      - run: echo "under constuction"
-
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Update api image
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: service-node-koa/infrastructure/k8s/deployment.yml
+          propertyPath: spec.template.spec.containers[0].image
+          value: ghcr.io/sombriks/redline/redline-api:${{needs.prepare-tag.outputs.ci_tag}}
+          commitChange: false
+      - name: Update app image
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: web-app-vue/infrastructure/k8s/deployment.yml
+          propertyPath: spec.template.spec.containers[0].image
+          value: ghcr.io/sombriks/redline/redline-app:${{needs.prepare-tag.outputs.ci_tag}}
+          commitChange: false
+      - name: Update and tag modified manifests
+        run: |
+          git config user.name "Mr. Bob Tags"
+          git config user.email action-bot@github.com
+          git status          
+          git pull
+          git add .
+          git commit -m "IaC updated ${{needs.prepare-tag.outputs.ci_tag}}"
+          git push origin main
+          git tag ${{needs.prepare-tag.outputs.ci_tag}}
+          git push origin ${{needs.prepare-tag.outputs.ci_tag}}
+          
