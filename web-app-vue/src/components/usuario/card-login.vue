@@ -22,6 +22,12 @@
         required
         type="password"
       ></v-text-field>
+      <v-text-field
+        :rules="[requiredRule]"
+        v-model="invite"
+        label="Convite"
+        required
+      ></v-text-field>
       <v-divider></v-divider>
       <v-btn type="submit">{{ createMode ? 'Criar conta' : 'Login' }}</v-btn>
       <v-btn
@@ -43,6 +49,7 @@ import { requiredRule } from '@/services/basic-rules'
 const nome = ref('')
 const email = ref('')
 const senha = ref('')
+const invite = ref('')
 const createMode = ref(false)
 const valid = ref(false)
 const uState = useUserStore()
@@ -56,7 +63,8 @@ const doLogin = async () => {
       await uState.doCreateUser({
         nome: nome.value,
         email: email.value,
-        senha: senha.value
+        senha: senha.value,
+        invite: invite.value
       })
     }
     const result = await uState.doLogin({ email: email.value, senha: senha.value })
