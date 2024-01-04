@@ -8,14 +8,13 @@ const uriParams = ({ uri, params }) =>
     .join('&')}`
 
 const req = async ({ method = 'POST', uri, payload }) => {
-  const token = useUserStore().store.token
-  const { router } = await import('./router')
+  const userStore = useUserStore()
   const url = `${import.meta.env.VITE_API_URL}${uri}`
   const headers = {
     'Content-Type': 'application/json',
     Accept: 'application/json'
   }
-  if (token) headers['Authorization'] = `Bearer ${token}`
+  if (userStore.store.token) headers['Authorization'] = `Bearer ${userStore.store.token}`
   try {
     const result = await fetch(url, {
       body: JSON.stringify(payload),
@@ -29,7 +28,7 @@ const req = async ({ method = 'POST', uri, payload }) => {
     }
   } catch (e) {
     if(e.status === 401) {
-      router.push('/auth')
+      await userStore.logout()
     }
     throw new Error(`${e.status} - ${await e.text()}`)
   }

@@ -65,7 +65,7 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
     setRedLine({ ...redLine, ...store })
   }
 
-  const getMovimentacao = id => store.movimentacoes?.find(m => m.id == id)
+  const getMovimentacao = (id) => store.movimentacoes?.find((m) => m.id == id)
 
   const calcula = (m) => {
     const v = parseFloat(m.valor)
@@ -74,7 +74,8 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
   }
 
   const saldo = () => {
-    return store.movimentacoes.reduce(
+    if (!store.movimentacoes || !store.movimentacoes.length) return 0
+    return store.movimentacoes?.reduce(
       (p, c) => {
         return { valor: calcula(p) + calcula(c), tipo_movimentacao_id: 1 }
       },

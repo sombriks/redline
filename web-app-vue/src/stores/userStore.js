@@ -23,9 +23,11 @@ export const useUserStore = defineStore("user-store", () => {
 
   const doLogin = ({email, senha}) => login({email, senha})
 
-  const logout = () => {
+  const logout = async () => {
+    const { router } = await import('../services/router')
     store.token = null;
     clearRedLine();
+    router.push('/auth')
   };
 
   const deleteAccount = async ({ email, senha }) => {

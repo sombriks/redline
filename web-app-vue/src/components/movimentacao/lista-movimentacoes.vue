@@ -180,7 +180,7 @@ const filtro = reactive({
   limit: 1000
 })
 
-const movimentacoes = computed(() => movimentacaoStore.store?.movimentacoes.map((m) => m) || [])
+const movimentacoes = computed(() => movimentacaoStore.store?.movimentacoes || [])
 
 const saldo = computed(() => movimentacaoStore.saldo())
 
