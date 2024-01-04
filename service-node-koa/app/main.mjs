@@ -37,13 +37,14 @@ import {
 import {contaOwnedBy, ifAuthenticated} from "./config/security/index.mjs";
 
 import ApiBuilder from "koa-api-builder";
+import { errHandler } from './config/default-error-handler.mjs'
 
 export const app = new Koa();
 const router = new Router();
 
 const cabin = new Cabin({logger: new Signale()})
 
-app.use(cors()).use(bodyParser()).use(cabin.middleware);
+app.use(errHandler).use(cors()).use(bodyParser()).use(cabin.middleware);
 
 ApiBuilder({router}).path(b => {
   b.get("/status", async ctx => ctx.body = "ONLINE");
