@@ -5,7 +5,7 @@ export const errHandler = async (ctx, next) => {
     ctx.response.set('ContentType', 'application/json')
     ctx.response.body = JSON.stringify(err)
     if (err.status) ctx.status = err.status
-    else if (err.name === 'JsonWebTokenError') ctx.status = 401
+    else if (['JsonWebTokenError', 'TokenExpiredError'].includes(err.name)) ctx.status = 401
     else ctx.status = 500
     ctx.log.error(err.message)
   }
