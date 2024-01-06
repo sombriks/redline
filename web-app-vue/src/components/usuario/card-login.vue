@@ -24,6 +24,7 @@
       ></v-text-field>
       <v-text-field
         :rules="[requiredRule]"
+        v-if="createMode"
         v-model="invite"
         label="Convite"
         required

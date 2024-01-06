@@ -1,18 +1,7 @@
-create table knex_migrations
-(
-    id             integer not null
-        primary key autoincrement,
-    name           varchar(255),
-    batch          integer,
-    migration_time datetime
-);
-
-create table knex_migrations_lock
-(
-    "index"   integer not null
-        primary key autoincrement,
-    is_locked integer
-);
+--
+-- initial database schema for reference. for updated schema see the knex
+-- migrations in service-node-koa/app/config/db/migrations
+--
 
 create table modelocategoria
 (
