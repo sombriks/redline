@@ -3,12 +3,13 @@
 name: Node.js CI/CD
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   prepare-tag:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -66,6 +67,7 @@ jobs:
           npm run build --if-present
           npm run test:service:coverage
   publish-docker-image-frontend:
+    if: github.ref == 'refs/heads/main'
     permissions: write-all
     runs-on: ubuntu-latest
     needs: [ run-tests-frontend, prepare-tag ]
@@ -95,6 +97,7 @@ jobs:
           ghcr.io/sombriks/redline/redline-app:latest
           ghcr.io/sombriks/redline/redline-app:${{needs.prepare-tag.outputs.ci_tag}}
   publish-docker-image-backend:
+    if: github.ref == 'refs/heads/main'
     permissions: write-all
     runs-on: ubuntu-latest
     needs: [run-tests-backend, prepare-tag]
@@ -122,6 +125,7 @@ jobs:
             ghcr.io/sombriks/redline/redline-api:latest
             ghcr.io/sombriks/redline/redline-api:${{needs.prepare-tag.outputs.ci_tag}}
   update-iac-manifests:
+    if: github.ref == 'refs/heads/main'
     permissions: write-all
     runs-on: ubuntu-latest
     needs: [prepare-tag, publish-docker-image-frontend, publish-docker-image-backend]
