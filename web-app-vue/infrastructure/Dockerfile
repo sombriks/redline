@@ -2,9 +2,8 @@ FROM alpine:3.19 AS build
 
 ENV NODE_ENV=${NODE_ENV:-production}
 
-
 ADD .env.production .eslintrc.cjs .prettierrc.json index.html \
-package.json package-lock.json vite.config.js vitest.config.js ./
+  package.json package-lock.json vite.config.js vitest.config.js ./
 ADD src ./src/
 ADD public ./public/
 

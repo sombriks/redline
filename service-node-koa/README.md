@@ -27,7 +27,7 @@ npm run test:service:coverage
 docker build -f infrastructure/Dockerfile -t sombriks/redline-api:testing .
 ```
 
-You can change the postgres database url for proper test values 
+You can change the postgres database url for proper test values
 
 ```sh
 docker run --rm -it -p 3000:3000 --network=host \

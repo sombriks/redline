@@ -113,3 +113,7 @@ export const updateMovimentacao = async ({ id, conta_id, movimentacao }) =>
 
 export const delMovimentacao = async ({ id, conta_id, movimentacao }) =>
   await del({ uri: `/${id}/movimentacao/${conta_id}/${movimentacao.id}` })
+
+export const uploadCsv = async ({id,file}) => {
+
+}

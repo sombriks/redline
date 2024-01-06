@@ -6,7 +6,7 @@
   "main": "index.mjs",
   "private": "true",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node -r dotenv-flow/config index.mjs",
+    "start": "node -r dotenv-flow/config index.mjs",
     "dev:service": "cross-env NODE_ENV=development nodemon -r dotenv-flow/config",
     "test:service": "cross-env NODE_ENV=test mocha -r dotenv-flow/config -r app/config/_test_hooks.mjs --recursive app/**/*.spec.mjs",
     "test:service:coverage": "c8 npm run test:service",

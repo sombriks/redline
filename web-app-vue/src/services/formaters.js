@@ -14,3 +14,11 @@ export const prepareMoney = (money) => {
     currency: 'BRL'
   }).format(money)
 }
+
+export const prepareByte = (n) => {
+  if (isNaN(n)) throw Error('Invalid number received')
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'unit',
+    unit: 'byte'
+  }).format(n)
+}
