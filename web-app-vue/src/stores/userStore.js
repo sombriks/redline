@@ -9,7 +9,7 @@ export const useUserStore = defineStore('user-store', () => {
     token: getRedLine()?.token
   })
 
-  const userData = computed(() => jwt_decode(store.token))
+  const userData = computed(() => store.token && jwt_decode(store.token) || {})
 
   const setToken = (_token) => {
     let redLine = getRedLine()

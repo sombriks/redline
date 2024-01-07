@@ -126,7 +126,7 @@ const importData = async () => {
 const exportData = async () => {}
 
 const logout = async () => {
-  await uStore.logout()
+  await uState.logout()
   await router.push('/')
 }
 
