@@ -2,7 +2,6 @@ import Koa from "koa";
 import cors from "@koa/cors";
 import bodyParser from "koa-bodyparser";
 
-
 import {
   listCategoriasRequest,
   findCategoriaRequest,
@@ -23,7 +22,8 @@ import {
   listRecorrenciaRequest,
   userLoginRequest,
   userSignupRequest,
-  delUsuarioRequest
+  delUsuarioRequest,
+  uploadMovimentacaoRequest
 } from "./controllers/index.mjs";
 import Router from "@koa/router";
 import {
@@ -78,6 +78,7 @@ new ApiBuilder({ router }).path(b => {
 
     b.path("/movimentacao", b => {
       b.get(listMovimentacaoRequest);
+      b.post("/upload", uploadMovimentacaoRequest);
       b.path("/:conta_id", contaOwnedBy, b => {
         b.post(insertMovimentacaoRequest);
         b.path("/:id", b => {
@@ -93,8 +94,5 @@ new ApiBuilder({ router }).path(b => {
     b.path("/recorrencia", b => b.get(listRecorrenciaRequest));
   });
 }).build();
-
-// router.post("/:usuario_id/entrada/:conta_id", ifAuthenticated, contaOwnedBy, novaEntradaRequest);
-// router.post("/:usuario_id/saida/:conta_id", ifAuthenticated, contaOwnedBy, novaSaidaRequest);
 
 app.use(router.routes()).use(router.allowedMethods());

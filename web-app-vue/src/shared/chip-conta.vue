@@ -1,10 +1,9 @@
 <script setup>
-
-import { computed } from "vue";
+import { computed } from 'vue'
 
 const props = defineProps(['conta', 'color', 'appendIcon'])
 
-const emit = defineEmits(["click"])
+const emit = defineEmits(['click'])
 
 const contaIcon = computed(() => {
   if (props.conta?.tipo_conta_id == '2') return 'mdi-bank'
@@ -21,6 +20,6 @@ const contaIcon = computed(() => {
     :color="props.color"
     :append-icon="props.appendIcon"
     @click="emit('click')"
-  >{{ props.conta.descricao }}
+    >{{ props.conta.descricao }}
   </v-chip>
 </template>

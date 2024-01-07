@@ -48,13 +48,14 @@ npm run lint
 
 ## Docker image build and run
 
-You can change `VITE_API_URL` to a proper testing value 
+You can change `VITE_API_URL` to a proper testing value
 
 ```sh
 docker build -f infrastructure/Dockerfile \
 -e VITE_API_URL=http://api.redline.sombriks.org \
 -t sombriks/redline-web:testing .
 ```
+
 You can expose another port if needed
 
 ```sh

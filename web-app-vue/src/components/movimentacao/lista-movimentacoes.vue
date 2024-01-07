@@ -193,6 +193,8 @@ const statusFiltro = computed(() => ({
 }))
 
 onMounted(() => {
+  contaStore.sincronizarContas()
+  categoriaStore.sincronizarCategorias()
   movimentacaoStore.sincronizarMovimentacoes()
   Object.assign(filtro, movimentacaoStore.store.filtrosMovimentacao)
 })

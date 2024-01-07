@@ -9,7 +9,7 @@ export const useUserStore = defineStore('user-store', () => {
     token: getRedLine()?.token
   })
 
-  const userData = computed(() => jwt_decode(store.token))
+  const userData = computed(() => store.token && jwt_decode(store.token) || {})
 
   const setToken = (_token) => {
     let redLine = getRedLine()
@@ -32,7 +32,7 @@ export const useUserStore = defineStore('user-store', () => {
 
   const deleteAccount = async ({ email, senha }) => {
     await removeAccount({ id: userData.value.id, email, senha })
-    logout()
+    await logout()
   }
 
   return { store, userData, setToken, doLogin, doCreateUser, logout, deleteAccount }

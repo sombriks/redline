@@ -1,0 +1,4 @@
+tipo,conta,categoria,criada,efetivada,valor,descrição
+entrada,carteira,salário,2024-01-06,2024-01-08,5120.22,salário de janeiro
+saída,conta banco,casa,2024-01-06,2024-01-22,101.42,conta de energia elétrica
+saída,cartão 1,lazer,2024-01-16,2024-02-15,70.22,cinema
