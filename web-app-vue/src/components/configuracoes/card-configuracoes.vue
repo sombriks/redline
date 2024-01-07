@@ -7,8 +7,8 @@
           class="item"
           variant="outlined"
           color="green"
-          @click="wantImport = true"
-          >Importar
+          @click="e => wantImport = true"
+        >Importar
         </v-btn>
         <v-form
           v-model="validImport"
@@ -40,7 +40,7 @@
               color="orange"
               class="ma-2"
               type="button"
-              @click="wantImport = false"
+              @click="e => wantImport = false"
               icon="mdi-close"
             ></v-btn>
           </div>
@@ -53,7 +53,7 @@
           class="item"
           @click="wantDelete = true"
           v-if="!wantDelete"
-          >Excluir conta
+        >Excluir conta
         </v-btn>
         <v-form
           v-model="validDelete"
@@ -87,11 +87,11 @@
             ></v-btn>
           </div>
         </v-form>
-        <br/>
-        <v-divider/>
+        <br />
+        <v-divider />
         <div class="column center">
           <a class="item" target="_blank" href="https://github.com/sombriks/redline"
-            >This is an open source project</a>
+          >This is an open source project</a>
         </div>
       </div>
     </v-card-text>
@@ -104,6 +104,9 @@ import { router } from '@/services/router'
 import { requiredRule, lengthRule } from '@/services/basic-rules'
 import { prepareByte, readTextFile } from '@/services/formaters'
 import { uploadCsv } from '@/services/api'
+import { useContaStore } from '@/stores/contaStore'
+import { useCategoriaStore } from '@/stores/categoriaStore'
+import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
 
 const wantImport = ref(false)
 const wantDelete = ref(false)
@@ -114,16 +117,33 @@ const csvFile = ref([])
 const pwd = ref('')
 
 const uState = useUserStore()
+const contaState = useContaStore()
+const categoriaState = useCategoriaStore()
+const movimentacaoState = useMovimentacaoStore()
 
 const fileInfo = computed(
   () => `${csvFile?.value?.[0]?.name}, ${prepareByte(csvFile?.value?.[0]?.size || 0)}`
 )
 const importData = async () => {
-  const file = await readTextFile(csvFile.value[0])
-  await uploadCsv({ id: uState.userData.id, file })
+  try {
+    const file = await readTextFile(csvFile.value[0])
+    const impo = await uploadCsv({ id: uState.userData.id, file })
+    console.log(impo)
+    alert(`Importação concluída com ${impo.result.imported} sucessos!`)
+    await contaState.sincronizarContas()
+    await categoriaState.sincronizarCategorias()
+    await movimentacaoState.sincronizarMovimentacoes()
+    csvFile.value = []
+    wantImport.value = false
+    await router.push("/historico")
+  } catch (e) {
+    console.log(e)
+    alert('Algo deu errado')
+  }
 }
 
-const exportData = async () => {}
+const exportData = async () => {
+}
 
 const logout = async () => {
   await uState.logout()
@@ -133,10 +153,10 @@ const logout = async () => {
 const deleteAccount = async () => {
   if (!validDelete.value) return
   const user = {
-    email: uStore.userData.email,
+    email: uState.userData.email,
     senha: pwd.value
   }
-  await uStore.deleteAccount(user)
+  await uState.deleteAccount(user)
   await router.push('/')
 }
 </script>

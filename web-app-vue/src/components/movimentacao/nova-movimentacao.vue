@@ -1,7 +1,7 @@
 <template>
   <v-card elevation="24" title="Nova movimentação" min-width="320">
   <v-card-text>
-  
+
   </v-card-text>
     <v-form v-model="valid" @submit.prevent.stop="salvarMovimentacao">
       <div class="column">
@@ -18,10 +18,10 @@
           label="Valor"
           prepend-inner-icon="mdi-cash-100"/>
         <!-- novaMovimentacao.categoria_id -->
-        <categoria-autocomplete class="item" 
+        <categoria-autocomplete class="item"
           v-model="novaMovimentacao.categoria_id" />
         <!-- novaMovimentacao.conta_id -->
-        <conta-autocomplete class="item" 
+        <conta-autocomplete class="item"
           v-model="novaMovimentacao.conta_id" :rules="[requiredRule]" />
         <!-- descrição -->
         <v-text-field class="item"
@@ -31,7 +31,7 @@
         <!-- efetivada? -->
         <v-checkbox class="item" v-model="contaEfetivada" label="Paga?"/>
         <!-- vencimento (dia do cartão se conta cartão) -->
-        <button-date v-if="contaEfetivada" class="item" 
+        <button-date v-if="contaEfetivada" class="item"
           label="Vencimento" v-model="novaMovimentacao.vencimento"/>
         <!-- efetivada (data) -->
         <button-date class="item" label="Efetivada" v-model="novaMovimentacao.efetivada"/>
@@ -103,6 +103,15 @@ const sync = async () => {
   await movimentacaoState.sincronizarMovimentacoes()
 }
 
+const salvarMovimentacao = async () => {
+  if (!valid.value) return
+  await movimentacaoState.salvarMovimentacao(novaMovimentacao)
+  await sync()
+  Object.assign(novaMovimentacao, resetMovimentacao())
+  Object.assign(contaSelecionada, resetConta())
+  router.push('/historico')
+}
+
 watch(
   () => novaMovimentacao.conta_id,
   () => {
@@ -128,15 +137,6 @@ watch(
     if (!contaEfetivada.value) novaMovimentacao.efetivada = null
   }
 )
-
-const salvarMovimentacao = async () => {
-  if (!valid.value) return
-  await movimentacaoState.salvarMovimentacao(novaMovimentacao)
-  await sync()
-  Object.assign(novaMovimentacao, resetMovimentacao())
-  Object.assign(contaSelecionada, resetConta())
-  router.push('/historico')
-}
 
 onMounted(sync)
 </script>
