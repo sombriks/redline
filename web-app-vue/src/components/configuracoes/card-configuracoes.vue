@@ -87,6 +87,12 @@
             ></v-btn>
           </div>
         </v-form>
+        <br/>
+        <v-divider/>
+        <div class="column center">
+          <a class="item" target="_blank" href="https://github.com/sombriks/redline"
+            >This is an open source project</a>
+        </div>
       </div>
     </v-card-text>
   </v-card>
@@ -96,7 +102,7 @@ import { computed, ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { router } from '@/services/router'
 import { requiredRule, lengthRule } from '@/services/basic-rules'
-import { prepareByte, prepareFile } from '@/services/formaters'
+import { prepareByte, readTextFile } from '@/services/formaters'
 import { uploadCsv } from '@/services/api'
 
 const wantImport = ref(false)
@@ -113,8 +119,7 @@ const fileInfo = computed(
   () => `${csvFile?.value?.[0]?.name}, ${prepareByte(csvFile?.value?.[0]?.size || 0)}`
 )
 const importData = async () => {
-  const file = await prepareFile(csvFile.value[0])
-  console.log(file)
+  const file = await readTextFile(csvFile.value[0])
   await uploadCsv({ id: uState.userData.id, file })
 }
 
@@ -148,5 +153,9 @@ const deleteAccount = async () => {
 .row {
   display: flex;
   flex-direction: row;
+}
+
+.center {
+  align-items: center;
 }
 </style>

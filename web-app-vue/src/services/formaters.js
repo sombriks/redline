@@ -23,7 +23,7 @@ export const prepareByte = (n) => {
   }).format(n)
 }
 
-export const prepareFile = (file) =>
+export const readTextFile = (file) =>
   new Promise((resolve, reject) => {
     const fr = new FileReader()
     fr.onload = () => resolve(fr.result)
