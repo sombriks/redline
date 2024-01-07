@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="24" :title="`Olá ${uStore.userData.nome}`" min-width="320">
+  <v-card elevation="24" :title="`Olá ${uState.userData.nome}`" min-width="320">
     <v-card-text>
       <div class="column">
         <v-btn
@@ -96,7 +96,8 @@ import { computed, ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { router } from '@/services/router'
 import { requiredRule, lengthRule } from '@/services/basic-rules'
-import { prepareByte } from '@/services/formaters'
+import { prepareByte, prepareFile } from '@/services/formaters'
+import { uploadCsv } from '@/services/api'
 
 const wantImport = ref(false)
 const wantDelete = ref(false)
@@ -106,13 +107,15 @@ const validDelete = ref(false)
 const csvFile = ref([])
 const pwd = ref('')
 
-const uStore = useUserStore()
+const uState = useUserStore()
 
 const fileInfo = computed(
   () => `${csvFile?.value?.[0]?.name}, ${prepareByte(csvFile?.value?.[0]?.size || 0)}`
 )
 const importData = async () => {
-  console.log(csvFile.value)
+  const file = await prepareFile(csvFile.value[0])
+  console.log(file)
+  await uploadCsv({ id: uState.userData.id, file })
 }
 
 const exportData = async () => {}

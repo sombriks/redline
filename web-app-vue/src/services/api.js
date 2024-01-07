@@ -1,5 +1,4 @@
 import { useUserStore } from '@/stores/userStore'
-import {useRouter} from "vue-router";
 
 const uriParams = ({ uri, params }) =>
   `${uri}?${Object.keys(params)
@@ -21,13 +20,12 @@ const req = async ({ method = 'POST', uri, payload }) => {
       headers,
       method
     })
-    if(result.status < 400)
-      return result.json()
+    if (result.status < 400) return result.json()
     else {
       throw result
     }
   } catch (e) {
-    if(e.status === 401) {
+    if (e.status === 401) {
       await userStore.logout()
     }
     throw new Error(`${e.status} - ${await e.text()}`)
@@ -114,6 +112,5 @@ export const updateMovimentacao = async ({ id, conta_id, movimentacao }) =>
 export const delMovimentacao = async ({ id, conta_id, movimentacao }) =>
   await del({ uri: `/${id}/movimentacao/${conta_id}/${movimentacao.id}` })
 
-export const uploadCsv = async ({id,file}) => {
-
-}
+export const uploadCsv = async ({ id, file }) =>
+  await post({ uri: `/${id}/movimentacao/upload`, payload: { file } })

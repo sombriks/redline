@@ -2,7 +2,6 @@ import Koa from "koa";
 import cors from "@koa/cors";
 import bodyParser from "koa-bodyparser";
 
-
 import {
   listCategoriasRequest,
   findCategoriaRequest,
@@ -78,6 +77,10 @@ new ApiBuilder({ router }).path(b => {
 
     b.path("/movimentacao", b => {
       b.get(listMovimentacaoRequest);
+      b.post("/upload", async ctx => {
+        ctx.logger.info(ctx.request.body)
+        ctx.body = {message: "OK"}
+      })
       b.path("/:conta_id", contaOwnedBy, b => {
         b.post(insertMovimentacaoRequest);
         b.path("/:id", b => {
