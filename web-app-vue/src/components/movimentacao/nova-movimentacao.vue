@@ -1,62 +1,71 @@
 <template>
-  <v-card elevation="24" title="Nova movimentação" min-width="320">
-  <v-card-text>
-
-  </v-card-text>
-    <v-form v-model="valid" @submit.prevent.stop="salvarMovimentacao">
-      <div class="column">
-        <!-- tipo de movimentação (entrada / saída) -->
-        <v-radio-group class="item" v-model="novaMovimentacao.tipo_movimentacao_id" inline>
-          <v-radio :value="1" label="Entrada"></v-radio>
-          <v-radio :value="2" label="Saída"></v-radio>
-        </v-radio-group>
-        <!-- valor -->
-        <v-text-field class="item"
-          :rules="[requiredRule, numberRule]"
-          type="number"
-          v-model="novaMovimentacao.valor"
-          label="Valor"
-          prepend-inner-icon="mdi-cash-100"/>
-        <!-- novaMovimentacao.categoria_id -->
-        <categoria-autocomplete class="item"
-          v-model="novaMovimentacao.categoria_id" />
-        <!-- novaMovimentacao.conta_id -->
-        <conta-autocomplete class="item"
-          v-model="novaMovimentacao.conta_id" :rules="[requiredRule]" />
-        <!-- descrição -->
-        <v-text-field class="item"
-          :rules="[requiredRule]"
-          v-model="novaMovimentacao.descricao"
-          label="Descrição"/>
-        <!-- efetivada? -->
-        <v-checkbox class="item" v-model="contaEfetivada" label="Paga?"/>
-        <!-- vencimento (dia do cartão se conta cartão) -->
-        <button-date v-if="contaEfetivada" class="item"
-          label="Vencimento" v-model="novaMovimentacao.vencimento"/>
-        <!-- efetivada (data) -->
-        <button-date class="item" label="Efetivada" v-model="novaMovimentacao.efetivada"/>
-        <!-- recorrência (painel estendido) pra criar recorrência // criar depois //-->
-        <v-divider/>
-        <div class="item row">
-          <v-btn
-            variant="outlined"
-            class="ma-2"
-            color="green"
-            type="submit"
-            icon="mdi-check"
-          ></v-btn>
-          <v-spacer></v-spacer>
-          <v-btn
-            variant="outlined"
-            color="orange"
-            class="ma-2"
-            type="button"
-            @click="router.push('/historico')"
-            icon="mdi-close"
-          ></v-btn>
+  <v-card elevation="24" min-width="320">
+    <v-card-text>
+      <v-form v-model="valid" @submit.prevent.stop="salvarMovimentacao">
+        <div class="column">
+          <!-- tipo de movimentação (entrada / saída) -->
+          <v-radio-group class="item" v-model="novaMovimentacao.tipo_movimentacao_id" inline>
+            <v-radio :value="1" label="Entrada"></v-radio>
+            <v-radio :value="2" label="Saída"></v-radio>
+          </v-radio-group>
+          <!-- valor -->
+          <v-text-field
+            class="item"
+            :rules="[requiredRule, numberRule]"
+            type="number"
+            v-model="novaMovimentacao.valor"
+            label="Valor"
+            prepend-inner-icon="mdi-cash-100"
+          />
+          <!-- novaMovimentacao.categoria_id -->
+          <categoria-autocomplete class="item" v-model="novaMovimentacao.categoria_id" />
+          <!-- novaMovimentacao.conta_id -->
+          <conta-autocomplete
+            class="item"
+            v-model="novaMovimentacao.conta_id"
+            :rules="[requiredRule]"
+          />
+          <!-- descrição -->
+          <v-text-field
+            class="item"
+            :rules="[requiredRule]"
+            v-model="novaMovimentacao.descricao"
+            label="Descrição"
+          />
+          <!-- efetivada? -->
+          <v-checkbox class="item" v-model="contaEfetivada" label="Paga?" />
+          <!-- vencimento (dia do cartão se conta cartão) -->
+          <button-date
+            v-if="contaEfetivada"
+            class="item"
+            label="Vencimento"
+            v-model="novaMovimentacao.vencimento"
+          />
+          <!-- efetivada (data) -->
+          <button-date class="item" label="Efetivada" v-model="novaMovimentacao.efetivada" />
+          <!-- recorrência (painel estendido) pra criar recorrência // criar depois //-->
+          <v-divider />
+          <div class="item row">
+            <v-btn
+              variant="outlined"
+              class="ma-2"
+              color="green"
+              type="submit"
+              icon="mdi-check"
+            ></v-btn>
+            <v-spacer></v-spacer>
+            <v-btn
+              variant="outlined"
+              color="orange"
+              class="ma-2"
+              type="button"
+              @click="router.push('/historico')"
+              icon="mdi-close"
+            ></v-btn>
+          </div>
         </div>
-      </div>
-    </v-form>
+      </v-form>
+    </v-card-text>
   </v-card>
 </template>
 <script setup>

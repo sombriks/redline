@@ -1,9 +1,6 @@
 <template>
   <v-container fluid style="width: 100%">
     <v-row align="center">
-      <h1>Histórico</h1>
-    </v-row>
-    <v-row align="center">
       <v-chip
         variant="outlined"
         class="ma-2"
@@ -41,7 +38,7 @@
       <i v-if="filtro.conta_id">conta {{ statusFiltro.conta?.descricao }},&nbsp;</i>
       <i v-if="filtro.dataFim">de {{ statusFiltro.inicio }} até {{ statusFiltro.fim }}&nbsp;</i>
     </v-row>
-    <v-row align="center">
+    <v-row align="center" class="vh-80-scroll" v-if="!agrupamento">
       <p v-if="!movimentacoes.length">Não há movimentações para exibir</p>
       <v-expansion-panels>
         <detalhe-movimentacao
@@ -50,6 +47,12 @@
           :movimentacao="movimentacao"
         />
       </v-expansion-panels>
+    </v-row>
+    <v-row align="center" class="vh-80-scroll" v-if="agrupamento === 'conta'">
+      <p>Conta</p>
+    </v-row>
+    <v-row align="center" class="vh-80-scroll" v-if="agrupamento === 'categoria'">
+      <p>Categoria</p>
     </v-row>
   </v-container>
   <v-dialog v-model="drawer" fullscreen transition="dialog-bottom-transition">
@@ -118,6 +121,17 @@
             </v-radio-group>
           </v-row>
           <v-row align="center">
+            <!-- Agrupamento -->
+            <v-radio-group inline v-model="agrupamento">
+              <template v-slot:label>
+                <div>Agrupamento</div>
+              </template>
+              <v-radio :value="null" label="Nenhum"></v-radio>
+              <v-radio value="conta" label="Conta"></v-radio>
+              <v-radio value="categoria" label="Categoria"></v-radio>
+            </v-radio-group>
+          </v-row>
+          <v-row align="center">
             <!-- período -->
             <button-date label="Data inicial" v-model="filtro.dataInicio"></button-date>
             <button-date label="Data final" v-model="filtro.dataFim"></button-date>
@@ -151,6 +165,19 @@
     </v-card>
   </v-dialog>
 </template>
+<style scoped>
+.alinha {
+  display: flex;
+}
+
+.alinha-item {
+  margin: 5px;
+}
+.vh-80-scroll {
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+</style>
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
@@ -179,6 +206,8 @@ const filtro = reactive({
   dataFim: endOfMonth(new Date()),
   limit: 1000
 })
+
+const agrupamento = ref(null)
 
 const movimentacoes = computed(() => movimentacaoStore.store?.movimentacoes || [])
 
@@ -218,12 +247,3 @@ const restauraPeriodo = () => {
   filtro.dataFim = endOfMonth(new Date())
 }
 </script>
-<style scoped>
-.alinha {
-  display: flex;
-}
-
-.alinha-item {
-  margin: 5px;
-}
-</style>

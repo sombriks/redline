@@ -1,8 +1,5 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <h1>Contas</h1>
-    </v-row>
     <v-row align="center">
       <detalhe-conta :conta="novaConta" @onSave="saveConta"></detalhe-conta>
       <v-btn variant="outlined" rounded @click="drawer = !drawer" size="large">

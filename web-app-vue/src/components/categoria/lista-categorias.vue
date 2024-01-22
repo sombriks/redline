@@ -1,9 +1,6 @@
 <template>
   <v-container fluid>
     <v-row align="center">
-      <h1>Categorias</h1>
-    </v-row>
-    <v-row align="center">
       <detalhe-categoria :categoria="novaCategoria" @onEdit="salvar"></detalhe-categoria>
       <v-btn variant="outlined" rounded @click="drawer = !drawer" size="large">
         <v-icon icon="mdi-dots-vertical"/>
