@@ -1,4 +1,4 @@
-import { parseISO } from 'date-fns'
+import { parseISO, parse } from 'date-fns'
 import { knex } from '../config/db/index.mjs'
 import { cabin } from '../config/base-logging.mjs'
 import { insertConta } from './conta.mjs'
@@ -119,25 +119,29 @@ export const removeMovimentacao = async (id = -1) =>
 
 export const uploadMovimentacao = async ({ id, header, lines }) => {
   const headerMap = { tipo: -1, conta: -1, categoria: -1, criada: -1, efetivada: -1, valor: -1, 'descrição': -1 }
-  header.replace(/"/g, '').split(/[,;]/).forEach((h, i) => {
+  header.toLowerCase().replace(/"/g, '').split(/[,;]/).forEach((h, i) => {
     if (h in headerMap) headerMap[h] = i
   })
   if (Object.keys(headerMap).some(k => headerMap[k] === -1))
     throw new Error('Unexpected header. Accepted header is ' + Object.keys(headerMap))
   const accountMap = {}
   const categoryMap = {}
-  const importStats = { imported: 0, errors: 0, failedLines:[] }
+  const importStats = { imported: 0, errors: 0, failedLines: [] }
 
   for (let line of lines) {
     line = line.replace(/"/g, '').split(/[,;]/) // unquote and split
     try {
-      const tipoMovimentacao = 'entrada' === line[headerMap.tipo].toLowerCase() ? 1 : 2
+      let tipoMovimentacao = 'entrada' === line[headerMap.tipo].toLowerCase() ? 1 : 2
       const conta = await findOrCreateAccount({ id, headerMap, accountMap, line })
       const categoria = await findOrCreateCategory({ id, headerMap, categoryMap, line })
-      const criacao = parseISO(line[headerMap.criada])
-      const efetivada = parseISO(line[headerMap.efetivada])
-      const valor = line[headerMap.valor]
+      const criacao = resolveDate(line[headerMap.criada])
+      const efetivada = resolveDate(line[headerMap.efetivada])
+      let valor = line[headerMap.valor]
       const descricao = line[headerMap['descrição']]
+      if (valor < 0) {
+        tipoMovimentacao = 2
+        valor *= -1
+      }
       await knex('movimentacao').insert({
         tipo_movimentacao_id: tipoMovimentacao,
         categoria_id: categoria?.id,
@@ -195,4 +199,10 @@ const findOrCreateCategory = async ({ id, headerMap, categoryMap, line }) => {
   }
   categoryMap[line[headerMap.categoria]] = category
   return category
+}
+
+const resolveDate = (date) => {
+  if (date.match(/\d{4}-\d{2}-\d{2}/))
+    return parseISO(date)
+  else return parse(date, 'dd/MM/yyyy', new Date())
 }
