@@ -1,6 +1,6 @@
 <template>
   <v-container fluid style="width: 100%">
-    <v-row align="center">
+    <v-row class="barra-botoes-acoes" align="center">
       <v-chip
         variant="outlined"
         class="ma-2"
@@ -17,17 +17,10 @@
         <v-icon icon="mdi-dots-vertical" />
       </v-btn>
       <v-spacer></v-spacer>
-      <v-chip
-        variant="outlined"
-        class="ma-2"
-        rounded
-        size="large"
-        :color="saldo >= 0 ? 'green-accent-2' : 'red-accent-2'"
-        >Saldo estimado: {{ statusFiltro.saldo }}
-      </v-chip>
+      <chip-saldo :saldo="saldo"/>
       <v-divider thickness="5"></v-divider>
     </v-row>
-    <v-row align="center">
+    <v-row class="barra-filtros-ativos" align="center">
       <!-- filtros ativos -->
       <i>Max {{ filtro.limit }} resultados,&nbsp;</i>
       <i v-if="filtro.tipo_movimentacao_id == 1">somente entradas,&nbsp;</i>
@@ -38,7 +31,7 @@
       <i v-if="filtro.conta_id">conta {{ statusFiltro.conta?.descricao }},&nbsp;</i>
       <i v-if="filtro.dataFim">de {{ statusFiltro.inicio }} até {{ statusFiltro.fim }}&nbsp;</i>
     </v-row>
-    <v-row align="center" class="vh-80-scroll" v-if="!agrupamento">
+    <v-row v-if="!agrupamento" align="center" class="vh-80-scroll">
       <p v-if="!movimentacoes.length">Não há movimentações para exibir</p>
       <v-expansion-panels>
         <detalhe-movimentacao
@@ -48,10 +41,15 @@
         />
       </v-expansion-panels>
     </v-row>
-    <v-row align="center" class="vh-80-scroll" v-if="agrupamento === 'conta'">
-      <p>Conta</p>
+    <v-row v-if="agrupamento === 'conta'" align="center" class="vh-80-scroll">
+      <v-list width="100%">
+        <v-list-item v-for="conta in agrupamentoConta" :key="conta.descricao">
+          <chip-conta :conta="conta"/>
+          <chip-saldo :saldo="conta.saldo"/>
+        </v-list-item>
+      </v-list>
     </v-row>
-    <v-row align="center" class="vh-80-scroll" v-if="agrupamento === 'categoria'">
+    <v-row v-if="agrupamento === 'categoria'" align="center" class="vh-80-scroll">
       <p>Categoria</p>
     </v-row>
   </v-container>
@@ -173,6 +171,7 @@
 .alinha-item {
   margin: 5px;
 }
+
 .vh-80-scroll {
   max-height: 80vh;
   overflow-y: scroll;
@@ -186,10 +185,12 @@ import ButtonDate from '@/shared/button-date.vue'
 import { router } from '@/services/router'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { useContaStore } from '@/stores/contaStore'
-import { prepareDate, prepareMoney } from '@/services/formaters'
+import { prepareBalance, prepareDate } from '@/services/formaters'
 import { endOfMonth, format, startOfMonth } from 'date-fns'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
+import ChipSaldo from '@/shared/chip-saldo.vue'
+import ChipConta from '@/shared/chip-conta.vue'
 
 const movimentacaoStore = useMovimentacaoStore()
 const categoriaStore = useCategoriaStore()
@@ -211,14 +212,20 @@ const agrupamento = ref(null)
 
 const movimentacoes = computed(() => movimentacaoStore.store?.movimentacoes || [])
 
-const saldo = computed(() => movimentacaoStore.saldo())
+const agrupamentoConta = computed(() => {
+
+  return [{descricao:"Teste", saldo: 11.50}]
+})
+
+const agrupamentoCategoria = computed(() => [])
+
+const saldo = computed(() => prepareBalance(movimentacoes))
 
 const statusFiltro = computed(() => ({
   inicio: filtro.dataInicio && format(prepareDate(filtro.dataInicio), 'yyyy-MM-dd'),
   fim: filtro.dataFim && format(prepareDate(filtro.dataFim), 'yyyy-MM-dd'),
   categoria: filtro.categoria_id && categoriaStore.getCategoria(filtro.categoria_id),
   conta: filtro.conta_id && contaStore.getConta(filtro.conta_id),
-  saldo: prepareMoney(saldo.value)
 }))
 
 onMounted(() => {

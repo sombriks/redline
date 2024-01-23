@@ -19,16 +19,14 @@
         class="ma-1"
         rounded
         size="large"
-        :title="props.movimentacao.efetivada || 'Pagamento pendente'"
+        :title="prepareDate(props.movimentacao.efetivada) || 'Pagamento pendente'"
         :color="!!props.movimentacao.efetivada ? 'green' : 'red'"
       >
         <v-icon :icon="!!props.movimentacao.efetivada ? 'mdi-check' : 'mdi-close'" />
       </v-chip>
     </v-expansion-panel-title>
     <v-expansion-panel-text>
-      <v-chip v-if="conta" variant="outlined" class="ma-1" rounded size="large" :color="conta.cor">
-        {{ conta.descricao }}
-      </v-chip>
+      <chip-conta :conta="conta"/>
       <v-chip
         v-if="categoria"
         variant="outlined"
@@ -53,7 +51,8 @@ import {computed, ref, watchEffect} from 'vue'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { router } from "@/services/router";
-import {prepareMoney} from "@/services/formaters";
+import { prepareDate, prepareMoney } from '@/services/formaters'
+import ChipConta from '@/shared/chip-conta.vue'
 
 const props = defineProps(['movimentacao'])
 

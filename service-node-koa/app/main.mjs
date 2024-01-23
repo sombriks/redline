@@ -1,5 +1,6 @@
 import Koa from "koa";
 import cors from "@koa/cors";
+import Router from "@koa/router";
 import bodyParser from "koa-bodyparser";
 
 import {
@@ -25,7 +26,6 @@ import {
   delUsuarioRequest,
   uploadMovimentacaoRequest
 } from "./controllers/index.mjs";
-import Router from "@koa/router";
 import {
   listModelocategoria,
   listTipoConta,
