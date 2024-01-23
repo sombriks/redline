@@ -22,18 +22,18 @@
         <v-row align="center">
           <!--  movEdit.descricao-->
           <v-text-field
-              :rules="[requiredRule]"
-              v-model="movEdit.descricao"
-              label="Descrição"
+            :rules="[requiredRule]"
+            v-model="movEdit.descricao"
+            label="Descrição"
           ></v-text-field>
         </v-row>
         <v-row align="center">
           <!--  movEdit.conta_id-->
-          <conta-autocomplete v-model="movEdit.conta_id" :rules="[requiredRule]"/>
+          <conta-autocomplete v-model="movEdit.conta_id" :rules="[requiredRule]" />
         </v-row>
         <v-row align="center">
           <!--  movEdit.categoria_id-->
-          <categoria-autocomplete v-model="movEdit.categoria_id"/>
+          <categoria-autocomplete v-model="movEdit.categoria_id" />
         </v-row>
         <v-row align="center">
           <!-- movEdit.vencimento -->
@@ -48,20 +48,28 @@
         <!--  movEdit.recorrencia_id-->
         <v-row align="center">
           <v-btn
-              variant="outlined"
-              class="ma-2"
-              color="green"
-              type="submit"
-              icon="mdi-check"
+            variant="outlined"
+            class="ma-2"
+            color="green"
+            type="submit"
+            icon="mdi-check"
+          ></v-btn>
+          <v-btn
+            variant="outlined"
+            color="orange"
+            class="ma-2"
+            type="button"
+            @click="router.push('/historico')"
+            icon="mdi-close"
           ></v-btn>
           <v-spacer></v-spacer>
           <v-btn
-              variant="outlined"
-              color="orange"
-              class="ma-2"
-              type="button"
-              @click="router.push('/historico')"
-              icon="mdi-close"
+            variant="outlined"
+            color="red"
+            class="ma-2"
+            type="button"
+            @click="excluirMovimentacao"
+            icon="mdi-trash-can-outline"
           ></v-btn>
         </v-row>
       </v-container>
@@ -69,28 +77,34 @@
   </v-card>
 </template>
 <script setup>
-import {reactive, ref} from 'vue'
+import { reactive, ref } from 'vue'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
 import { numberRule, requiredRule } from '@/services/basic-rules'
-import ContaAutocomplete from "@/shared/conta-autocomplete.vue";
-import CategoriaAutocomplete from "@/shared/categoria-autocomplete.vue";
-import {useRouter} from "vue-router";
-import ButtonDate from "@/shared/button-date.vue";
+import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
+import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
+import { useRouter } from 'vue-router'
+import ButtonDate from '@/shared/button-date.vue'
 
-const router = useRouter();
-const movimentacaoStore = useMovimentacaoStore();
+const router = useRouter()
+const movimentacaoStore = useMovimentacaoStore()
 
-const props = defineProps(['movimentacao']);
+const props = defineProps(['movimentacao'])
 
-const movEdit = reactive({ ...props.movimentacao });
+const movEdit = reactive({ ...props.movimentacao })
 
 const valid = ref(false)
 
 const salvarMovimentacao = async () => {
   if (!valid.value) return
   await movimentacaoStore.salvarMovimentacao(movEdit)
-  router.push('/historico')
+  await router.push('/historico')
 }
 
+const excluirMovimentacao = async () => {
+  if (confirm(`Deseja realmente excluir a movimentação #${props.movimentacao.id}`)) {
+    await movimentacaoStore.excluirMovimentacao(props.movimentacao)
+    await router.push('/historico')
+  }
+}
 </script>
 <style scoped></style>

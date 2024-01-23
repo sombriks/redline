@@ -4,7 +4,7 @@ import {
   listMovimentacaoByConta,
   listMovimentacaoByUsuario,
   removeMovimentacao,
-  updateMovimentacao, uploadMovimentacao
+  updateMovimentacao, uploadMovimentacoes
 } from '../services/index.mjs'
 
 export const listMovimentacaoRequest = async ctx => {
@@ -50,8 +50,8 @@ export const uploadMovimentacaoRequest = async ctx => {
   if (lines.length <= 1) throw new Error('File is empty')
   ctx.logger.info(`File with ${lines.length} lines`)
   const header = lines.shift()
-  if (header.split(/[,;]/).length !== 7) throw new Error('Incorrect column count')
-  ctx.logger.info("Proper column count. Start processing...")
-  const result = await uploadMovimentacao({id, header, lines})
-  ctx.body = { messsage: 'processed', result }
+  if (header.split(/[,;]/).length < 7) throw new Error('Incorrect column count')
+  ctx.logger.info('Proper column count. Start processing...')
+  const result = await uploadMovimentacoes({ id, header, lines })
+  ctx.body = { message: 'processed', result }
 }
