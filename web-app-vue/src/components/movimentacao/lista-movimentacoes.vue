@@ -53,7 +53,20 @@
       </v-list>
     </v-row>
     <v-row v-if="agrupamento === 'categoria'" align="center" class="vh-80-scroll">
-      <p>Categoria</p>
+      <v-list width="100%">
+        <v-list-item v-for="cat in agrupamentoCategoria" :key="cat.descricao">
+          <v-chip
+            v-if="cat"
+            variant="outlined"
+            class="ma-1"
+            rounded
+            size="large"
+            :color="cat.cor"
+          >{{ cat.descricao }}
+          </v-chip>
+          <chip-saldo :saldo="cat.saldo"/>
+        </v-list-item>
+      </v-list>
     </v-row>
   </v-container>
   <v-dialog v-model="drawer" fullscreen transition="dialog-bottom-transition">
@@ -227,7 +240,15 @@ const agrupamentoConta = computed(() => {
   return contas
 })
 
-const agrupamentoCategoria = computed(() => [])
+const agrupamentoCategoria = computed(() => {
+  const categorias = categoriaStore.store.categorias.map(c => {
+    const thisCategory = movimentacoes.value.filter(m => m.categoria_id == c.id)
+    return {
+      ...c, saldo: prepareBalance(thisCategory)
+    }
+  })
+  return categorias
+})
 
 const saldo = computed(() => prepareBalance(movimentacoes.value))
 
