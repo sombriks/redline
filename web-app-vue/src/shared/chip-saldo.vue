@@ -5,12 +5,12 @@
     rounded
     size="large"
     :color="props.saldo >= 0 ? 'green-accent-2' : 'red-accent-2'"
-    >Saldo estimado: {{ prepareMoney(props.saldo) }}
+    >{{props.label}} {{ prepareMoney(props.saldo) }}
   </v-chip>
 </template>
 <style></style>
 <script setup>
 import { prepareMoney } from '@/services/formaters'
 
-const props = defineProps(['saldo'])
+const props = defineProps(['label', 'saldo'])
 </script>

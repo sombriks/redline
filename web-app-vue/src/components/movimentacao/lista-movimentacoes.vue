@@ -13,11 +13,14 @@
       >
         Nova movimentação
       </v-chip>
-      <v-btn variant="outlined" rounded @click="drawer = !drawer" size="large">
-        <v-icon icon="mdi-dots-vertical" />
-      </v-btn>
+      <v-btn
+        variant="outlined"
+        rounded="rounded-circle"
+        @click="drawer = !drawer"
+        icon="mdi-dots-vertical"
+      ></v-btn>
       <v-spacer></v-spacer>
-      <chip-saldo :saldo="saldo"/>
+      <chip-saldo label="Saldo Estimado:" :saldo="saldo"/>
       <v-divider thickness="5"></v-divider>
     </v-row>
     <v-row class="barra-filtros-ativos" align="center">
@@ -214,12 +217,19 @@ const movimentacoes = computed(() => movimentacaoStore.store?.movimentacoes || [
 
 const agrupamentoConta = computed(() => {
 
-  return [{descricao:"Teste", saldo: 11.50}]
+  const contas = contaStore.store.contas.map(c => {
+    const thisAccount = movimentacoes.value.filter(m => m.conta_id == c.id)
+    console.log(thisAccount)
+    return {
+      ...c, saldo: prepareBalance(thisAccount)
+    }
+  })
+  return contas
 })
 
 const agrupamentoCategoria = computed(() => [])
 
-const saldo = computed(() => prepareBalance(movimentacoes))
+const saldo = computed(() => prepareBalance(movimentacoes.value))
 
 const statusFiltro = computed(() => ({
   inicio: filtro.dataInicio && format(prepareDate(filtro.dataInicio), 'yyyy-MM-dd'),

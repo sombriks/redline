@@ -2,9 +2,12 @@
   <v-container fluid>
     <v-row align="center">
       <detalhe-categoria :categoria="novaCategoria" @onEdit="salvar"></detalhe-categoria>
-      <v-btn variant="outlined" rounded @click="drawer = !drawer" size="large">
-        <v-icon icon="mdi-dots-vertical"/>
-      </v-btn>
+      <v-btn
+        variant="outlined"
+        rounded="rounded-circle"
+        @click="drawer = !drawer"
+        icon="mdi-dots-vertical"
+      ></v-btn>
       <v-divider></v-divider>
       <detalhe-categoria
           @onEdit="salvar"
