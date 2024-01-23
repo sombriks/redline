@@ -17,7 +17,7 @@ const contaIcon = computed(() => {
     rounded
     variant="outlined"
     :prepend-icon="contaIcon"
-    :color="props.color"
+    :color="props.color || props.conta?.cor"
     :append-icon="props.appendIcon"
     @click="emit('click')"
     >{{ props.conta.descricao }}

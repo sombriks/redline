@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { useUserStore } from '@/stores/userStore'
 import { reactive } from 'vue'
-import { endOfMonth, format, startOfMonth } from 'date-fns'
+import { endOfMonth, startOfMonth } from 'date-fns'
 import { getRedLine, setRedLine } from '@/services/redLine'
 import {
   delMovimentacao,
@@ -25,7 +25,7 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
         dataInicio: startOfMonth(new Date()),
         dataFim: endOfMonth(new Date()),
         offset: 0,
-        limit: 50,
+        limit: 10000,
         id: null,
         q: ''
       }
@@ -67,29 +67,12 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
 
   const getMovimentacao = (id) => store.movimentacoes?.find((m) => m.id == id)
 
-  const calcula = (m) => {
-    const v = parseFloat(m.valor)
-    if (m.tipo_movimentacao_id == 1) return v
-    return -v
-  }
-
-  const saldo = () => {
-    if (!store.movimentacoes || !store.movimentacoes.length) return 0
-    return store.movimentacoes?.reduce(
-      (p, c) => {
-        return { valor: calcula(p) + calcula(c), tipo_movimentacao_id: 1 }
-      },
-      { valor: 0 }
-    ).valor
-  }
-
   return {
     store,
     sincronizarMovimentacoes,
     salvarMovimentacao,
     excluirMovimentacao,
     aplicarFiltro,
-    getMovimentacao,
-    saldo
+    getMovimentacao
   }
 })

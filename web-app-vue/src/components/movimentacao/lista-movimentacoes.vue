@@ -1,9 +1,6 @@
 <template>
   <v-container fluid style="width: 100%">
-    <v-row align="center">
-      <h1>Histórico</h1>
-    </v-row>
-    <v-row align="center">
+    <v-row class="barra-botoes-acoes" align="center">
       <v-chip
         variant="outlined"
         class="ma-2"
@@ -16,21 +13,17 @@
       >
         Nova movimentação
       </v-chip>
-      <v-btn variant="outlined" rounded @click="drawer = !drawer" size="large">
-        <v-icon icon="mdi-dots-vertical" />
-      </v-btn>
-      <v-spacer></v-spacer>
-      <v-chip
+      <v-btn
         variant="outlined"
-        class="ma-2"
-        rounded
-        size="large"
-        :color="saldo >= 0 ? 'green-accent-2' : 'red-accent-2'"
-        >Saldo estimado: {{ statusFiltro.saldo }}
-      </v-chip>
+        rounded="rounded-circle"
+        @click="drawer = !drawer"
+        icon="mdi-dots-vertical"
+      ></v-btn>
+      <v-spacer></v-spacer>
+      <chip-saldo label="Saldo Estimado:" :saldo="saldo"/>
       <v-divider thickness="5"></v-divider>
     </v-row>
-    <v-row align="center">
+    <v-row class="barra-filtros-ativos" align="center">
       <!-- filtros ativos -->
       <i>Max {{ filtro.limit }} resultados,&nbsp;</i>
       <i v-if="filtro.tipo_movimentacao_id == 1">somente entradas,&nbsp;</i>
@@ -41,7 +34,7 @@
       <i v-if="filtro.conta_id">conta {{ statusFiltro.conta?.descricao }},&nbsp;</i>
       <i v-if="filtro.dataFim">de {{ statusFiltro.inicio }} até {{ statusFiltro.fim }}&nbsp;</i>
     </v-row>
-    <v-row align="center">
+    <v-row v-if="!agrupamento" align="center" class="vh-80-scroll">
       <p v-if="!movimentacoes.length">Não há movimentações para exibir</p>
       <v-expansion-panels>
         <detalhe-movimentacao
@@ -50,6 +43,30 @@
           :movimentacao="movimentacao"
         />
       </v-expansion-panels>
+    </v-row>
+    <v-row v-if="agrupamento === 'conta'" align="center" class="vh-80-scroll">
+      <v-list width="100%">
+        <v-list-item v-for="conta in agrupamentoConta" :key="conta.descricao">
+          <chip-conta :conta="conta"/>
+          <chip-saldo :saldo="conta.saldo"/>
+        </v-list-item>
+      </v-list>
+    </v-row>
+    <v-row v-if="agrupamento === 'categoria'" align="center" class="vh-80-scroll">
+      <v-list width="100%">
+        <v-list-item v-for="cat in agrupamentoCategoria" :key="cat.descricao">
+          <v-chip
+            v-if="cat"
+            variant="outlined"
+            class="ma-1"
+            rounded
+            size="large"
+            :color="cat.cor"
+          >{{ cat.descricao }}
+          </v-chip>
+          <chip-saldo :saldo="cat.saldo"/>
+        </v-list-item>
+      </v-list>
     </v-row>
   </v-container>
   <v-dialog v-model="drawer" fullscreen transition="dialog-bottom-transition">
@@ -118,6 +135,17 @@
             </v-radio-group>
           </v-row>
           <v-row align="center">
+            <!-- Agrupamento -->
+            <v-radio-group inline v-model="agrupamento">
+              <template v-slot:label>
+                <div>Agrupamento</div>
+              </template>
+              <v-radio :value="null" label="Nenhum"></v-radio>
+              <v-radio value="conta" label="Conta"></v-radio>
+              <v-radio value="categoria" label="Categoria"></v-radio>
+            </v-radio-group>
+          </v-row>
+          <v-row align="center">
             <!-- período -->
             <button-date label="Data inicial" v-model="filtro.dataInicio"></button-date>
             <button-date label="Data final" v-model="filtro.dataFim"></button-date>
@@ -151,6 +179,20 @@
     </v-card>
   </v-dialog>
 </template>
+<style scoped>
+.alinha {
+  display: flex;
+}
+
+.alinha-item {
+  margin: 5px;
+}
+
+.vh-80-scroll {
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+</style>
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
@@ -159,10 +201,12 @@ import ButtonDate from '@/shared/button-date.vue'
 import { router } from '@/services/router'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { useContaStore } from '@/stores/contaStore'
-import { prepareDate, prepareMoney } from '@/services/formaters'
+import { prepareBalance, prepareDate } from '@/services/formaters'
 import { endOfMonth, format, startOfMonth } from 'date-fns'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
+import ChipSaldo from '@/shared/chip-saldo.vue'
+import ChipConta from '@/shared/chip-conta.vue'
 
 const movimentacaoStore = useMovimentacaoStore()
 const categoriaStore = useCategoriaStore()
@@ -180,16 +224,39 @@ const filtro = reactive({
   limit: 1000
 })
 
+const agrupamento = ref(null)
+
 const movimentacoes = computed(() => movimentacaoStore.store?.movimentacoes || [])
 
-const saldo = computed(() => movimentacaoStore.saldo())
+const agrupamentoConta = computed(() => {
+
+  const contas = contaStore.store.contas.map(c => {
+    const thisAccount = movimentacoes.value.filter(m => m.conta_id == c.id)
+    console.log(thisAccount)
+    return {
+      ...c, saldo: prepareBalance(thisAccount)
+    }
+  })
+  return contas
+})
+
+const agrupamentoCategoria = computed(() => {
+  const categorias = categoriaStore.store.categorias.map(c => {
+    const thisCategory = movimentacoes.value.filter(m => m.categoria_id == c.id)
+    return {
+      ...c, saldo: prepareBalance(thisCategory)
+    }
+  })
+  return categorias
+})
+
+const saldo = computed(() => prepareBalance(movimentacoes.value))
 
 const statusFiltro = computed(() => ({
   inicio: filtro.dataInicio && format(prepareDate(filtro.dataInicio), 'yyyy-MM-dd'),
   fim: filtro.dataFim && format(prepareDate(filtro.dataFim), 'yyyy-MM-dd'),
   categoria: filtro.categoria_id && categoriaStore.getCategoria(filtro.categoria_id),
   conta: filtro.conta_id && contaStore.getConta(filtro.conta_id),
-  saldo: prepareMoney(saldo.value)
 }))
 
 onMounted(() => {
@@ -218,12 +285,3 @@ const restauraPeriodo = () => {
   filtro.dataFim = endOfMonth(new Date())
 }
 </script>
-<style scoped>
-.alinha {
-  display: flex;
-}
-
-.alinha-item {
-  margin: 5px;
-}
-</style>

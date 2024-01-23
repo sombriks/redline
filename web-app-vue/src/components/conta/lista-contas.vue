@@ -1,13 +1,13 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <h1>Contas</h1>
-    </v-row>
     <v-row align="center">
       <detalhe-conta :conta="novaConta" @onSave="saveConta"></detalhe-conta>
-      <v-btn variant="outlined" rounded @click="drawer = !drawer" size="large">
-        <v-icon icon="mdi-dots-vertical"/>
-      </v-btn>
+      <v-btn
+        variant="outlined"
+        rounded="rounded-circle"
+        @click="drawer = !drawer"
+        icon="mdi-dots-vertical"
+      ></v-btn>
       <v-divider></v-divider>
       <detalhe-conta
         v-for="c in contas"

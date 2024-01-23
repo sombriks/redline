@@ -117,8 +117,8 @@ export const removeMovimentacao = async (id = -1) =>
     .where({ id })
     .del()
 
-export const uploadMovimentacao = async ({ id, header, lines }) => {
-  const headerMap = { tipo: -1, conta: -1, categoria: -1, criada: -1, efetivada: -1, valor: -1, 'descrição': -1 }
+export const uploadMovimentacoes = async ({ id, header, lines }) => {
+  const headerMap = { tipo: -1, conta: -1, categoria: -1, vencimento: -1, efetivada: -1, valor: -1, 'descrição': -1 }
   header.toLowerCase().replace(/"/g, '').split(/[,;]/).forEach((h, i) => {
     if (h in headerMap) headerMap[h] = i
   })
@@ -134,7 +134,9 @@ export const uploadMovimentacao = async ({ id, header, lines }) => {
       let tipoMovimentacao = 'entrada' === line[headerMap.tipo].toLowerCase() ? 1 : 2
       const conta = await findOrCreateAccount({ id, headerMap, accountMap, line })
       const categoria = await findOrCreateCategory({ id, headerMap, categoryMap, line })
-      const criacao = resolveDate(line[headerMap.criada])
+      const vencimento = resolveDate(line[headerMap.vencimento])
+      if (!vencimento)
+        throw new Error('Must provide a valid creation date')
       const efetivada = resolveDate(line[headerMap.efetivada])
       let valor = line[headerMap.valor]
       const descricao = line[headerMap['descrição']]
@@ -146,9 +148,9 @@ export const uploadMovimentacao = async ({ id, header, lines }) => {
         tipo_movimentacao_id: tipoMovimentacao,
         categoria_id: categoria?.id,
         conta_id: conta.id,
+        vencimento,
         descricao,
         efetivada,
-        criacao,
         valor
       })
       importStats.imported++
@@ -202,6 +204,8 @@ const findOrCreateCategory = async ({ id, headerMap, categoryMap, line }) => {
 }
 
 const resolveDate = (date) => {
+  if (!date || '' === `${date}`.trim()) return null
+  if (!isNaN(date)) return new Date(date)
   if (date.match(/\d{4}-\d{2}-\d{2}/))
     return parseISO(date)
   else return parse(date, 'dd/MM/yyyy', new Date())
