@@ -24,7 +24,7 @@ import {
   userLoginRequest,
   userSignupRequest,
   delUsuarioRequest,
-  uploadMovimentacaoRequest
+  uploadMovimentacoesRequest, downloadMovimentacoesRequest
 } from "./controllers/index.mjs";
 import {
   listModelocategoria,
@@ -78,7 +78,8 @@ new ApiBuilder({ router }).path(b => {
 
     b.path("/movimentacao", b => {
       b.get(listMovimentacaoRequest);
-      b.post("/upload", uploadMovimentacaoRequest);
+      b.get("/download", downloadMovimentacoesRequest);
+      b.post("/upload", uploadMovimentacoesRequest);
       b.path("/:conta_id", contaOwnedBy, b => {
         b.post(insertMovimentacaoRequest);
         b.path("/:id", b => {
