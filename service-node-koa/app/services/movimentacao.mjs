@@ -1,11 +1,11 @@
-import {parseISO, parse} from 'date-fns'
-import {knex} from '../config/db/index.mjs'
-import {cabin} from '../config/base-logging.mjs'
-import {insertConta} from './conta.mjs'
-import {insertCategoria} from './categoria.mjs'
+import { parseISO, parse } from 'date-fns'
+import { knex } from '../config/db/index.mjs'
+import { cabin } from '../config/base-logging.mjs'
+import { insertConta } from './conta.mjs'
+import { insertCategoria } from './categoria.mjs'
 
 export const findMovimentacao = async id =>
-  knex('movimentacao').where({id}).first()
+  knex('movimentacao').where({ id }).first()
 
 export const listMovimentacaoByUsuario = async (params) => {
   const {
@@ -14,7 +14,7 @@ export const listMovimentacaoByUsuario = async (params) => {
 
   return prepareMovimentacaoQuery(params)
     .whereIn('conta_id',
-      knex('conta').where({usuario_id}).select('id'))
+      knex('conta').where({ usuario_id }).select('id'))
 }
 
 
@@ -23,7 +23,7 @@ export const listMovimentacaoByConta = async (params) => {
     conta_id = -1
   } = params
 
-  return prepareMovimentacaoQuery(params, {conta_id})
+  return prepareMovimentacaoQuery(params, { conta_id })
 }
 
 /**
@@ -37,7 +37,7 @@ export const listMovimentacaoByConta = async (params) => {
  * @returns {Knex.QueryBuilder<TRecord, TResult>}
  */
 const prepareMovimentacaoQuery = (params, whereParams = {}) => {
-  const {
+  const { // TODO aplicar joi ? https://joi.dev/api/?v=17.9.1#general-usage
     q = '',
     tipo_movimentacao_id,
     categoria_id,
@@ -79,7 +79,7 @@ const prepareMovimentacaoQuery = (params, whereParams = {}) => {
     .limit(limit)
 }
 
-export const novaEntrada = async ({conta_id, valor, descricao, categoria_id, efetivada}) =>
+export const novaEntrada = async ({ conta_id, valor, descricao, categoria_id, efetivada }) =>
   knex('movimentacao')
     .insert({
       conta_id,
@@ -91,7 +91,7 @@ export const novaEntrada = async ({conta_id, valor, descricao, categoria_id, efe
     }, ['id'])
 
 
-export const novaSaida = async ({conta_id, valor, descricao, categoria_id, efetivada}) =>
+export const novaSaida = async ({ conta_id, valor, descricao, categoria_id, efetivada }) =>
   knex('movimentacao')
     .insert({
       conta_id,
@@ -105,20 +105,20 @@ export const novaSaida = async ({conta_id, valor, descricao, categoria_id, efeti
 export const insertMovimentacao = async movimentacao =>
   knex('movimentacao').insert(movimentacao, ['id'])
 
-export const updateMovimentacao = async ({id = -1, movimentacao}) => {
+export const updateMovimentacao = async ({ id = -1, movimentacao }) => {
   movimentacao.id = id
   return knex('movimentacao')
     .update(movimentacao)
-    .where({id})
+    .where({ id })
 }
 
 export const removeMovimentacao = async (id = -1) =>
   knex('movimentacao')
-    .where({id})
+    .where({ id })
     .del()
 
-export const uploadMovimentacoes = async ({id, header, lines}) => {
-  const headerMap = {tipo: -1, conta: -1, categoria: -1, vencimento: -1, efetivada: -1, valor: -1, 'descrição': -1}
+export const uploadMovimentacoes = async ({ id, header, lines }) => {
+  const headerMap = { tipo: -1, conta: -1, categoria: -1, vencimento: -1, efetivada: -1, valor: -1, 'descrição': -1 }
   header.toLowerCase().replace(/"/g, '').split(/[,;]/).forEach((h, i) => {
     if (h in headerMap) headerMap[h] = i
   })
@@ -126,14 +126,14 @@ export const uploadMovimentacoes = async ({id, header, lines}) => {
     throw new Error('Unexpected header. Accepted header is ' + Object.keys(headerMap))
   const accountMap = {}
   const categoryMap = {}
-  const importStats = {imported: 0, errors: 0, failedLines: []}
+  const importStats = { imported: 0, errors: 0, failedLines: [] }
 
   for (let line of lines) {
     line = line.replace(/"/g, '').split(/[,;]/) // unquote and split
     try {
       let tipoMovimentacao = 'entrada' === line[headerMap.tipo].toLowerCase() ? 1 : 2
-      const conta = await findOrCreateAccount({id, headerMap, accountMap, line})
-      const categoria = await findOrCreateCategory({id, headerMap, categoryMap, line})
+      const conta = await findOrCreateAccount({ id, headerMap, accountMap, line })
+      const categoria = await findOrCreateCategory({ id, headerMap, categoryMap, line })
       const vencimento = resolveDate(line[headerMap.vencimento])?.toISOString()
       if (!vencimento)
         throw new Error('Must provide a valid creation date')
@@ -163,17 +163,24 @@ export const uploadMovimentacoes = async ({id, header, lines}) => {
   return importStats
 }
 
-export const downloadMovimentacoes = async ({id, conta_id, data_inicio, data_fim}) => {
-  const result = await knex("movimentacao")
+export const downloadMovimentacoes = async ({ id, conta_id, data_inicio, data_fim }) => {
+  const result = knex('movimentacao')
+    .join('tipo_movimentacao', 'movimentacao.tipo_movimentacao_id', 'tipo_movimentacao.id')
+    .join('conta', 'movimentacao.conta_id', 'conta.id')
+    .leftJoin('categoria', 'movimentacao.categoria_id', 'categoria.id')
+    .whereIn("conta_id", knex("conta").select("id").where("usuario_id", id))
+    .andWhere({conta_id})
+    .andWhereBetween("vencimento",[new Date(data_inicio).toISOString(), new Date(data_fim).toISOString()])
+  return result
   // select * from movimentacao
   // join tipo_movimentacao on movimentacao.tipo_movimentacao_id = tipo_movimentacao.id
   // join conta on movimentacao.conta_id = conta.id
   // left join categoria on movimentacao.categoria_id = categoria.id
-  // where conta
+  // where conta (...)
   // TODO create view or regular joins on knex?
 }
 
-const findOrCreateAccount = async ({id, headerMap, accountMap, line}) => {
+const findOrCreateAccount = async ({ id, headerMap, accountMap, line }) => {
   let conta = accountMap[line[headerMap.conta]]
   if (conta) return conta
   conta = await knex('conta')
@@ -186,14 +193,14 @@ const findOrCreateAccount = async ({id, headerMap, accountMap, line}) => {
       tipo_conta_id: 2,
       usuario_id: id
     }
-    const [{id: conta_id}] = await insertConta(conta)
+    const [{ id: conta_id }] = await insertConta(conta)
     conta.id = conta_id
   }
   accountMap[line[headerMap.conta]] = conta
   return conta
 }
 
-const findOrCreateCategory = async ({id, headerMap, categoryMap, line}) => {
+const findOrCreateCategory = async ({ id, headerMap, categoryMap, line }) => {
   if (line[headerMap.categoria] == '') return null
   let category = categoryMap[line[headerMap.categoria]]
   if (category) return category
@@ -206,7 +213,7 @@ const findOrCreateCategory = async ({id, headerMap, categoryMap, line}) => {
       descricao: line[headerMap.categoria],
       usuario_id: id
     }
-    const [{id: categoria_id}] = await insertCategoria(category)
+    const [{ id: categoria_id }] = await insertCategoria(category)
     category.id = categoria_id
   }
   categoryMap[line[headerMap.categoria]] = category
