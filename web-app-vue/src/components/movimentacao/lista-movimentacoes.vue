@@ -73,9 +73,6 @@
     <v-card>
       <v-form @submit.prevent="aplicarFiltro">
         <v-container>
-          <v-row align="center">
-            <h1>Filtrar histórico</h1>
-          </v-row>
           <v-row class="alinha">
             <!-- categoria -->
             <categoria-autocomplete v-model="filtro.categoria_id" />

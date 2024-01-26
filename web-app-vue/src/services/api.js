@@ -114,3 +114,15 @@ export const delMovimentacao = async ({ id, conta_id, movimentacao }) =>
 
 export const uploadCsv = async ({ id, file }) =>
   await post({ uri: `/${id}/movimentacao/upload`, payload: { file } })
+
+export const downloadCsv = async ({ id, conta_id, data_inicio, data_fim }) =>
+  await get({
+    uri: uriParams({
+      uri: `/${id}/movimentacao/download`,
+      params: {
+        conta_id,
+        data_inicio,
+        data_fim
+      }
+    })
+  })
