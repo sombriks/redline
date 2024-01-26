@@ -86,10 +86,18 @@
               icon="mdi-close"
               type="button"
               variant="outlined"
-              @click="wantExport = false"
+              @click="closeExport()"
             ></v-btn>
           </div>
         </v-form>
+        <v-btn
+            v-if="csvDownload"
+            class="item"
+            color="blue"
+            variant="outlined"
+            :href="csvDownload"
+        >Baixar arquivo
+        </v-btn>
         <v-btn class="item" color="orange" variant="outlined" @click="logout()">Desconectar</v-btn>
         <v-btn
           v-if="!wantDelete"
@@ -184,6 +192,7 @@ const validExport = ref(false)
 const validDelete = ref(false)
 
 const csvFile = ref([])
+const csvDownload = ref('')
 const pwd = ref('')
 
 const exporta = reactive({
@@ -220,8 +229,14 @@ const importData = async () => {
 }
 
 const exportData = async () => {
-  const data = downloadCsv({ id: uState.userData.id, ...exporta })
-  console.log(data)
+  const data = await downloadCsv({ id: uState.userData.id, ...exporta })
+  const blob = new Blob([data.csv],{type:"text/csv"})
+  csvDownload.value = URL.createObjectURL(blob)
+}
+
+const closeExport = () => {
+  wantExport.value = false
+  csvDownload.value = ''
 }
 
 const logout = async () => {
