@@ -2,7 +2,7 @@
   <v-autocomplete
     v-model="contaId"
     :items="contaState.store.contas"
-    :rules="rules"
+    :rules="props.rules"
     item-title="descricao"
     item-value="id"
     label="Conta"

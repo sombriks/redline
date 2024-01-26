@@ -62,8 +62,8 @@ export const downloadMovimentacoesRequest = async ctx => {
   const {conta_id, data_inicio, data_fim} = ctx.request.query
   if (!conta_id) throw new Error('account not found')
   if (!data_inicio || !data_fim) throw new Error('must provide date interval (data_inicio/data_fim)')
-  if (!data_inicio.match(/\d{4}-\d{2}-\d{2}/)) throw new Error("invalid date format for data_inicio")
-  if (!data_fim.match(/\d{4}-\d{2}-\d{2}/)) throw new Error("invalid date format for data_fim")
+  // if (!data_inicio.match(/\d{4}-\d{2}-\d{2}/)) throw new Error("invalid date format for data_inicio")
+  // if (!data_fim.match(/\d{4}-\d{2}-\d{2}/)) throw new Error("invalid date format for data_fim")
   const csv = await downloadMovimentacoes({id, conta_id, data_inicio, data_fim})
   ctx.body = {csv}
 }

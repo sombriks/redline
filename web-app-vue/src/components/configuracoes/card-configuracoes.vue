@@ -1,165 +1,147 @@
 <template>
-  <v-card elevation="24" :title="`Olá ${uState.userData.nome}`" min-width="320">
+  <v-card :title="`Olá ${uState.userData.nome}`" elevation="24" min-width="320">
     <v-card-text>
       <div class="column">
         <v-btn
           v-if="!wantImport"
           class="item"
-          variant="outlined"
           color="green"
-          @click="e => wantImport = true"
-        >Importar
+          variant="outlined"
+          @click="(e) => (wantImport = true)"
+          >Importar
         </v-btn>
         <v-form
-          v-model="validImport"
           v-if="wantImport"
+          v-model="validImport"
           class="item column"
           @submit.prevent.stop="importData()"
         >
           <p class="item">Veja o <a href="dados.csv">arquivo de exemplo</a></p>
           <v-file-input
-            class="item"
             v-model="csvFile"
-            label="Selecionar CSV"
-            accept="text/plain, text/csv"
             :rules="[requiredRule, lengthRule(1)]"
+            accept="text/plain, text/csv"
+            class="item"
+            label="Selecionar CSV"
           />
-          <i class="item" v-if="csvFile.length">{{ fileInfo }}</i>
+          <i v-if="csvFile.length" class="item">{{ fileInfo }}</i>
           <div class="item row">
             <v-btn
               :disabled="!validImport"
-              variant="outlined"
               class="ma-2"
               color="green"
-              type="submit"
               icon="mdi-check"
+              type="submit"
+              variant="outlined"
             ></v-btn>
             <v-spacer></v-spacer>
             <v-btn
-              variant="outlined"
-              color="orange"
               class="ma-2"
-              type="button"
-              @click="e => wantImport = false"
+              color="orange"
               icon="mdi-close"
+              type="button"
+              variant="outlined"
+              @click="(e) => (wantImport = false)"
             ></v-btn>
           </div>
         </v-form>
-        <v-btn variant="outlined" color="blue" class="item" @click="exportData()">Exportar</v-btn>
-        <v-btn variant="outlined" color="orange" class="item" @click="logout()">Desconectar</v-btn>
         <v-btn
-          variant="outlined"
-          color="red"
+          v-if="!wantExport"
           class="item"
-          @click="wantDelete = true"
-          v-if="!wantDelete"
-        >Excluir conta
+          color="blue"
+          variant="outlined"
+          @click="wantExport = true"
+          >Exportar
         </v-btn>
         <v-form
+          v-if="wantExport"
+          v-model="validExport"
+          class="item column"
+          @submit.prevent.stop="exportData()"
+        >
+          <!-- account -->
+          <div class="item row">
+            <conta-autocomplete v-model="exporta.conta_id" :rules="[requiredRule]" />
+          </div>
+          <!-- period -->
+          <div class="item row">
+            <button-date label="Data inicial" v-model="exporta.data_inicio"></button-date>
+          </div>
+          <div class="item row">
+            <button-date label="Data final" v-model="exporta.data_fim"></button-date>
+          </div>
+          <div class="item row">
+            <v-btn
+              :disabled="!validExport"
+              class="ma-2"
+              color="green"
+              icon="mdi-check"
+              type="submit"
+              variant="outlined"
+            ></v-btn>
+            <v-spacer></v-spacer>
+            <v-btn
+              class="ma-2"
+              color="orange"
+              icon="mdi-close"
+              type="button"
+              variant="outlined"
+              @click="wantExport = false"
+            ></v-btn>
+          </div>
+        </v-form>
+        <v-btn class="item" color="orange" variant="outlined" @click="logout()">Desconectar</v-btn>
+        <v-btn
+          v-if="!wantDelete"
+          class="item"
+          color="red"
+          variant="outlined"
+          @click="wantDelete = true"
+          >Excluir conta
+        </v-btn>
+        <v-form
+          v-if="wantDelete"
           v-model="validDelete"
           class="item"
-          v-if="wantDelete"
           @submit.prevent.stop="deleteAccount"
         >
           <v-text-field
-            label="Confirme sua senha"
-            :rules="[requiredRule]"
-            type="password"
             v-model="pwd"
+            :rules="[requiredRule]"
+            label="Confirme sua senha"
+            type="password"
           />
           <div class="item row">
             <v-btn
               :disabled="!validDelete"
-              variant="outlined"
               class="ma-2"
               color="red"
-              type="submit"
               icon="mdi-trash-can"
+              type="submit"
+              variant="outlined"
             ></v-btn>
             <v-spacer></v-spacer>
             <v-btn
-              variant="outlined"
-              color="orange"
               class="ma-2"
-              type="button"
-              @click="wantDelete = false"
+              color="orange"
               icon="mdi-close"
+              type="button"
+              variant="outlined"
+              @click="wantDelete = false"
             ></v-btn>
           </div>
         </v-form>
         <br />
         <v-divider />
         <div class="column center">
-          <a class="item" target="_blank" href="https://github.com/sombriks/redline"
-          >This is an open source project</a>
+          <a class="item" href="https://github.com/sombriks/redline" target="_blank"
+            >This is an open source project</a
+          >
         </div>
       </div>
     </v-card-text>
   </v-card>
 </template>
-<script setup>
-import { computed, ref } from 'vue'
-import { useUserStore } from '@/stores/userStore'
-import { router } from '@/services/router'
-import { requiredRule, lengthRule } from '@/services/basic-rules'
-import { prepareByte, readTextFile } from '@/services/formaters'
-import { uploadCsv } from '@/services/api'
-import { useContaStore } from '@/stores/contaStore'
-import { useCategoriaStore } from '@/stores/categoriaStore'
-import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
-
-const wantImport = ref(false)
-const wantDelete = ref(false)
-const validImport = ref(false)
-const validDelete = ref(false)
-
-const csvFile = ref([])
-const pwd = ref('')
-
-const uState = useUserStore()
-const contaState = useContaStore()
-const categoriaState = useCategoriaStore()
-const movimentacaoState = useMovimentacaoStore()
-
-const fileInfo = computed(
-  () => `${csvFile?.value?.[0]?.name}, ${prepareByte(csvFile?.value?.[0]?.size || 0)}`
-)
-const importData = async () => {
-  try {
-    const file = await readTextFile(csvFile.value[0])
-    const impo = await uploadCsv({ id: uState.userData.id, file })
-    console.log(impo)
-    alert(`Importação concluída com ${impo.result.imported} sucessos!`)
-    await contaState.sincronizarContas()
-    await categoriaState.sincronizarCategorias()
-    await movimentacaoState.sincronizarMovimentacoes()
-    csvFile.value = []
-    wantImport.value = false
-    await router.push("/historico")
-  } catch (e) {
-    console.log(e)
-    alert('Algo deu errado')
-  }
-}
-
-const exportData = async () => {
-}
-
-const logout = async () => {
-  await uState.logout()
-  await router.push('/')
-}
-
-const deleteAccount = async () => {
-  if (!validDelete.value) return
-  const user = {
-    email: uState.userData.email,
-    senha: pwd.value
-  }
-  await uState.deleteAccount(user)
-  await router.push('/')
-}
-</script>
 <style scoped>
 .column {
   display: flex;
@@ -179,3 +161,85 @@ const deleteAccount = async () => {
   align-items: center;
 }
 </style>
+<script setup>
+import { computed, onMounted, reactive, ref } from 'vue'
+import { useUserStore } from '@/stores/userStore'
+import { router } from '@/services/router'
+import { lengthRule, requiredRule } from '@/services/basic-rules'
+import { prepareByte, readTextFile } from '@/services/formaters'
+import {downloadCsv, uploadCsv} from '@/services/api'
+import { useContaStore } from '@/stores/contaStore'
+import { useCategoriaStore } from '@/stores/categoriaStore'
+import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
+import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
+import ButtonDate from '@/shared/button-date.vue'
+import { endOfMonth, startOfMonth } from 'date-fns'
+
+const wantImport = ref(false)
+const wantExport = ref(false)
+const wantDelete = ref(false)
+
+const validImport = ref(false)
+const validExport = ref(false)
+const validDelete = ref(false)
+
+const csvFile = ref([])
+const pwd = ref('')
+
+const exporta = reactive({
+  conta_id: null,
+  data_inicio: startOfMonth(new Date()),
+  data_fim: endOfMonth(new Date())
+})
+
+const uState = useUserStore()
+const contaStore = useContaStore()
+const categoriaState = useCategoriaStore()
+const movimentacaoState = useMovimentacaoStore()
+
+const fileInfo = computed(
+  () => `${csvFile?.value?.[0]?.name}, ${prepareByte(csvFile?.value?.[0]?.size || 0)}`
+)
+
+const importData = async () => {
+  try {
+    const file = await readTextFile(csvFile.value[0])
+    const impo = await uploadCsv({ id: uState.userData.id, file })
+    console.log(impo)
+    alert(`Importação concluída com ${impo.result.imported} sucessos!`)
+    await contaStore.sincronizarContas()
+    await categoriaState.sincronizarCategorias()
+    await movimentacaoState.sincronizarMovimentacoes()
+    csvFile.value = []
+    wantImport.value = false
+    await router.push('/historico')
+  } catch (e) {
+    console.log(e)
+    alert('Algo deu errado')
+  }
+}
+
+const exportData = async () => {
+  const data = downloadCsv({ id: uState.userData.id, ...exporta })
+  console.log(data)
+}
+
+const logout = async () => {
+  await uState.logout()
+  await router.push('/')
+}
+
+const deleteAccount = async () => {
+  if (!validDelete.value) return
+  const user = {
+    email: uState.userData.email,
+    senha: pwd.value
+  }
+  await uState.deleteAccount(user)
+  await router.push('/')
+}
+
+onMounted(() => {
+  contaStore.sincronizarContas()
+})
+</script>

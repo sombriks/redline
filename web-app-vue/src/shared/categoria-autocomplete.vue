@@ -2,6 +2,7 @@
   <v-autocomplete
       v-model="categoriaId"
       :items="categoriaState.store.categorias"
+      :rules="props.rules"
       item-title="descricao"
       item-value="id"
       label="Categoria"
@@ -32,7 +33,7 @@ import { ref, watch } from 'vue'
 import {useCategoriaStore} from "@/stores/categoriaStore";
 
 const categoriaState = useCategoriaStore()
-const props = defineProps(['modelValue'])
+const props = defineProps(['modelValue', 'rules'])
 const emit = defineEmits(['update:modelValue'])
 
 const categoriaId = ref(props.modelValue)
