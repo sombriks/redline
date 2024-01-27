@@ -139,5 +139,11 @@ export const listPlanejamentos = async ({ id, q, limit, offset }) =>
     })
   })
 
+export const insertPlanejamento = async ({ id, planejamento }) =>
+  await post({ uri: `/${id}/planejamento`, planejamento })
+
+export const updatePlanejamento = async ({ id, planejamento }) =>
+  await put({ uri: `/${id}/planejamento/${planejamento.id}`, planejamento })
+
 export const delPlanejamento = async ({ id, planejamento_id }) =>
   await del({ uri: `/${id}/planejamento/${planejamento_id}` })

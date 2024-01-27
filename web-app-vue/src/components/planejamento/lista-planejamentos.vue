@@ -22,12 +22,12 @@
 <style scoped></style>
 <script setup>
 import DetalhePlanejamento from '@/components/planejamento/detalhe-planejamento.vue'
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { usePlanejamentoStore } from '@/stores/planejamentoStore'
 
 const drawer = ref(false)
 
-const filtros = reactive({})
+// const filtros = reactive({})
 
 const planejamentoStore = usePlanejamentoStore()
 
@@ -39,8 +39,9 @@ onMounted(async () => {
   await planejamentoStore.sincronizarPlanejamentos()
 })
 
-const savePlanejamento = (planejamento) => {
-  console.log(planejamento)
+const savePlanejamento = async (planejamento) => {
+  await planejamentoStore.salvaPlanejamento(planejamento)
+  await planejamentoStore.sincronizarPlanejamentos()
 }
 
 const delPlanejamento = async (planejamento) => {

@@ -67,7 +67,7 @@
 </template>
 <style scoped></style>
 <script setup>
-import {computed, reactive, ref, toRaw, watch} from 'vue'
+import {computed, ref, toRaw, watch} from 'vue'
 import {numberRule, requiredRule} from "@/services/basic-rules";
 import CategoriaAutocomplete from "@/shared/categoria-autocomplete.vue";
 
