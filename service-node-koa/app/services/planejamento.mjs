@@ -6,6 +6,7 @@ export const listPlanejamento = ({ user_id = -1, q = "", limit = 10, offset = 0 
       .select("id")
       .where({ user_id }))
     .andWhereLike("descricao", `%${q}%`)
+    .orderBy("criacao","desc")
     .offset(offset)
     .limit(limit);
 };

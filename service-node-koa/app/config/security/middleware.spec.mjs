@@ -55,14 +55,15 @@ describe("Middleware tests", () => {
   })
 
   it("Should FAIL due missing auth header", async () => {
+    // given
     const authorization = `Bearer`
     const ctx = {request: {header: {authorization}}, throw: sinon.mock()}
     const next = sinon.mock()
     next.never()
     ctx.throw.never()
 
+    // when
     const spyable = { ifAuthenticated: middleware.ifAuthenticated}
-
     const spy = sinon.spy(spyable, "ifAuthenticated")
     try {
       await spyable.ifAuthenticated(ctx, next)
@@ -70,6 +71,7 @@ describe("Middleware tests", () => {
       chai.expect(spy.exceptions).length(1)
     }
 
+    // then
     chai.expect(spy.called)
     chai.expect(spy.threw())
     ctx.throw.verify()

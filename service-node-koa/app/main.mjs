@@ -90,7 +90,12 @@ new ApiBuilder({ router }).path(b => {
       });
     });
 
-    b.path("/planejamento", b => b.get(listPlanejamentoRequest));
+    b.path("/planejamento", b => {
+      b.get(listPlanejamentoRequest)
+      b.path("/:id", b => {
+
+      })
+    });
 
     b.path("/recorrencia", b => b.get(listRecorrenciaRequest));
   });
