@@ -20,6 +20,6 @@ const contaIcon = computed(() => {
     :color="props.color || props.conta?.cor"
     :append-icon="props.appendIcon"
     @click="emit('click')"
-    >{{ props.conta.descricao }}
+    >{{ props.conta?.descricao }}
   </v-chip>
 </template>

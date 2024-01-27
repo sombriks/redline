@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid style="width: 100%">
+  <v-container fluid >
     <v-row class="barra-botoes-acoes" align="center">
       <v-chip
         variant="outlined"
@@ -229,7 +229,7 @@ const agrupamentoConta = computed(() => {
 
   const contas = contaStore.store.contas.map(c => {
     const thisAccount = movimentacoes.value.filter(m => m.conta_id == c.id)
-    console.log(thisAccount)
+    // console.log(thisAccount)
     return {
       ...c, saldo: prepareBalance(thisAccount)
     }
@@ -263,9 +263,9 @@ onMounted(() => {
   Object.assign(filtro, movimentacaoStore.store.filtrosMovimentacao)
 })
 
-const aplicarFiltro = () => {
+const aplicarFiltro = async () => {
   movimentacaoStore.aplicarFiltro(filtro)
-  movimentacaoStore.sincronizarMovimentacoes()
+  await movimentacaoStore.sincronizarMovimentacoes()
   drawer.value = false
 }
 

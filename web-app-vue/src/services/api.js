@@ -126,3 +126,18 @@ export const downloadCsv = async ({ id, conta_id, data_inicio, data_fim }) =>
       }
     })
   })
+
+export const listPlanejamentos = async ({ id, q, limit, offset }) =>
+  await get({
+    uri: uriParams({
+      uri: `/${id}/planejamento`,
+      params: {
+        limit,
+        offset,
+        q
+      }
+    })
+  })
+
+export const delPlanejamento = async ({ id, planejamento_id }) =>
+  await del({ uri: `/${id}/planejamento/${planejamento_id}` })
