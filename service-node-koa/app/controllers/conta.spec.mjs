@@ -1,29 +1,30 @@
 import chai from "chai";
-import {app} from "../main.mjs";
-import {findCategoria, getAdmin, listCategorias, resetCategorias} from "../services/index.mjs";
 import chaiHttp from "chai-http";
+
+import {findConta, getAdmin, listContas, resetConta} from "../services/index.mjs";
 import {sign} from "../config/security/index.mjs";
+import {app} from "../main.mjs";
 
 chai.should();
 chai.use(chaiHttp);
 
-describe("Categoria API tests", () => {
+describe("Conta API tests", () => {
 
   let user;
   let authorization;
 
   before(async () => {
-    user = await getAdmin();
-    await resetCategorias({usuario_id: user.id});
+    user = await getAdmin()
+    await resetConta({usuario_id: user.id})
     const {token} = sign(user)
     authorization = `Bearer ${token}`
-  });
+  })
 
-  it("should list categorias", async () => {
+  it("Should list contas", async () => {
     try {
       const res = await chai
         .request(app.callback())
-        .get(`/${user.id}/categoria`)
+        .get(`/${user.id}/conta`)
         .set("Authorization", authorization)
       res.should.have.status(200);
       res.body.should.be.an("array");
@@ -32,29 +33,29 @@ describe("Categoria API tests", () => {
     }
   })
 
-  it("should find categoria", async () => {
+  it("Should find conta", async () => {
     try {
-      const categorias = await listCategorias({usuario_id: user.id})
+      const contas = await listContas(({usuario_id: user.id}))
       const res = await chai
         .request(app.callback())
-        .get(`/${user.id}/categoria/${categorias[0].id}`)
+        .get(`/${user.id}/conta/${contas[0].id}`)
         .set("Authorization", authorization)
       res.should.have.status(200);
       res.body.should.be.an("object");
-      res.body.usuario_id.should.be.eq(user.id);
+      res.body.id.should.be.eq(contas[0].id)
     } catch (e) {
       chai.expect.fail(e)
     }
   })
 
-  it("should insert categoria", async () => {
+  it("Should insert conta", async () => {
     try {
-      const novaCat = {descricao: "teste", cor: "#FEA"}
+      const novaConta = {descricao: "teste conta", tipo_conta_id: 1}
       const res = await chai
         .request(app.callback())
-        .post(`/${user.id}/categoria`)
+        .post(`/${user.id}/conta`)
         .set("Authorization", authorization)
-        .send(novaCat)
+        .send(novaConta)
       res.should.have.status(200);
       res.body.should.be.an("array");
       res.body[0].id.should.be.ok
@@ -63,38 +64,37 @@ describe("Categoria API tests", () => {
     }
   })
 
-  it("should update categoria", async () => {
+  it("Should update conta", async () => {
     try {
-      const [cat] = await listCategorias({usuario_id: user.id})
-      cat.cor = "#AFE"
-      cat.descricao = "categoria sob teste"
+      const [conta] = await listContas(({usuario_id: user.id}))
+      conta.descricao = "conta teste update"
       const res = await chai
         .request(app.callback())
-        .put(`/${user.id}/categoria/${cat.id}`)
+        .put(`/${user.id}/conta/${conta.id}`)
         .set("Authorization", authorization)
-        .send(cat)
+        .send(conta)
       res.should.have.status(200);
       const affected = res.body // update/PUT only returns number of affected rows
       affected.should.be.eq(1)
-      const check = await listCategorias({q: "sob teste", usuario_id: user.id})
+      const check = await listContas({usuario_id: user.id, q: "conta teste update"})
       check.should.be.an("array")
-      check[0].cor.should.be.eq("#AFE")
+      check[0].id.should.be.eq(conta.id)
     } catch (e) {
       chai.expect.fail(e)
     }
   })
 
-  it("should del categoria", async () => {
+  it("Should delete conta", async () => {
     try {
-      const [categoria] = await listCategorias({usuario_id: user.id})
+      const [conta] = await listContas(({usuario_id: user.id}))
       const res = await chai
         .request(app.callback())
-        .del(`/${user.id}/categoria/${categoria.id}`)
+        .del(`/${user.id}/conta/${conta.id}`)
         .set("Authorization", authorization)
       res.should.have.status(200);
       const affected = res.body // delete only returns number of affected rows
       affected.should.be.eq(1)
-      const check = await findCategoria(({id: categoria.id, usuario_id: user.id}))
+      const check = await findConta({id: conta.id, usuario_id: user.id})
       chai.expect(check).to.be.undefined
     } catch (e) {
       chai.expect.fail(e)
