@@ -24,12 +24,14 @@
 import DetalhePlanejamento from '@/components/planejamento/detalhe-planejamento.vue'
 import { computed, onMounted, ref } from 'vue'
 import { usePlanejamentoStore } from '@/stores/planejamentoStore'
+import { useCategoriaStore } from '@/stores/categoriaStore'
 
 const drawer = ref(false)
 
 // const filtros = reactive({})
 
 const planejamentoStore = usePlanejamentoStore()
+const categoriaStore = useCategoriaStore()
 
 const planejamentos = computed(() => {
   return planejamentoStore.store.planejamentos || []
@@ -37,6 +39,7 @@ const planejamentos = computed(() => {
 
 onMounted(async () => {
   await planejamentoStore.sincronizarPlanejamentos()
+  await categoriaStore.sincronizarCategorias()
 })
 
 const savePlanejamento = async (planejamento) => {

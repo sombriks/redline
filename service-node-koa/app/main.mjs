@@ -14,7 +14,7 @@ import {
   findMovimentacaoRequest,
   insertCategoriaRequest,
   insertContaRequest,
-  insertMovimentacaoRequest,
+  insertMovimentacaoRequest, insertPlanejamentoRequest,
   listCategoriasRequest,
   listContasRequest,
   listMovimentacaoRequest,
@@ -23,11 +23,11 @@ import {
   removeMovimentacaoRequest,
   updateCategoriaRequest,
   updateContaRequest,
-  updateMovimentacaoRequest,
+  updateMovimentacaoRequest, updatePlanejamentoRequest,
   uploadMovimentacoesRequest,
   userLoginRequest,
   userSignupRequest
-} from "./controllers/index.mjs";
+} from './controllers/index.mjs'
 import {listModelocategoria, listTipoConta, listTipoMovimentacao, listTipoRecorrencia} from "./services/index.mjs";
 import {contaOwnedBy, ifAuthenticated} from "./config/security/index.mjs";
 
@@ -89,8 +89,10 @@ new ApiBuilder({router}).path(b => {
 
     b.path("/planejamento", b => {
       b.get(listPlanejamentoRequest)
+      b.post(insertPlanejamentoRequest)
       b.path("/:id", b => {
         b.del(delPlanejamentoRequest)
+        b.put(updatePlanejamentoRequest)
       });
     });
 
