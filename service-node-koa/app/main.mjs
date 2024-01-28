@@ -4,46 +4,43 @@ import Router from "@koa/router";
 import bodyParser from "koa-bodyparser";
 
 import {
-  listCategoriasRequest,
-  findCategoriaRequest,
-  insertCategoriaRequest,
-  updateCategoriaRequest,
   delCategoriaRequest,
-  listContasRequest,
-  findContaRequest,
-  insertContaRequest,
-  updateContaRequest,
   delContaRequest,
-  removeMovimentacaoRequest,
-  updateMovimentacaoRequest,
-  insertMovimentacaoRequest,
+  delPlanejamentoRequest,
+  delUsuarioRequest,
+  downloadMovimentacoesRequest,
+  findCategoriaRequest,
+  findContaRequest,
   findMovimentacaoRequest,
+  insertCategoriaRequest,
+  insertContaRequest,
+  insertMovimentacaoRequest, insertPlanejamentoRequest,
+  listCategoriasRequest,
+  listContasRequest,
   listMovimentacaoRequest,
   listPlanejamentoRequest,
   listRecorrenciaRequest,
+  removeMovimentacaoRequest,
+  updateCategoriaRequest,
+  updateContaRequest,
+  updateMovimentacaoRequest, updatePlanejamentoRequest,
+  uploadMovimentacoesRequest,
   userLoginRequest,
-  userSignupRequest,
-  delUsuarioRequest,
-  uploadMovimentacoesRequest, downloadMovimentacoesRequest
-} from "./controllers/index.mjs";
-import {
-  listModelocategoria,
-  listTipoConta,
-  listTipoMovimentacao,
-  listTipoRecorrencia
-} from "./services/index.mjs";
-import { contaOwnedBy, ifAuthenticated } from "./config/security/index.mjs";
+  userSignupRequest
+} from './controllers/index.mjs'
+import {listModelocategoria, listTipoConta, listTipoMovimentacao, listTipoRecorrencia} from "./services/index.mjs";
+import {contaOwnedBy, ifAuthenticated} from "./config/security/index.mjs";
 
 import ApiBuilder from "koa-api-builder";
-import { errHandler } from './config/default-error-handler.mjs'
-import { cabin } from "./config/base-logging.mjs";
+import {errHandler} from './config/default-error-handler.mjs'
+import {cabin} from "./config/base-logging.mjs";
 
 export const app = new Koa();
 const router = new Router();
 
 app.use(cabin.middleware).use(errHandler).use(cors()).use(bodyParser());
 
-new ApiBuilder({ router }).path(b => {
+new ApiBuilder({router}).path(b => {
   b.get("/status", async ctx => ctx.body = "ONLINE");
   b.get("/tipo-conta", async ctx => ctx.body = await listTipoConta());
   b.get("/modelocategoria", async ctx => ctx.body = await listModelocategoria());
@@ -90,7 +87,14 @@ new ApiBuilder({ router }).path(b => {
       });
     });
 
-    b.path("/planejamento", b => b.get(listPlanejamentoRequest));
+    b.path("/planejamento", b => {
+      b.get(listPlanejamentoRequest)
+      b.post(insertPlanejamentoRequest)
+      b.path("/:id", b => {
+        b.del(delPlanejamentoRequest)
+        b.put(updatePlanejamentoRequest)
+      });
+    });
 
     b.path("/recorrencia", b => b.get(listRecorrenciaRequest));
   });

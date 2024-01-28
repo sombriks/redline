@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import { routes } from '@/services/router'
 
 const userStore = useUserStore()
-const menu = routes.filter(r => r.label)
+const menu = routes.filter((r) => r.label)
 const show = ref(false)
 </script>
 
@@ -12,7 +12,12 @@ const show = ref(false)
   <v-layout class="rounded rounded-md">
     <v-app-bar :collapse="!show" v-if="userStore.store.token">
       <template v-slot:prepend>
-        <v-app-bar-nav-icon icon="mdi-pulse" color="red" @click="show = !show"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon
+          variant="outlined"
+          icon="mdi-pulse"
+          color="red"
+          @click="show = !show"
+        ></v-app-bar-nav-icon>
       </template>
       <v-app-bar-title><span class="red">redline</span></v-app-bar-title>
     </v-app-bar>
@@ -20,7 +25,7 @@ const show = ref(false)
       <v-list>
         <v-list-item v-for="m in menu" :key="m.label" :active="m.path == $route.path">
           <template v-slot:prepend>
-            <v-icon color="red-lighten-3" :icon="m.icon"></v-icon>
+            <v-icon variant="outlined" color="red-lighten-3" :icon="m.icon"></v-icon>
           </template>
           <v-list-item-title>
             <router-link :to="m.path">{{ m.label }}</router-link>

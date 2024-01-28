@@ -2,14 +2,14 @@
   <v-expansion-panel>
     <v-expansion-panel-title>
       <v-chip variant="outlined" class="ma-1" rounded size="large">
-        {{ parseISO(props.movimentacao.vencimento).toLocaleDateString() }}
+        {{ prepareDate(props.movimentacao?.vencimento).toLocaleDateString() }}
       </v-chip>
       <v-chip
         variant="outlined"
         class="ma-1"
         rounded
         size="large"
-        :color="props.movimentacao.tipo_movimentacao_id === 1 ? 'green' : 'red'"
+        :color="props.movimentacao?.tipo_movimentacao_id === 1 ? 'green' : 'red'"
       >
         {{ valor }}
       </v-chip>
@@ -19,10 +19,10 @@
         class="ma-1"
         rounded
         size="large"
-        :title="prepareDate(props.movimentacao.efetivada) || 'Pagamento pendente'"
-        :color="!!props.movimentacao.efetivada ? 'green' : 'red'"
+        :title="prepareDate(props.movimentacao?.efetivada) || 'Pagamento pendente'"
+        :color="!!props.movimentacao?.efetivada ? 'green' : 'red'"
       >
-        <v-icon :icon="!!props.movimentacao.efetivada ? 'mdi-check' : 'mdi-close'" />
+        <v-icon :icon="!!props.movimentacao?.efetivada ? 'mdi-check' : 'mdi-close'" />
       </v-chip>
     </v-expansion-panel-title>
     <v-expansion-panel-text>
@@ -37,9 +37,9 @@
         >{{ categoria.descricao }}
       </v-chip>
       <v-chip variant="outlined" class="ma-1" rounded size="large">
-        {{ props.movimentacao.descricao }}
+        {{ props.movimentacao?.descricao }}
       </v-chip>
-      <v-btn variant="outlined" rounded @click="router.push(`/editar-movimentacao/${props.movimentacao.id}`)" size="large">
+      <v-btn variant="outlined" rounded @click="router.push(`/editar-movimentacao/${props.movimentacao?.id}`)" size="large">
         <v-icon icon="mdi-circle-edit-outline" />
       </v-btn>
     </v-expansion-panel-text>
@@ -47,7 +47,7 @@
 </template>
 <script setup>
 import { parseISO } from 'date-fns'
-import {computed, ref, watchEffect} from 'vue'
+import {computed, ref, watch} from 'vue'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { router } from "@/services/router";
@@ -64,7 +64,7 @@ const categoria = ref(null)
 
 const valor = computed(() => prepareMoney(props.movimentacao?.valor))
 
-watchEffect(() => {
+watch(() => props.movimentacao, () => {
   if (props.movimentacao) {
     conta.value = contaStore.store.contas
       .find((c) => c.id === props.movimentacao.conta_id)

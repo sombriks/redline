@@ -1,9 +1,10 @@
 <script setup>
 
+import ListaPlanejamentos from "@/components/planejamento/lista-planejamentos.vue";
 </script>
 
 <template>
-<h1>Planejamento</h1>
+  <lista-planejamentos/>
 </template>
 
 <style scoped>
