@@ -15,12 +15,12 @@
     <v-form v-model="valid" @submit.prevent.stop="doSave">
       <v-container>
         <v-row align="center">
-          <categoria-autocomplete v-model="planejamento.categoria_id" />
+          <categoria-autocomplete v-model="plan.categoria_id" />
         </v-row>
         <v-row align="center">
           <v-text-field
             :rules="[requiredRule]"
-            v-model="planejamento.descricao"
+            v-model="plan.descricao"
             label="Descrição"
           ></v-text-field>
         </v-row>
@@ -29,16 +29,16 @@
             class="item"
             :rules="[requiredRule, numberRule]"
             type="number"
-            v-model="planejamento.limite"
+            v-model="plan.limite"
             label="Limite"
             prepend-inner-icon="mdi-cash-100"
           />
         </v-row>
         <v-row align="center">
-          <button-date label="Início" v-model="planejamento.inicial"></button-date>
+          <button-date label="Início" v-model="plan.inicial"></button-date>
         </v-row>
         <v-row align="center">
-          <button-date label="Fim" v-model="planejamento.final"></button-date>
+          <button-date label="Fim" v-model="plan.final"></button-date>
         </v-row>
         <v-row align="center">
           <v-btn
@@ -73,7 +73,7 @@
 </template>
 <style scoped></style>
 <script setup>
-import { computed, ref, toRaw, watch } from 'vue'
+import { computed, onMounted, ref, toRaw, watch } from 'vue'
 import { numberRule, requiredRule } from '@/services/basic-rules'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 import { useCategoriaStore } from '@/stores/categoriaStore'
@@ -88,19 +88,12 @@ const emit = defineEmits(['onSave', 'onCancel', 'onDel'])
 
 const edit = ref(false)
 const valid = ref(false)
-const planejamento = ref(
-  structuredClone(
-    toRaw(
-      props.planejamento || {
-        inicial: startOfYear(new Date()),
-        final: endOfYear(new Date())
-      }
-    )
-  )
-)
+const plan = ref({})
 
 const descricao = computed(() => {
-  return `${prepareMoney(planejamento.value.limite)} - ${planejamento.value.descricao} (${categoria.value.descricao})`
+  return `${prepareMoney(props.planejamento.limite)} - ${props.planejamento.descricao} (${
+    categoria.value.descricao
+  })`
 })
 
 const categoria = computed(
@@ -110,23 +103,38 @@ const categoria = computed(
 watch(
   () => props.planejamento,
   () => {
-    planejamento.value = structuredClone(toRaw(props.planejamento || {}))
+    plan.value = reset()
   }
 )
 
+onMounted(() => {
+  plan.value = reset()
+})
+
+const reset = () =>
+  structuredClone(
+    toRaw(
+      props.planejamento || {
+        inicial: startOfYear(new Date()),
+        final: endOfYear(new Date())
+      }
+    )
+  )
+
 const doSave = async () => {
-  if(!valid.value) return
-  emit('onSave', planejamento.value)
+  if (!valid.value) return
+  emit('onSave', plan.value)
+  plan.value = reset()
   edit.value = false
 }
 
 const doCancel = async () => {
-  planejamento.value = structuredClone(toRaw(props.planejamento || {}))
+  plan.value = reset()
   edit.value = false
   emit('onCancel')
 }
 
 const doDel = async () => {
-  emit('onDel', planejamento.value)
+  emit('onDel', plan.value)
 }
 </script>
