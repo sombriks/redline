@@ -4,7 +4,7 @@ import {cabin} from '../config/base-logging.mjs'
 import {insertConta} from './conta.mjs'
 import {insertCategoria} from './categoria.mjs'
 
-export const findMovimentacao = async id =>
+export const findMovimentacao = async id => // TODO check account and user too
   knex('movimentacao').where({id}).first()
 
 export const listMovimentacaoByUsuario = async (params) => {
