@@ -5,7 +5,8 @@ import {
   listMovimentacaoByConta,
   listMovimentacaoByUsuario,
   removeMovimentacao,
-  updateMovimentacao, uploadMovimentacoes
+  updateMovimentacao,
+  uploadMovimentacoes
 } from '../services/index.mjs'
 
 export const listMovimentacaoRequest = async ctx => {
@@ -17,8 +18,8 @@ export const listMovimentacaoRequest = async ctx => {
 }
 
 export const findMovimentacaoRequest = async ctx => {
-  const {usuario_id, id} = ctx.request.params
-  ctx.body = await findMovimentacao({usuario_id, id})
+  const {/*usuario_id, conta_id,*/ id} = ctx.request.params
+  ctx.body = await findMovimentacao(id)
 }
 
 export const insertMovimentacaoRequest = async ctx => {
