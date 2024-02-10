@@ -2,12 +2,13 @@
 import { useUserStore } from '@/stores/userStore'
 import { ref } from 'vue'
 import { routes } from '@/services/router'
+import { useGeneralStore } from '@/stores/generalStore'
 
+const generalStore = useGeneralStore()
 const userStore = useUserStore()
 const menu = routes.filter((r) => r.label)
 const show = ref(false)
 </script>
-
 <template>
   <v-layout class="rounded rounded-md">
     <v-app-bar :collapse="!show" v-if="userStore.store.token">
@@ -35,6 +36,22 @@ const show = ref(false)
     </v-navigation-drawer>
     <v-main class="d-flex align-center justify-center" style="min-height: 300px">
       <router-view></router-view>
+      <v-overlay
+        :model-value="generalStore.loading"
+        :persistent="true"
+        class="align-center justify-center"
+      >
+        <v-card>
+          <v-progress-linear
+            style="min-width: 300px"
+            model-value="100"
+            height="10"
+            color="red"
+            rounded
+            striped
+          />
+        </v-card>
+      </v-overlay>
     </v-main>
   </v-layout>
 </template>

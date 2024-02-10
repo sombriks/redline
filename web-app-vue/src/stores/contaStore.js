@@ -20,8 +20,10 @@ export const useContaStore = defineStore('conta-store', () => {
   const sincronizarContas = async () => {
     const redLine = getRedLine()
     const { id } = uState.userData
-    const contas = await listContas({ id })
-    const tiposConta = await listTiposConta()
+    const [contas, tiposConta] = await Promise.all([
+      listContas({ id }),
+      listTiposConta()
+    ])
     store.contas = contas
     store.tiposConta = tiposConta
     setRedLine({ ...redLine, contas, tiposConta })

@@ -1,4 +1,5 @@
 import { useUserStore } from '@/stores/userStore'
+import { useGeneralStore } from '@/stores/generalStore'
 
 const uriParams = ({ uri, params }) =>
   `${uri}?${Object.keys(params)
@@ -8,6 +9,7 @@ const uriParams = ({ uri, params }) =>
 
 const req = async ({ method = 'POST', uri, payload }) => {
   const userStore = useUserStore()
+  const generalStore = useGeneralStore()
   const url = `${import.meta.env.VITE_API_URL}${uri}`
   const headers = {
     'Content-Type': 'application/json',
@@ -15,6 +17,7 @@ const req = async ({ method = 'POST', uri, payload }) => {
   }
   if (userStore.store.token) headers['Authorization'] = `Bearer ${userStore.store.token}`
   try {
+    generalStore.loading = true
     const result = await fetch(url, {
       body: JSON.stringify(payload),
       headers,
@@ -29,6 +32,12 @@ const req = async ({ method = 'POST', uri, payload }) => {
       await userStore.logout()
     }
     throw new Error(`${e.status} - ${await e.text()}`)
+  } finally {
+    if (generalStore.loading === true) {
+      setTimeout(() => {
+        generalStore.loading = false
+      }, 1000)
+    }
   }
 }
 
