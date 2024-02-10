@@ -8,6 +8,7 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
+        - api.redline.sombriks.org
         - app.redline.sombriks.org
       secretName: letsencrypt-prod # secret name, same as the privateKeySecretRef in the (Cluster)Issuer
   rules:

@@ -9,6 +9,7 @@ spec:
   tls:
     - hosts:
         - api.redline.sombriks.org
+        - app.redline.sombriks.org
       secretName: letsencrypt-prod # secret name, same as the privateKeySecretRef in the (Cluster)Issuer
   rules:
     - host: api.redline.sombriks.org
