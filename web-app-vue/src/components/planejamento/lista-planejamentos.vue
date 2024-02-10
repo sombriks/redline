@@ -38,8 +38,10 @@ const planejamentos = computed(() => {
 })
 
 onMounted(async () => {
-  await planejamentoStore.sincronizarPlanejamentos()
-  await categoriaStore.sincronizarCategorias()
+  await Promise.all([
+    planejamentoStore.sincronizarPlanejamentos(),
+    categoriaStore.sincronizarCategorias()
+  ])
 })
 
 const savePlanejamento = async (planejamento) => {

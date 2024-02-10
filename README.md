@@ -13,7 +13,7 @@ Study project - Yet another personal finance app
 - <https://sombriks.atlassian.net/jira/software/projects/RED/boards/2>
 - <https://lazerhawk.bandcamp.com/album/redline>
 
-![jerry-maguire-show-me-the-money.gif](docs%2Fjerry-maguire-show-me-the-money.gif)
+![jerry-maguire-show-me-the-money.gif](docs/jerry-maguire-show-me-the-money.gif)
 
 ## Project setup
 

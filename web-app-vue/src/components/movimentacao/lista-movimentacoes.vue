@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid >
+  <v-container fluid>
     <v-row class="barra-botoes-acoes" align="center">
       <v-chip
         variant="outlined"
@@ -20,7 +20,7 @@
         icon="mdi-dots-vertical"
       ></v-btn>
       <v-spacer></v-spacer>
-      <chip-saldo label="Saldo Estimado:" :saldo="saldo"/>
+      <chip-saldo label="Saldo Estimado:" :saldo="saldo" />
       <v-divider thickness="5"></v-divider>
     </v-row>
     <v-row class="barra-filtros-ativos" align="center">
@@ -47,24 +47,18 @@
     <v-row v-if="agrupamento === 'conta'" align="center" class="vh-80-scroll">
       <v-list width="100%">
         <v-list-item v-for="conta in agrupamentoConta" :key="conta.descricao">
-          <chip-conta :conta="conta"/>
-          <chip-saldo :saldo="conta.saldo"/>
+          <chip-conta :conta="conta" />
+          <chip-saldo :saldo="conta.saldo" />
         </v-list-item>
       </v-list>
     </v-row>
     <v-row v-if="agrupamento === 'categoria'" align="center" class="vh-80-scroll">
       <v-list width="100%">
         <v-list-item v-for="cat in agrupamentoCategoria" :key="cat.descricao">
-          <v-chip
-            v-if="cat"
-            variant="outlined"
-            class="ma-1"
-            rounded
-            size="large"
-            :color="cat.cor"
-          >{{ cat.descricao }}
+          <v-chip v-if="cat" variant="outlined" class="ma-1" rounded size="large" :color="cat.cor"
+            >{{ cat.descricao }}
           </v-chip>
-          <chip-saldo :saldo="cat.saldo"/>
+          <chip-saldo :saldo="cat.saldo" />
         </v-list-item>
       </v-list>
     </v-row>
@@ -226,22 +220,23 @@ const agrupamento = ref(null)
 const movimentacoes = computed(() => movimentacaoStore.store?.movimentacoes || [])
 
 const agrupamentoConta = computed(() => {
-
-  const contas = contaStore.store.contas.map(c => {
-    const thisAccount = movimentacoes.value.filter(m => m.conta_id == c.id)
+  const contas = contaStore.store.contas.map((c) => {
+    const thisAccount = movimentacoes.value.filter((m) => m.conta_id == c.id)
     // console.log(thisAccount)
     return {
-      ...c, saldo: prepareBalance(thisAccount)
+      ...c,
+      saldo: prepareBalance(thisAccount)
     }
   })
   return contas
 })
 
 const agrupamentoCategoria = computed(() => {
-  const categorias = categoriaStore.store.categorias.map(c => {
-    const thisCategory = movimentacoes.value.filter(m => m.categoria_id == c.id)
+  const categorias = categoriaStore.store.categorias.map((c) => {
+    const thisCategory = movimentacoes.value.filter((m) => m.categoria_id == c.id)
     return {
-      ...c, saldo: prepareBalance(thisCategory)
+      ...c,
+      saldo: prepareBalance(thisCategory)
     }
   })
   return categorias
@@ -253,13 +248,15 @@ const statusFiltro = computed(() => ({
   inicio: filtro.dataInicio && format(prepareDate(filtro.dataInicio), 'yyyy-MM-dd'),
   fim: filtro.dataFim && format(prepareDate(filtro.dataFim), 'yyyy-MM-dd'),
   categoria: filtro.categoria_id && categoriaStore.getCategoria(filtro.categoria_id),
-  conta: filtro.conta_id && contaStore.getConta(filtro.conta_id),
+  conta: filtro.conta_id && contaStore.getConta(filtro.conta_id)
 }))
 
-onMounted(() => {
-  contaStore.sincronizarContas()
-  categoriaStore.sincronizarCategorias()
-  movimentacaoStore.sincronizarMovimentacoes()
+onMounted(async () => {
+  await Promise.all([
+    contaStore.sincronizarContas(),
+    categoriaStore.sincronizarCategorias(),
+    movimentacaoStore.sincronizarMovimentacoes()
+  ])
   Object.assign(filtro, movimentacaoStore.store.filtrosMovimentacao)
 })
 

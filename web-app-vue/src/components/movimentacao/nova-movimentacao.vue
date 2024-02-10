@@ -35,14 +35,14 @@
           <!-- efetivada? -->
           <v-checkbox class="item" v-model="contaEfetivada" label="Paga?" />
           <!-- vencimento (dia do cartão se conta cartão) -->
+          <button-date class="item" label="Vencimento" v-model="novaMovimentacao.vencimento" />
+          <!-- efetivada (data) -->
           <button-date
             v-if="contaEfetivada"
             class="item"
-            label="Vencimento"
-            v-model="novaMovimentacao.vencimento"
+            label="Efetivada"
+            v-model="novaMovimentacao.efetivada"
           />
-          <!-- efetivada (data) -->
-          <button-date class="item" label="Efetivada" v-model="novaMovimentacao.efetivada" />
           <!-- recorrência (painel estendido) pra criar recorrência // criar depois //-->
           <v-divider />
           <div class="item row">
@@ -107,15 +107,16 @@ const contaEfetivada = ref(false)
 const valid = ref(false)
 
 const sync = async () => {
-  await contaState.sincronizarContas()
-  await categoriaState.sincronizarCategorias()
-  await movimentacaoState.sincronizarMovimentacoes()
+  await Promise.all([
+    contaState.sincronizarContas(),
+    categoriaState.sincronizarCategorias(),
+    movimentacaoState.sincronizarMovimentacoes()
+  ])
 }
 
 const salvarMovimentacao = async () => {
   if (!valid.value) return
   await movimentacaoState.salvarMovimentacao(novaMovimentacao)
-  await sync()
   Object.assign(novaMovimentacao, resetMovimentacao())
   Object.assign(contaSelecionada, resetConta())
   router.push('/historico')
