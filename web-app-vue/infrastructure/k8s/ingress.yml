@@ -2,8 +2,14 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-redline-app
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   ingressClassName: traefik
+  tls:
+    - hosts:
+        - app.redline.sombriks.org
+      secretName: letsencrypt-prod # secret name, same as the privateKeySecretRef in the (Cluster)Issuer
   rules:
     - host: app.redline.sombriks.org
       http:
