@@ -1,9 +1,10 @@
 <script setup>
 
+import ListRecorrencia from "@/components/recorrencia/list-recorrencia.vue";
 </script>
 
 <template>
-<h1>Recorrências</h1>
+<list-recorrencia></list-recorrencia>
 </template>
 
 <style scoped>

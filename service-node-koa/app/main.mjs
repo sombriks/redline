@@ -6,16 +6,17 @@ import bodyParser from "koa-bodyparser";
 import {
   delCategoriaRequest,
   delContaRequest,
-  delPlanejamentoRequest,
+  delPlanejamentoRequest, delRecorrenciaRequest,
   delUsuarioRequest,
   downloadMovimentacoesRequest,
   findCategoriaRequest,
   findContaRequest,
   findMovimentacaoRequest,
+  findRecorrenciaRequest,
   insertCategoriaRequest,
   insertContaRequest,
   insertMovimentacaoRequest,
-  insertPlanejamentoRequest,
+  insertPlanejamentoRequest, insertRecorrenciaRequest,
   listCategoriasRequest,
   listContasRequest,
   listMovimentacaoRequest,
@@ -25,7 +26,7 @@ import {
   updateCategoriaRequest,
   updateContaRequest,
   updateMovimentacaoRequest,
-  updatePlanejamentoRequest,
+  updatePlanejamentoRequest, updateRecorrenciaRequest,
   uploadMovimentacoesRequest,
   userLoginRequest,
   userSignupRequest
@@ -98,7 +99,15 @@ new ApiBuilder({router}).path(b => {
       });
     });
 
-    b.path("/recorrencia", b => b.get(listRecorrenciaRequest));
+    b.path("/recorrencia", b => {
+      b.get(listRecorrenciaRequest)
+      b.post(insertRecorrenciaRequest)
+      b.path("/:id", b => {
+        b.get(findRecorrenciaRequest)
+        b.put(updateRecorrenciaRequest)
+        b.del(delRecorrenciaRequest)
+      })
+    });
   });
 }).build();
 

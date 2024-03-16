@@ -30,6 +30,7 @@
     "cross-env": "^7.0.3",
     "date-fns": "^3.1.0",
     "dotenv-flow": "^3.2.0",
+    "joi": "^17.12.2",
     "jsonwebtoken": "^9.0.0",
     "knex": "^2.4.2",
     "koa": "^2.14.1",

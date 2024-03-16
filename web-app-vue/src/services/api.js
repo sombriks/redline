@@ -156,3 +156,15 @@ export const updatePlanejamento = async ({ id, planejamento }) =>
 
 export const delPlanejamento = async ({ id, planejamento_id }) =>
   await del({ uri: `/${id}/planejamento/${planejamento_id}` })
+
+export const listRecorrencias = async ({ id, q, limit, offset }) =>
+  await get({
+    uri: uriParams({
+      uri: `/${id}/recorrencia`,
+      params: {
+        limit,
+        offset,
+        q
+      }
+    })
+  })
