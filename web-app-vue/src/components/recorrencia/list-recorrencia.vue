@@ -9,12 +9,14 @@
 <script setup>
   import {useRecorrenciaStore} from "@/stores/recorrenciaStore";
   import DetalheRecorrencia from "@/components/recorrencia/detalhe-recorrencia.vue";
-  import {computed} from "vue";
+  import {computed, onMounted} from "vue";
 
   const recorrenciaStore = useRecorrenciaStore()
 
   const recorrencias = computed(() => {
     return recorrenciaStore.store.recorrencias || []
   })
+
+  onMounted(async () => await recorrenciaStore.sincronizarRecorrencia())
 
 </script>

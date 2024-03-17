@@ -2,6 +2,12 @@ import { defineStore } from 'pinia'
 import { reactive } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { getRedLine } from '@/services/redLine'
+import {
+  delRecorrencia,
+  insertRecorrencia,
+  listRecorrencias,
+  updateRecorrencia
+} from '@/services/api'
 
 export const useRecorrenciaStore = defineStore('recorrencia-store', () => {
   const uState = useUserStore()
@@ -15,12 +21,26 @@ export const useRecorrenciaStore = defineStore('recorrencia-store', () => {
     }
   })
 
-  const sincronizarRecorrencia = () => {
+  const sincronizarRecorrencia = async () => {
+    console.log("aqui")
     const { id } = uState.userData
-    const { q, limit, offset } = store.filtroPlanejamentos
+    const { q, limit, offset } = store.filtroRecorrencias
+    store.recorrencias = await listRecorrencias({ id, q, limit, offset })
   }
-  const salvarRecorrencia = () => {}
-  const excluirRecorrencia = () => {}
+  const salvarRecorrencia = async (recorrencia) => {
+    const { id } = uState.userData
+    if (recorrencia.id) {
+      await updateRecorrencia({ id, recorrencia })
+    } else {
+      await insertRecorrencia({ id, recorrencia })
+    }
+    await sincronizarRecorrencia()
+  }
+  const excluirRecorrencia = async (recorrencia_id) => {
+    const { id } = uState.userData
+    await delRecorrencia({ id, recorrencia_id })
+    await sincronizarRecorrencia()
+  }
 
   return { store, sincronizarRecorrencia, salvarRecorrencia, excluirRecorrencia }
 })
