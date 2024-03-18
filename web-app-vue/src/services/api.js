@@ -58,6 +58,8 @@ export const removeAccount = async ({ id, email, senha }) =>
 
 export const listTiposConta = async () => await get({ uri: '/tipo-conta' })
 
+export const listTiposRecorrencia = async () => await get({ uri: '/tipo-recorrencia' })
+
 export const listContas = async ({ id, q = '', limit = 50, offset = 0 }) =>
   await get({ uri: `/${id}/conta?q=${q}&limit=${limit}&offset=${offset}` })
 
