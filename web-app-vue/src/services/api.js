@@ -174,11 +174,11 @@ export const listRecorrencias = async ({ id, q, limit, offset }) =>
 export const insertRecorrencia = async ({ id, recorrencia }) =>
   await post({ uri: `/${id}/recorrencia`, payload: recorrencia })
 
-export const findRecorrencia = async ({ id, recorrencia_id }) =>
-  await get({ uri: `/${id}/recorrencia/${recorrencia_id}` })
-
 export const updateRecorrencia = async ({ id, recorrencia }) =>
   await put({ uri: `/${id}/recorrencia/${recorrencia.id}`, payload: recorrencia })
+
+export const findRecorrencia = async ({ id, recorrencia_id }) =>
+  await get({ uri: `/${id}/recorrencia/${recorrencia_id}` })
 
 export const delRecorrencia = async ({ id, recorrencia_id }) =>
   await del({ uri: `/${id}/recorrencia/${recorrencia_id}` })

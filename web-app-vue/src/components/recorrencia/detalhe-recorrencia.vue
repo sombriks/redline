@@ -3,7 +3,7 @@
     v-if="!edit"
     rounded
     variant="outlined"
-    color="green-accent-2"
+    :color="props.recorrencia?.cor || 'green-accent-2'"
     class="ma-2"
     size="x-large"
     :append-icon="props.recorrencia?.id ? 'mdi-playlist-edit' : 'mdi-playlist-plus'"
@@ -20,6 +20,7 @@
           v-model="rec.descricao"
           label="Descrição"
         ></v-text-field>
+        <categoria-autocomplete v-model="rec.categoria_id" />
         <v-select
           v-model="rec.tipo_recorrencia_id"
           :items="recorrenciaStore.store.tiposRecorrencia"
@@ -32,14 +33,14 @@
         <button-date label="Fim" v-model="rec.final"></button-date>
         <v-text-field
           class="item"
-          :rules="[requiredRule, numberRule]"
+          :rules="[requiredRule, minValueRule(1)]"
           type="number"
           v-model="valor"
           label="Valor"
           prepend-inner-icon="mdi-cash-100"
         />
         <v-row align="center">
-          <v-radio-group v-model="divideRepete" inline>
+          <v-radio-group v-model="divide" inline>
             <v-radio :value="true" label="Dividir valor"></v-radio>
             <v-radio :value="false" label="Repetir valor"></v-radio>
           </v-radio-group>
@@ -86,10 +87,11 @@ import {
   endOfMonth,
   startOfMonth
 } from 'date-fns'
-import { numberRule, requiredRule } from '@/services/basic-rules'
+import { minValueRule, requiredRule } from '@/services/basic-rules'
 import ButtonDate from '@/shared/button-date.vue'
 import { useRecorrenciaStore } from '@/stores/recorrenciaStore'
-import { prepareMoney } from '@/services/formaters'
+import { prepareDate, prepareMoney } from '@/services/formaters'
+import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 
 const recorrenciaStore = useRecorrenciaStore()
 
@@ -104,44 +106,69 @@ const reset = () => ({
     tipo_recorrencia_id: 1,
     inicial: startOfMonth(new Date()),
     final: endOfMonth(new Date()),
+    categoria_id: null,
+    valorTotal: 0,
     descricao: '',
+    divide: true,
+    parcelas: 1,
     cor: '#f00'
   })
 })
 
 const rec = reactive(reset())
 
-const divideRepete = ref(true)
-const valor = ref(0)
-
-const parcelas = computed(() => {
-  if (rec.tipo_recorrencia_id == 1) return 1 + differenceInMonths(rec.final, rec.inicial) // mensal
-  else if (rec.tipo_recorrencia_id == 2)
-    return 1 + differenceInYears(rec.final, rec.inicial) // anual
-  else return 1 + differenceInDays(rec.final, rec.inicial) // diária
+const valor = computed({
+  get() {
+    return rec.divide ? rec.valorTotal / rec.parcelas : rec.valorTotal
+  },
+  set(val) {
+    rec.valorTotal = rec.divide ? val * rec.parcelas : val
+  }
 })
 
-const resultado = computed(() =>
-  divideRepete.value
+const parcelas = computed({
+  get() {
+    if (rec.tipo_recorrencia_id == 1)
+      return 1 + differenceInMonths(prepareDate(rec.final), prepareDate(rec.inicial)) // mensal
+    else if (rec.tipo_recorrencia_id == 2)
+      return 1 + differenceInYears(prepareDate(rec.final), prepareDate(rec.inicial)) // anual
+    else return 1 + differenceInDays(prepareDate(rec.final), prepareDate(rec.inicial)) // diária
+  }
+})
+
+const resultado = computed(() => {
+  return rec.divide
     ? `${parcelas.value}x de ${prepareMoney(valor.value / parcelas.value)}`
     : `${prepareMoney(valor.value * parcelas.value)} em ${parcelas.value}x`
-)
+})
+
+const divide = computed({
+  get() {
+    return !!rec.divide
+  },
+  set(val) {
+    rec.divide = val
+  }
+})
 
 const doSave = async () => {
   if (!valid.value) return
-  emit('onSave', rec.value)
+  rec.parcelas = parcelas.value
+  emit('onSave', rec)
   edit.value = false
-  reset()
+  if (!rec.id) {
+    Object.assign(rec, reset())
+  }
 }
 
 const doCancel = async () => {
   edit.value = false
   emit('onCancel')
-  reset()
+  Object.assign(rec, reset())
 }
 
 const doDel = async () => {
-  emit('onDel', rec.value)
-  reset()
+  emit('onDel', rec)
+  Object.assign(rec, reset())
 }
 </script>

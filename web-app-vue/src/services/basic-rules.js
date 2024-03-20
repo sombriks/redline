@@ -16,5 +16,9 @@ export const dayOfMonthRule = (value) => {
 }
 
 export const numberRule = (value) => {
-  return !value || !isNaN(value) || "Provide a valid number"
+  return !isNaN(value) || "Provide a valid number"
+}
+
+export const minValueRule = min => value => {
+  return parseInt(value) >= parseInt(min) || `Value smaller than ${min}`
 }
