@@ -27,7 +27,7 @@ export const useRecorrenciaStore = defineStore('recorrencia-store', () => {
     const redLine = getRedLine()
     const { id } = uState.userData
     const { q, limit, offset } = store.filtroRecorrencias
-    const [recorrencias, tiposRecorrencia] = await await Promise.all([
+    const [recorrencias, tiposRecorrencia] = await Promise.all([
       listRecorrencias({ id, q, limit, offset }),
       listTiposRecorrencia()
     ])

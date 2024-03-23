@@ -36,9 +36,9 @@ const doDel = async (rec) => {
 }
 
 onMounted(async () =>
-  Promise.all([
-    await recorrenciaStore.sincronizarRecorrencia(),
-    await categoriaStore.sincronizarCategorias()
+  await Promise.all([
+    recorrenciaStore.sincronizarRecorrencia(),
+    categoriaStore.sincronizarCategorias()
   ])
 )
 </script>

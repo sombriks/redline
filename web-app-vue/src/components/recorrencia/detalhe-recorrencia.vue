@@ -9,7 +9,7 @@
     :append-icon="props.recorrencia?.id ? 'mdi-playlist-edit' : 'mdi-playlist-plus'"
     @click="edit = !edit"
   >
-    {{ props.recorrencia?.descricao || 'Nova recorrência' }}
+    {{ descricao }}
   </v-chip>
   <v-card v-if="edit" elevation="24" min-width="300">
     <v-form v-model="valid" @submit.prevent.stop="doSave">
@@ -35,16 +35,10 @@
           class="item"
           :rules="[requiredRule, minValueRule(1)]"
           type="number"
-          v-model="valor"
-          label="Valor"
+          v-model="rec.valorParcela"
+          label="Valor parcela"
           prepend-inner-icon="mdi-cash-100"
         />
-        <v-row align="center">
-          <v-radio-group v-model="divide" inline>
-            <v-radio :value="true" label="Dividir valor"></v-radio>
-            <v-radio :value="false" label="Repetir valor"></v-radio>
-          </v-radio-group>
-        </v-row>
         <p>{{ resultado }}</p>
         <br />
         <v-row align="center">
@@ -88,12 +82,14 @@ import {
   startOfMonth
 } from 'date-fns'
 import { minValueRule, requiredRule } from '@/services/basic-rules'
-import ButtonDate from '@/shared/button-date.vue'
-import { useRecorrenciaStore } from '@/stores/recorrenciaStore'
 import { prepareDate, prepareMoney } from '@/services/formaters'
+import ButtonDate from '@/shared/button-date.vue'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
+import { useRecorrenciaStore } from '@/stores/recorrenciaStore'
+import { useCategoriaStore } from '@/stores/categoriaStore'
 
 const recorrenciaStore = useRecorrenciaStore()
+const categoriaStore = useCategoriaStore()
 
 const props = defineProps(['recorrencia'])
 const emit = defineEmits(['onSave', 'onCancel', 'onDel'])
@@ -107,24 +103,14 @@ const reset = () => ({
     inicial: startOfMonth(new Date()),
     final: endOfMonth(new Date()),
     categoria_id: null,
-    valorTotal: 0,
+    valorParcela: 0,
     descricao: '',
-    divide: true,
     parcelas: 1,
     cor: '#f00'
   })
 })
 
 const rec = reactive(reset())
-
-const valor = computed({
-  get() {
-    return rec.divide ? rec.valorTotal / rec.parcelas : rec.valorTotal
-  },
-  set(val) {
-    rec.valorTotal = rec.divide ? val * rec.parcelas : val
-  }
-})
 
 const parcelas = computed({
   get() {
@@ -136,19 +122,18 @@ const parcelas = computed({
   }
 })
 
-const resultado = computed(() => {
-  return rec.divide
-    ? `${parcelas.value}x de ${prepareMoney(valor.value / parcelas.value)}`
-    : `${prepareMoney(valor.value * parcelas.value)} em ${parcelas.value}x`
+const categoria = computed(() => {
+  if (rec.categoria_id) return categoriaStore.store.categorias.find(c => c.id == rec.categoria_id)
+  return { descricao: '' }
 })
 
-const divide = computed({
-  get() {
-    return !!rec.divide
-  },
-  set(val) {
-    rec.divide = val
-  }
+const descricao = computed(() => {
+  if (rec.id) return `${rec.descricao} (${categoria.value.descricao}) | ${resultado.value}`
+  return 'Nova recorrência'
+})
+
+const resultado = computed(() => {
+  return `${parcelas.value}x de ${prepareMoney(rec.valorParcela)} (${recorrenciaStore.store.tiposRecorrencia.find(tr => tr.id == rec.tipo_recorrencia_id)?.descricao})`
 })
 
 const doSave = async () => {
