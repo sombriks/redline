@@ -36,7 +36,7 @@ describe("Recorrencia API requests", () => {
   })
 
   it("Should insert recorrencia", async () => {
-    const novaRecorrencia = {tipo_recorrencia_id: 1, descricao: "nova", valor: 100.50}
+    const novaRecorrencia = {tipo_recorrencia_id: 1, descricao: "nova", valorParcela: 100.50}
     const res = await chai
       .request(app.callback())
       .post(`/${user.id}/recorrencia`)
@@ -48,7 +48,7 @@ describe("Recorrencia API requests", () => {
 
   it("Should find recorrencia", async () => {
     const [{id}] = await insertRecorrencia({
-      usuario_id: user.id, recorrencia: {tipo_recorrencia_id: 1, descricao: "nova", valor: 100.50}
+      usuario_id: user.id, recorrencia: {tipo_recorrencia_id: 1, descricao: "nova", valorParcela: 100.50}
     })
     const res = await chai
       .request(app.callback())
@@ -61,7 +61,7 @@ describe("Recorrencia API requests", () => {
 
   it("Should update recorrencia", async () => {
     const [{id}] = await insertRecorrencia({
-      usuario_id: user.id, recorrencia: {tipo_recorrencia_id: 1, descricao: "nova", valor: 100.50}
+      usuario_id: user.id, recorrencia: {tipo_recorrencia_id: 1, descricao: "nova", valorParcela: 100.50}
     })
     const res = await chai
       .request(app.callback())
@@ -76,7 +76,7 @@ describe("Recorrencia API requests", () => {
 
   it("should delete recorrencia", async () => {
     const [{id}] = await insertRecorrencia({
-      usuario_id: user.id, recorrencia: {tipo_recorrencia_id: 1, descricao: "nova", valor: 100.50}
+      usuario_id: user.id, recorrencia: {tipo_recorrencia_id: 1, descricao: "nova", valorParcela: 100.50}
     })
     const res = await chai
       .request(app.callback())
