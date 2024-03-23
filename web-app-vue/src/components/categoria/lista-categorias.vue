@@ -47,8 +47,8 @@ const salvar = async (categoria) => {
   await cState.sincronizarCategorias()
 }
 
-onMounted(() => {
-  cState.sincronizarCategorias()
+onMounted(async () => {
+  await cState.sincronizarCategorias()
 })
 </script>
 <style scoped></style>

@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
 import { useUserStore } from '@/stores/userStore'
-import {getRedLine, setRedLine} from '@/services/redLine'
+import { getRedLine, setRedLine } from '@/services/redLine'
 import {
-  delRecorrencia,
+  delRecorrencia, geraLancamentosRecorrencia,
   insertRecorrencia,
   listRecorrencias,
   listTiposRecorrencia,
@@ -50,5 +50,11 @@ export const useRecorrenciaStore = defineStore('recorrencia-store', () => {
     await sincronizarRecorrencia()
   }
 
-  return { store, sincronizarRecorrencia, salvarRecorrencia, excluirRecorrencia }
+  const gerarLancamentos = async (recorrencia) => {
+    const { id } = uState.userData
+    await geraLancamentosRecorrencia({ id, recorrencia_id: recorrencia.id })
+    console.log(recorrencia)
+  }
+
+  return { store, sincronizarRecorrencia, salvarRecorrencia, excluirRecorrencia, gerarLancamentos }
 })

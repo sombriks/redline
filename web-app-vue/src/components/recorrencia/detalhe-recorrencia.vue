@@ -112,14 +112,12 @@ const reset = () => ({
 
 const rec = reactive(reset())
 
-const parcelas = computed({
-  get() {
-    if (rec.tipo_recorrencia_id == 1)
-      return 1 + differenceInMonths(prepareDate(rec.final), prepareDate(rec.inicial)) // mensal
-    else if (rec.tipo_recorrencia_id == 2)
-      return 1 + differenceInYears(prepareDate(rec.final), prepareDate(rec.inicial)) // anual
-    else return 1 + differenceInDays(prepareDate(rec.final), prepareDate(rec.inicial)) // diária
-  }
+const parcelas = computed(() => {
+  if (rec.tipo_recorrencia_id == 1)
+    return 1 + differenceInMonths(prepareDate(rec.final), prepareDate(rec.inicial)) // mensal
+  else if (rec.tipo_recorrencia_id == 2)
+    return 1 + differenceInYears(prepareDate(rec.final), prepareDate(rec.inicial)) // anual
+  else return 1 + differenceInDays(prepareDate(rec.final), prepareDate(rec.inicial)) // diária
 })
 
 const categoria = computed(() => {

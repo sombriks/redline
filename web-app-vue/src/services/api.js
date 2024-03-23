@@ -86,17 +86,17 @@ export const delCategoria = async ({ id, categoria }) =>
 export const lisTiposMovimentacao = async () => await get({ uri: '/tipo-movimentacao' })
 
 export const listMovimentacoes = async ({
-  tipo_movimentacao_id = undefined,
-  categoria_id = undefined,
-  dataInicio = undefined,
-  conta_id = undefined,
-  dataFim = undefined,
-  efetivada = undefined,
-  offset = 0,
-  limit = 50,
-  id,
-  q = ''
-}) =>
+                                          tipo_movimentacao_id = undefined,
+                                          categoria_id = undefined,
+                                          dataInicio = undefined,
+                                          conta_id = undefined,
+                                          dataFim = undefined,
+                                          efetivada = undefined,
+                                          offset = 0,
+                                          limit = 50,
+                                          id,
+                                          q = ''
+                                        }) =>
   await get({
     uri: uriParams({
       uri: `/${id}/movimentacao`,
@@ -182,3 +182,6 @@ export const findRecorrencia = async ({ id, recorrencia_id }) =>
 
 export const delRecorrencia = async ({ id, recorrencia_id }) =>
   await del({ uri: `/${id}/recorrencia/${recorrencia_id}` })
+
+export const geraLancamentosRecorrencia = async ({ id, recorrencia_id }) =>
+  await get({ uri: `/${id}/recorrencia/${recorrencia_id}/lancamentos` })

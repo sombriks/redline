@@ -106,6 +106,7 @@ new ApiBuilder({router}).path(b => {
         b.get(findRecorrenciaRequest)
         b.put(updateRecorrenciaRequest)
         b.del(delRecorrenciaRequest)
+        b.get("/lancamentos", ctx => ctx.body = "TBD")
       })
     });
   });

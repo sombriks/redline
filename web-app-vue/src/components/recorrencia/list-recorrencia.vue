@@ -27,6 +27,9 @@ const recorrencias = computed(() => {
 
 const doSave = async (rec) => {
   await recorrenciaStore.salvarRecorrencia(rec)
+  if(rec.id && confirm("deseja gerar os lançamentos da recorrência novamente?")) {
+    await recorrenciaStore.gerarLancamentos(rec)
+  }
 }
 
 const doDel = async (rec) => {
