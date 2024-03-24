@@ -39,7 +39,7 @@
         prepend-inner-icon="mdi-calendar-alert"
       ></v-text-field>
       <v-text-field
-        v-if="contaEdit.tipo_conta_id == 3"
+        v-if="contaEdit.tipo_conta_id == 3 || contaEdit.tipo_conta_id == 2"
         :rules="[numberRule]"
         type="number"
         v-model="contaEdit.limite"

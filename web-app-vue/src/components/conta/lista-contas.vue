@@ -54,17 +54,17 @@ const contas = computed(() =>
   })
 )
 
-onMounted(() => {
-  cState.sincronizarContas()
+onMounted(async () => {
+  await cState.sincronizarContas()
 })
 
-const saveConta = (conta) => {
-  cState.salvarConta(conta)
-  cState.sincronizarContas()
+const saveConta = async (conta) => {
+  await cState.salvarConta(conta)
+  await cState.sincronizarContas()
 }
 
-const removeConta = (conta) => {
-  if (confirm('confirmar deletar conta?')) cState.removeConta(conta)
-  cState.sincronizarContas()
+const removeConta = async (conta) => {
+  if (confirm('confirmar deletar conta?')) await cState.removeConta(conta)
+  await cState.sincronizarContas()
 }
 </script>

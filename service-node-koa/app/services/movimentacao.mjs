@@ -1,6 +1,6 @@
 import {parse, parseISO} from 'date-fns'
 import {knex} from '../config/db/index.mjs'
-import {cabin} from '../config/base-logging.mjs'
+import {logger} from '../config/base-logging.mjs'
 import {insertConta} from './conta.mjs'
 import {insertCategoria} from './categoria.mjs'
 
@@ -157,7 +157,7 @@ export const uploadMovimentacoes = async ({id, header, lines}) => {
     } catch (e) {
       importStats.errors++
       importStats.failedLines.push(line)
-      cabin.warning(e.err)
+      logger.warn(e && e.err || e)
     }
   }
   return importStats

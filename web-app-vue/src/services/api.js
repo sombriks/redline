@@ -58,6 +58,8 @@ export const removeAccount = async ({ id, email, senha }) =>
 
 export const listTiposConta = async () => await get({ uri: '/tipo-conta' })
 
+export const listTiposRecorrencia = async () => await get({ uri: '/tipo-recorrencia' })
+
 export const listContas = async ({ id, q = '', limit = 50, offset = 0 }) =>
   await get({ uri: `/${id}/conta?q=${q}&limit=${limit}&offset=${offset}` })
 
@@ -84,17 +86,17 @@ export const delCategoria = async ({ id, categoria }) =>
 export const lisTiposMovimentacao = async () => await get({ uri: '/tipo-movimentacao' })
 
 export const listMovimentacoes = async ({
-  tipo_movimentacao_id = undefined,
-  categoria_id = undefined,
-  dataInicio = undefined,
-  conta_id = undefined,
-  dataFim = undefined,
-  efetivada = undefined,
-  offset = 0,
-  limit = 50,
-  id,
-  q = ''
-}) =>
+                                          tipo_movimentacao_id = undefined,
+                                          categoria_id = undefined,
+                                          dataInicio = undefined,
+                                          conta_id = undefined,
+                                          dataFim = undefined,
+                                          efetivada = undefined,
+                                          offset = 0,
+                                          limit = 50,
+                                          id,
+                                          q = ''
+                                        }) =>
   await get({
     uri: uriParams({
       uri: `/${id}/movimentacao`,
@@ -156,3 +158,30 @@ export const updatePlanejamento = async ({ id, planejamento }) =>
 
 export const delPlanejamento = async ({ id, planejamento_id }) =>
   await del({ uri: `/${id}/planejamento/${planejamento_id}` })
+
+export const listRecorrencias = async ({ id, q, limit, offset }) =>
+  await get({
+    uri: uriParams({
+      uri: `/${id}/recorrencia`,
+      params: {
+        limit,
+        offset,
+        q
+      }
+    })
+  })
+
+export const insertRecorrencia = async ({ id, recorrencia }) =>
+  await post({ uri: `/${id}/recorrencia`, payload: recorrencia })
+
+export const updateRecorrencia = async ({ id, recorrencia }) =>
+  await put({ uri: `/${id}/recorrencia/${recorrencia.id}`, payload: recorrencia })
+
+export const findRecorrencia = async ({ id, recorrencia_id }) =>
+  await get({ uri: `/${id}/recorrencia/${recorrencia_id}` })
+
+export const delRecorrencia = async ({ id, recorrencia_id }) =>
+  await del({ uri: `/${id}/recorrencia/${recorrencia_id}` })
+
+export const geraLancamentosRecorrencia = async ({ id, recorrencia_id }) =>
+  await get({ uri: `/${id}/recorrencia/${recorrencia_id}/lancamentos` })

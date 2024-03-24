@@ -91,9 +91,9 @@ const valid = ref(false)
 const plan = ref({})
 
 const descricao = computed(() => {
-  return `${prepareMoney(props.planejamento.limite)} - ${props.planejamento.descricao} (${
+  return `${props.planejamento.descricao} (${
     categoria.value.descricao
-  })`
+  }) | ${prepareMoney(props.planejamento.limite)}`
 })
 
 const categoria = computed(

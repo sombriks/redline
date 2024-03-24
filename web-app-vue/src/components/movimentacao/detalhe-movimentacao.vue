@@ -46,7 +46,6 @@
   </v-expansion-panel>
 </template>
 <script setup>
-import { parseISO } from 'date-fns'
 import {computed, ref, watch} from 'vue'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'

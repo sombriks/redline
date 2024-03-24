@@ -7,7 +7,7 @@
         rounded
         size="large"
         color="green-accent-2"
-        prepend-icon="mdi-currency-usd"
+        prepend-icon="mdi-cash"
         append-icon="mdi-playlist-plus"
         @click="router.push('/nova-movimentacao')"
       >

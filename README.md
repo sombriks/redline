@@ -9,7 +9,7 @@ Study project - Yet another personal finance app
 - Keep track of your personal expenses and income
 - Draw nice charts
 - Import and export data
-- _Don't take this code too serious_
+- [_Don't take this code too serious_](./docs/THINGS_TO_FIX.md)
 - <https://sombriks.atlassian.net/jira/software/projects/RED/boards/2>
 - <https://lazerhawk.bandcamp.com/album/redline>
 

@@ -1,3 +1,4 @@
+import { logger } from "./base-logging.mjs"
 export const errHandler = async (ctx, next) => {
   try {
     await next()
@@ -7,6 +8,6 @@ export const errHandler = async (ctx, next) => {
     if (err.status) ctx.status = err.status
     else if (['JsonWebTokenError', 'TokenExpiredError'].includes(err.name)) ctx.status = 401
     else ctx.status = 500
-    ctx.log.error(err.message)
+    logger.error(err)
   }
 }
