@@ -40,7 +40,8 @@ export const useRecorrenciaStore = defineStore('recorrencia-store', () => {
     if (recorrencia.id) {
       await updateRecorrencia({ id, recorrencia })
     } else {
-      await insertRecorrencia({ id, recorrencia })
+      const [result] = await insertRecorrencia({ id, recorrencia })
+      await gerarLancamentos(result)
     }
     await sincronizarRecorrencia()
   }
@@ -53,7 +54,6 @@ export const useRecorrenciaStore = defineStore('recorrencia-store', () => {
   const gerarLancamentos = async (recorrencia) => {
     const { id } = uState.userData
     await geraLancamentosRecorrencia({ id, recorrencia_id: recorrencia.id })
-    console.log(recorrencia)
   }
 
   return { store, sincronizarRecorrencia, salvarRecorrencia, excluirRecorrencia, gerarLancamentos }

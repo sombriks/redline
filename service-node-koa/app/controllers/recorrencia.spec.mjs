@@ -2,8 +2,16 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 
 import {app} from '../main.mjs'
-import {findRecorrencia, getAdmin, insertRecorrencia, listContas, resetConta} from "../services/index.mjs";
+import {
+  findRecorrencia,
+  getAdmin,
+  insertRecorrencia,
+  listContas,
+  listMovimentacaoByConta,
+  resetConta
+} from "../services/index.mjs";
 import {sign} from "../config/security/index.mjs";
+import {endOfYear, startOfYear} from "date-fns";
 
 chai.should();
 chai.use(chaiHttp);
@@ -48,7 +56,7 @@ describe("Recorrencia API requests", () => {
 
   it("Should find recorrencia", async () => {
     const [{id}] = await insertRecorrencia({
-      usuario_id: user.id, recorrencia: {tipo_recorrencia_id: 1, conta_id: conta.id, descricao: "nova", valorParcela: 100.50}
+      recorrencia: {tipo_recorrencia_id: 1, conta_id: conta.id, descricao: "nova", valorParcela: 100.50}
     })
     const res = await chai
       .request(app.callback())
@@ -61,7 +69,7 @@ describe("Recorrencia API requests", () => {
 
   it("Should update recorrencia", async () => {
     const [{id}] = await insertRecorrencia({
-      usuario_id: user.id, recorrencia: {tipo_recorrencia_id: 1, conta_id: conta.id, descricao: "nova", valorParcela: 100.50}
+      recorrencia: {tipo_recorrencia_id: 1, conta_id: conta.id, descricao: "nova", valorParcela: 100.50}
     })
     const res = await chai
       .request(app.callback())
@@ -70,13 +78,13 @@ describe("Recorrencia API requests", () => {
       .send({descricao: "atualizada"})
     res.should.have.status(200)
     res.body.should.be.ok
-    const recorrencia = await findRecorrencia({usuario_id: user.id, id})
+    const recorrencia = await findRecorrencia({id})
     recorrencia.descricao.should.be.eq("atualizada")
   })
 
   it("should delete recorrencia", async () => {
     const [{id}] = await insertRecorrencia({
-      usuario_id: user.id, recorrencia: {tipo_recorrencia_id: 1, conta_id: conta.id, descricao: "nova", valorParcela: 100.50}
+      recorrencia: {tipo_recorrencia_id: 1, conta_id: conta.id, descricao: "nova", valorParcela: 100.50}
     })
     const res = await chai
       .request(app.callback())
@@ -84,7 +92,32 @@ describe("Recorrencia API requests", () => {
       .set("Authorization", authorization)
     res.should.have.status(200)
     res.body.should.be.ok
-    const recorrencia = await findRecorrencia({usuario_id: user.id, id})
+    const recorrencia = await findRecorrencia({id})
     chai.expect(recorrencia).to.be.undefined
+  })
+
+  it("should check generated parcels", async () => {
+    const [{id}] = await insertRecorrencia({
+      recorrencia: {
+        tipo_recorrencia_id: 1,
+        conta_id: conta.id,
+        descricao: "ver parcelas",
+        valorParcela: 100.50,
+        inicial: startOfYear(new Date()),
+        final: endOfYear(new Date())
+      }
+    })
+
+    const res = await chai
+      .request(app.callback())
+      .get(`/${user.id}/recorrencia/${id}/lancamentos`)
+      .set("Authorization", authorization)
+    res.should.have.status(200)
+    res.body.should.be.ok
+
+    const parcelas = await listMovimentacaoByConta({conta_id: conta.id})
+    parcelas.should.be.ok
+    parcelas.should.be.an('array')
+    parcelas.length.should.be.eq(12)
   })
 })
