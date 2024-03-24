@@ -12,7 +12,7 @@ import {
   findCategoriaRequest,
   findContaRequest,
   findMovimentacaoRequest,
-  findRecorrenciaRequest,
+  findRecorrenciaRequest, geraLancamentosRequest,
   insertCategoriaRequest,
   insertContaRequest,
   insertMovimentacaoRequest,
@@ -106,7 +106,7 @@ new ApiBuilder({router}).path(b => {
         b.get(findRecorrenciaRequest)
         b.put(updateRecorrenciaRequest)
         b.del(delRecorrenciaRequest)
-        b.get("/lancamentos", ctx => ctx.body = "TBD")
+        b.get("/lancamentos", geraLancamentosRequest)
       })
     });
   });

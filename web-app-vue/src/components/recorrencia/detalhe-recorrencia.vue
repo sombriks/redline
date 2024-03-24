@@ -6,6 +6,7 @@
     :color="props.recorrencia?.cor || 'green-accent-2'"
     class="ma-2"
     size="x-large"
+    :prepend-icon="props.recorrencia?.id ? props.recorrencia?.tipo_movimentacao_id == 1 ? 'mdi-cash-plus' : 'mdi-cash-minus' : 'mdi-cash'"
     :append-icon="props.recorrencia?.id ? 'mdi-playlist-edit' : 'mdi-playlist-plus'"
     @click="edit = !edit"
   >
@@ -15,12 +16,21 @@
     <v-form v-model="valid" @submit.prevent.stop="doSave">
       <v-container>
         <v-color-picker v-model="rec.cor"></v-color-picker>
+
+        <v-row align="center">
+          <!--  movEdit.tipo_movimentacao_id-->
+          <v-radio-group v-model="rec.tipo_movimentacao_id" inline>
+            <v-radio :value="1" label="Entrada"></v-radio>
+            <v-radio :value="2" label="Saída"></v-radio>
+          </v-radio-group>
+        </v-row>
         <v-text-field
           :rules="[requiredRule]"
           v-model="rec.descricao"
           label="Descrição"
         ></v-text-field>
         <categoria-autocomplete v-model="rec.categoria_id" />
+        <conta-autocomplete :rules="[requiredRule]" v-model="rec.conta_id" />
         <v-select
           v-model="rec.tipo_recorrencia_id"
           :items="recorrenciaStore.store.tiposRecorrencia"
@@ -87,6 +97,7 @@ import ButtonDate from '@/shared/button-date.vue'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 import { useRecorrenciaStore } from '@/stores/recorrenciaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
+import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
 
 const recorrenciaStore = useRecorrenciaStore()
 const categoriaStore = useCategoriaStore()
@@ -102,7 +113,9 @@ const reset = () => ({
     tipo_recorrencia_id: 1,
     inicial: startOfMonth(new Date()),
     final: endOfMonth(new Date()),
+    tipo_movimentacao_id: 2,
     categoria_id: null,
+    conta_id: null,
     valorParcela: 0,
     descricao: '',
     parcelas: 1,
