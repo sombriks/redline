@@ -24,7 +24,8 @@ export const updateRecorrencia = ({ usuario_id, id, recorrencia }) => {
   return knex('recorrencia').update(recorrencia).where({ id })
 }
 
-export const delRecorrencia = ({ id }) => {
+export const delRecorrencia = async ({ id = -1 }) => {
+  await knex('movimentacao').del().where({ recorrencia_id: id })
   return knex('recorrencia').del().where({ id })
 }
 

@@ -8,7 +8,7 @@
           color="green"
           variant="outlined"
           @click="(e) => (wantImport = true)"
-          >Importar
+        >Importar
         </v-btn>
         <v-form
           v-if="wantImport"
@@ -51,7 +51,7 @@
           color="blue"
           variant="outlined"
           @click="wantExport = true"
-          >Exportar
+        >Exportar
         </v-btn>
         <v-form
           v-if="wantExport"
@@ -91,11 +91,11 @@
           </div>
         </v-form>
         <v-btn
-            v-if="csvDownload"
-            class="item"
-            color="blue"
-            variant="outlined"
-            :href="csvDownload"
+          v-if="csvDownload"
+          class="item"
+          color="blue"
+          variant="outlined"
+          :href="csvDownload"
         >Baixar arquivo
         </v-btn>
         <v-btn class="item" color="orange" variant="outlined" @click="logout()">Desconectar</v-btn>
@@ -105,7 +105,7 @@
           color="red"
           variant="outlined"
           @click="wantDelete = true"
-          >Excluir conta
+        >Excluir conta
         </v-btn>
         <v-form
           v-if="wantDelete"
@@ -142,40 +142,20 @@
         <br />
         <v-divider />
         <div class="column center">
-          <a class="item" href="https://github.com/sombriks/redline" target="_blank"
-            >This is an open source project</a
-          >
+          <a class="item" href="https://github.com/sombriks/redline" target="_blank">
+            Este aplicativo é de código aberto</a>
         </div>
       </div>
     </v-card-text>
   </v-card>
 </template>
-<style scoped>
-.column {
-  display: flex;
-  flex-direction: column;
-}
-
-.item {
-  margin: 5px;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
-.center {
-  align-items: center;
-}
-</style>
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { router } from '@/services/router'
 import { lengthRule, requiredRule } from '@/services/basic-rules'
 import { prepareByte, readTextFile } from '@/services/formaters'
-import {downloadCsv, uploadCsv} from '@/services/api'
+import { downloadCsv, uploadCsv } from '@/services/api'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
@@ -230,7 +210,7 @@ const importData = async () => {
 
 const exportData = async () => {
   const data = await downloadCsv({ id: uState.userData.id, ...exporta })
-  const blob = new Blob([data.csv],{type:"text/csv"})
+  const blob = new Blob([data.csv], { type: 'text/csv' })
   csvDownload.value = URL.createObjectURL(blob)
 }
 
@@ -258,3 +238,22 @@ onMounted(() => {
   contaStore.sincronizarContas()
 })
 </script>
+<style scoped>
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  margin: 5px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.center {
+  align-items: center;
+}
+</style>
