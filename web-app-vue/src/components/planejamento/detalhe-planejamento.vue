@@ -4,6 +4,7 @@
     rounded
     variant="outlined"
     :color="categoria.cor || 'green-accent-2'"
+    :prepend-icon="planejamento?.tipo_movimentacao_id == 1 ? 'mdi-cash-plus' : planejamento?.tipo_movimentacao_id == 2 ? 'mdi-cash-minus' : 'mdi-cash'"
     :append-icon="planejamento?.id ? 'mdi-playlist-edit' : 'mdi-playlist-plus'"
     class="ma-2"
     size="x-large"
@@ -14,6 +15,13 @@
   <v-card v-if="edit" elevation="24" min-width="300">
     <v-form v-model="valid" @submit.prevent.stop="doSave">
       <v-container>
+        <v-row align="center">
+          <!--  movEdit.tipo_movimentacao_id-->
+          <v-radio-group v-model="plan.tipo_movimentacao_id" inline>
+            <v-radio :value="1" label="Entrada"></v-radio>
+            <v-radio :value="2" label="Saída"></v-radio>
+          </v-radio-group>
+        </v-row>
         <v-row align="center">
           <categoria-autocomplete v-model="plan.categoria_id" />
         </v-row>
@@ -30,7 +38,7 @@
             :rules="[requiredRule, numberRule]"
             type="number"
             v-model="plan.limite"
-            label="Limite"
+            label="Valor"
             prepend-inner-icon="mdi-cash-100"
           />
         </v-row>
@@ -115,6 +123,7 @@ const reset = () =>
   structuredClone(
     toRaw(
       props.planejamento || {
+        tipo_movimentacao_id: 2,
         inicial: startOfYear(new Date()),
         final: endOfYear(new Date())
       }

@@ -1,6 +1,6 @@
 <template>
   <v-chip
-    v-if="!edit"
+    v-if="mode<2"
     rounded
     variant="outlined"
     :color="props.recorrencia?.cor || 'green-accent-2'"
@@ -8,15 +8,15 @@
     size="x-large"
     :prepend-icon="props.recorrencia?.id ? props.recorrencia?.tipo_movimentacao_id == 1 ? 'mdi-cash-plus' : 'mdi-cash-minus' : 'mdi-cash'"
     :append-icon="props.recorrencia?.id ? 'mdi-playlist-edit' : 'mdi-playlist-plus'"
-    @click="edit = !edit"
+    @click="!props.recorrencia?.id ? mode = 2 : mode++"
   >
-    {{ descricao }}
+    <span v-if="mode===0">{{ compacto }}</span>
+    <span v-if="mode===1">{{ descricao }}</span>
   </v-chip>
-  <v-card v-if="edit" elevation="24" min-width="300">
+  <v-card v-if="mode===2" elevation="24" min-width="300">
     <v-form v-model="valid" @submit.prevent.stop="doSave">
       <v-container>
         <v-color-picker v-model="rec.cor"></v-color-picker>
-
         <v-row align="center">
           <!--  movEdit.tipo_movimentacao_id-->
           <v-radio-group v-model="rec.tipo_movimentacao_id" inline>
@@ -105,7 +105,7 @@ const categoriaStore = useCategoriaStore()
 const props = defineProps(['recorrencia'])
 const emit = defineEmits(['onSave', 'onCancel', 'onDel'])
 
-const edit = ref(false)
+const mode = ref(0)
 const valid = ref(false)
 
 const reset = () => ({
@@ -138,6 +138,11 @@ const categoria = computed(() => {
   return { descricao: '' }
 })
 
+const compacto = computed(() => {
+  if (rec.id) return `${parcelas.value}x de ${prepareMoney(rec.valorParcela)}`
+  return 'Nova recorrência'
+})
+
 const descricao = computed(() => {
   if (rec.id) return `${rec.descricao} (${categoria.value.descricao}) | ${resultado.value}`
   return 'Nova recorrência'
@@ -151,19 +156,20 @@ const doSave = async () => {
   if (!valid.value) return
   rec.parcelas = parcelas.value
   emit('onSave', rec)
-  edit.value = false
+  mode.value = 0
   if (!rec.id) {
     Object.assign(rec, reset())
   }
 }
 
 const doCancel = async () => {
-  edit.value = false
+  mode.value = 0
   emit('onCancel')
   Object.assign(rec, reset())
 }
 
 const doDel = async () => {
+  mode.value = 0
   emit('onDel', rec)
   Object.assign(rec, reset())
 }
