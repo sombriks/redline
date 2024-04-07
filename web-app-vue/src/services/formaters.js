@@ -1,7 +1,9 @@
 import { parseISO } from 'date-fns'
 
 export const prepareDate = (date) => {
+  // console.log(`date: ${JSON.stringify(date)}`)
   if (!date) return date
+  if(date.value) date = date.value
   if (date.toLocaleDateString) return date
   if (!isNaN(date)) return new Date(date)
   return parseISO(date)

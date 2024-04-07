@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 
 import { router } from './services/router'
 
-import { vuetifyInstance } from "@/services/vuetifyInstance";
+import { vuetifyInstance } from '@/services/vuetifyInstance'
 
 import App from './App.vue'
 

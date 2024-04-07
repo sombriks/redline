@@ -1,5 +1,5 @@
 import { knex } from '../config/db/index.mjs'
-import { addMonths, differenceInDays, differenceInMonths, differenceInYears } from 'date-fns'
+import { addDays, addMonths, addYears, differenceInDays, differenceInMonths, differenceInYears } from 'date-fns'
 
 export const listRecorrencia = ({ usuario_id = -1, q = '', limit = 10, offset = 0 }) => {
   return knex('recorrencia')
@@ -24,7 +24,8 @@ export const updateRecorrencia = ({ usuario_id, id, recorrencia }) => {
   return knex('recorrencia').update(recorrencia).where({ id })
 }
 
-export const delRecorrencia = ({ id }) => {
+export const delRecorrencia = async ({ id = -1 }) => {
+  await knex('movimentacao').del().where({ recorrencia_id: id })
   return knex('recorrencia').del().where({ id })
 }
 
@@ -41,16 +42,16 @@ export const geraLancamentos = async ({ usuario_id, id }) => {
       recorrencia_id: recorrencia.id,
       conta_id: recorrencia.conta_id,
       tipo_movimentacao_id: recorrencia.tipo_movimentacao_id,
-      vencimento: addMonths(recorrencia.inicial, i).toISOString(),
+      vencimento: proximoVencimento(recorrencia, i),
       valor: recorrencia.valorParcela
     })
   }
   const result = await knex('movimentacao').insert(lancamentos)
-  return { success: true }
+  return { success: true, result }
 }
 
 const limparParcelas = async (recorrencia) => {
-  return await knex('movimentacao').del().where({ recorrencia_id: recorrencia.id })
+  return knex('movimentacao').del().where({ recorrencia_id: recorrencia.id })
 }
 
 const calculaParcelas = ({ tipo_recorrencia_id, inicial, final }) => {
@@ -61,5 +62,16 @@ const calculaParcelas = ({ tipo_recorrencia_id, inicial, final }) => {
       return 1 + differenceInYears(final, inicial)
     default:
       return 1 + differenceInDays(final, inicial)
+  }
+}
+
+const proximoVencimento = (recorrencia, i) => {
+  switch (recorrencia.tipo_recorrencia_id) {
+    case 1:
+      return addMonths(recorrencia.inicial, i).toISOString()
+    case 2:
+      return addYears(recorrencia.inicial, i).toISOString()
+    default:
+      return addDays(recorrencia.inicial, i).toISOString()
   }
 }

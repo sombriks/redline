@@ -64,11 +64,18 @@
             <conta-autocomplete v-model="exporta.conta_id" :rules="[requiredRule]" />
           </div>
           <!-- period -->
+          <!--          <div class="item row">-->
+          <!--            <chip-date label="Data inicial" v-model="exporta.data_inicio"></chip-date>-->
+          <!--          </div>-->
+          <!--          <div class="item row">-->
+          <!--            <chip-date label="Data final" v-model="exporta.data_fim"></chip-date>-->
+          <!--          </div>-->
           <div class="item row">
-            <button-date label="Data inicial" v-model="exporta.data_inicio"></button-date>
-          </div>
-          <div class="item row">
-            <button-date label="Data final" v-model="exporta.data_fim"></button-date>
+            <chip-periodo
+              label="Período"
+              v-model:inicial="exporta.data_inicio"
+              v-model:final="exporta.data_fim"
+            ></chip-periodo>
           </div>
           <div class="item row">
             <v-btn
@@ -90,13 +97,8 @@
             ></v-btn>
           </div>
         </v-form>
-        <v-btn
-            v-if="csvDownload"
-            class="item"
-            color="blue"
-            variant="outlined"
-            :href="csvDownload"
-        >Baixar arquivo
+        <v-btn v-if="csvDownload" class="item" color="blue" variant="outlined" :href="csvDownload"
+          >Baixar arquivo
         </v-btn>
         <v-btn class="item" color="orange" variant="outlined" @click="logout()">Desconectar</v-btn>
         <v-btn
@@ -142,46 +144,27 @@
         <br />
         <v-divider />
         <div class="column center">
-          <a class="item" href="https://github.com/sombriks/redline" target="_blank"
-            >This is an open source project</a
+          <a class="item" href="https://github.com/sombriks/redline" target="_blank">
+            Este aplicativo é de código aberto</a
           >
         </div>
       </div>
     </v-card-text>
   </v-card>
 </template>
-<style scoped>
-.column {
-  display: flex;
-  flex-direction: column;
-}
-
-.item {
-  margin: 5px;
-}
-
-.row {
-  display: flex;
-  flex-direction: row;
-}
-
-.center {
-  align-items: center;
-}
-</style>
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { router } from '@/services/router'
 import { lengthRule, requiredRule } from '@/services/basic-rules'
 import { prepareByte, readTextFile } from '@/services/formaters'
-import {downloadCsv, uploadCsv} from '@/services/api'
+import { downloadCsv, uploadCsv } from '@/services/api'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
-import ButtonDate from '@/shared/button-date.vue'
 import { endOfMonth, startOfMonth } from 'date-fns'
+import ChipPeriodo from '@/shared/chip-periodo.vue'
 
 const wantImport = ref(false)
 const wantExport = ref(false)
@@ -230,7 +213,7 @@ const importData = async () => {
 
 const exportData = async () => {
   const data = await downloadCsv({ id: uState.userData.id, ...exporta })
-  const blob = new Blob([data.csv],{type:"text/csv"})
+  const blob = new Blob([data.csv], { type: 'text/csv' })
   csvDownload.value = URL.createObjectURL(blob)
 }
 
@@ -258,3 +241,22 @@ onMounted(() => {
   contaStore.sincronizarContas()
 })
 </script>
+<style scoped>
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  margin: 5px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.center {
+  align-items: center;
+}
+</style>
