@@ -4,7 +4,13 @@
     rounded
     variant="outlined"
     :color="categoria.cor || 'green-accent-2'"
-    :prepend-icon="planejamento?.tipo_movimentacao_id == 1 ? 'mdi-cash-plus' : planejamento?.tipo_movimentacao_id == 2 ? 'mdi-cash-minus' : 'mdi-cash'"
+    :prepend-icon="
+      planejamento?.tipo_movimentacao_id == 1
+        ? 'mdi-cash-plus'
+        : planejamento?.tipo_movimentacao_id == 2
+        ? 'mdi-cash-minus'
+        : 'mdi-cash'
+    "
     :append-icon="planejamento?.id ? 'mdi-playlist-edit' : 'mdi-playlist-plus'"
     class="ma-2"
     size="x-large"
@@ -43,10 +49,11 @@
           />
         </v-row>
         <v-row align="center">
-          <button-date label="Início" v-model="plan.inicial"></button-date>
-        </v-row>
-        <v-row align="center">
-          <button-date label="Fim" v-model="plan.final"></button-date>
+          <chip-periodo
+            label="Período"
+            v-model:inicial="plan.inicial"
+            v-model:final="plan.final"
+          ></chip-periodo>
         </v-row>
         <v-row align="center">
           <v-btn
@@ -85,9 +92,9 @@ import { computed, onMounted, ref, toRaw, watch } from 'vue'
 import { numberRule, requiredRule } from '@/services/basic-rules'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 import { useCategoriaStore } from '@/stores/categoriaStore'
-import ButtonDate from '@/shared/button-date.vue'
 import { endOfYear, startOfYear } from 'date-fns/fp'
 import { prepareMoney } from '@/services/formaters'
+import ChipPeriodo from '@/shared/chip-periodo.vue'
 
 const categoriaStore = useCategoriaStore()
 
@@ -99,9 +106,9 @@ const valid = ref(false)
 const plan = ref({})
 
 const descricao = computed(() => {
-  return `${props.planejamento.descricao} (${
-    categoria.value.descricao
-  }) | ${prepareMoney(props.planejamento.limite)}`
+  return `${props.planejamento.descricao} (${categoria.value.descricao}) | ${prepareMoney(
+    props.planejamento.limite
+  )}`
 })
 
 const categoria = computed(

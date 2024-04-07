@@ -37,11 +37,11 @@
         </v-row>
         <v-row align="center">
           <!-- movEdit.vencimento -->
-          <button-date label="Vencimento" v-model="movEdit.vencimento"></button-date>
+          <chip-date label="Vencimento" v-model="movEdit.vencimento"></chip-date>
         </v-row>
         <v-row align="center">
           <!-- movEdit.efetivada -->
-          <button-date label="Efetivada" v-model="movEdit.efetivada"></button-date>
+          <chip-date label="Efetivada" v-model="movEdit.efetivada"></chip-date>
         </v-row>
         <!--  movEdit.criacao-->
         <!--  movEdit.alteracao-->
@@ -83,7 +83,7 @@ import { numberRule, requiredRule } from '@/services/basic-rules'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 import { useRouter } from 'vue-router'
-import ButtonDate from '@/shared/button-date.vue'
+import ChipDate from '@/shared/chip-date.vue'
 
 const router = useRouter()
 const movimentacaoStore = useMovimentacaoStore()

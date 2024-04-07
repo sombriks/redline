@@ -35,9 +35,9 @@
           <!-- efetivada? -->
           <v-checkbox class="item" v-model="contaEfetivada" label="Paga?" />
           <!-- vencimento (dia do cartão se conta cartão) -->
-          <button-date class="item" label="Vencimento" v-model="novaMovimentacao.vencimento" />
+          <chip-date class="item" label="Vencimento" v-model="novaMovimentacao.vencimento" />
           <!-- efetivada (data) -->
-          <button-date
+          <chip-date
             v-if="contaEfetivada"
             class="item"
             label="Efetivada"
@@ -75,7 +75,7 @@ import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { numberRule, requiredRule } from '@/services/basic-rules'
 import { router } from '@/services/router'
-import ButtonDate from '../../shared/button-date.vue'
+import ChipDate from '@/shared/chip-date.vue'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 

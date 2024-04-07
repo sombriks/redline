@@ -8,7 +8,7 @@
           color="green"
           variant="outlined"
           @click="(e) => (wantImport = true)"
-        >Importar
+          >Importar
         </v-btn>
         <v-form
           v-if="wantImport"
@@ -51,7 +51,7 @@
           color="blue"
           variant="outlined"
           @click="wantExport = true"
-        >Exportar
+          >Exportar
         </v-btn>
         <v-form
           v-if="wantExport"
@@ -64,11 +64,18 @@
             <conta-autocomplete v-model="exporta.conta_id" :rules="[requiredRule]" />
           </div>
           <!-- period -->
+          <!--          <div class="item row">-->
+          <!--            <chip-date label="Data inicial" v-model="exporta.data_inicio"></chip-date>-->
+          <!--          </div>-->
+          <!--          <div class="item row">-->
+          <!--            <chip-date label="Data final" v-model="exporta.data_fim"></chip-date>-->
+          <!--          </div>-->
           <div class="item row">
-            <button-date label="Data inicial" v-model="exporta.data_inicio"></button-date>
-          </div>
-          <div class="item row">
-            <button-date label="Data final" v-model="exporta.data_fim"></button-date>
+            <chip-periodo
+              label="Período"
+              v-model:inicial="exporta.data_inicio"
+              v-model:final="exporta.data_fim"
+            ></chip-periodo>
           </div>
           <div class="item row">
             <v-btn
@@ -90,13 +97,8 @@
             ></v-btn>
           </div>
         </v-form>
-        <v-btn
-          v-if="csvDownload"
-          class="item"
-          color="blue"
-          variant="outlined"
-          :href="csvDownload"
-        >Baixar arquivo
+        <v-btn v-if="csvDownload" class="item" color="blue" variant="outlined" :href="csvDownload"
+          >Baixar arquivo
         </v-btn>
         <v-btn class="item" color="orange" variant="outlined" @click="logout()">Desconectar</v-btn>
         <v-btn
@@ -105,7 +107,7 @@
           color="red"
           variant="outlined"
           @click="wantDelete = true"
-        >Excluir conta
+          >Excluir conta
         </v-btn>
         <v-form
           v-if="wantDelete"
@@ -143,7 +145,8 @@
         <v-divider />
         <div class="column center">
           <a class="item" href="https://github.com/sombriks/redline" target="_blank">
-            Este aplicativo é de código aberto</a>
+            Este aplicativo é de código aberto</a
+          >
         </div>
       </div>
     </v-card-text>
@@ -160,8 +163,8 @@ import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
-import ButtonDate from '@/shared/button-date.vue'
 import { endOfMonth, startOfMonth } from 'date-fns'
+import ChipPeriodo from '@/shared/chip-periodo.vue'
 
 const wantImport = ref(false)
 const wantExport = ref(false)

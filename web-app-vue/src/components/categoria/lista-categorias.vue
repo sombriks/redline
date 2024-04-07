@@ -2,12 +2,6 @@
   <v-container fluid>
     <v-row align="center">
       <detalhe-categoria :categoria="novaCategoria" @onEdit="salvar"></detalhe-categoria>
-      <v-btn
-        variant="outlined"
-        rounded="rounded-circle"
-        @click="drawer = !drawer"
-        icon="mdi-dots-vertical"
-      ></v-btn>
       <v-divider></v-divider>
       <detalhe-categoria
           @onEdit="salvar"
@@ -18,12 +12,6 @@
       ></detalhe-categoria>
     </v-row>
   </v-container>
-  <v-navigation-drawer
-      v-model="drawer"
-      location="bottom"
-      temporary
-  >
-  </v-navigation-drawer>
 </template>
 <script setup>
 import {onMounted, reactive, ref} from 'vue'
@@ -31,8 +19,6 @@ import {useCategoriaStore} from '@/stores/categoriaStore'
 import DetalheCategoria from '@/components/categoria/detalhe-categoria.vue'
 
 const cState = useCategoriaStore()
-
-const drawer = ref(false)
 
 const novaCategoria = reactive({descricao: 'Nova Categoria'})
 

@@ -138,14 +138,13 @@
           </v-row>
           <v-row align="center">
             <!-- período -->
-            <button-date label="Data inicial" v-model="filtro.dataInicio"></button-date>
-            <button-date label="Data final" v-model="filtro.dataFim"></button-date>
-            <v-btn
-              icon="mdi-history"
-              title="Restaurar para mês atual"
-              variant="outlined"
-              @click="restauraPeriodo"
-            ></v-btn>
+            <!--            <chip-date label="Data inicial" v-model="filtro.dataInicio"></chip-date>-->
+            <!--            <chip-date label="Data final" v-model="filtro.dataFim"></chip-date>-->
+            <chip-periodo
+              label="Período"
+              v-model:inicial="filtro.dataInicio"
+              v-model:final="filtro.dataFim"
+            ></chip-periodo>
           </v-row>
           <v-row align="center">
             <!-- ações -->
@@ -188,7 +187,6 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
 import DetalheMovimentacao from '@/components/movimentacao/detalhe-movimentacao.vue'
-import ButtonDate from '@/shared/button-date.vue'
 import { router } from '@/services/router'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { useContaStore } from '@/stores/contaStore'
@@ -198,6 +196,7 @@ import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
 import ChipSaldo from '@/shared/chip-saldo.vue'
 import ChipConta from '@/shared/chip-conta.vue'
+import ChipPeriodo from '@/shared/chip-periodo.vue'
 
 const movimentacaoStore = useMovimentacaoStore()
 const categoriaStore = useCategoriaStore()
@@ -272,10 +271,5 @@ const limpaCategoria = () => {
 
 const limpaConta = () => {
   filtro.conta_id = null
-}
-
-const restauraPeriodo = () => {
-  filtro.dataInicio = startOfMonth(new Date())
-  filtro.dataFim = endOfMonth(new Date())
 }
 </script>

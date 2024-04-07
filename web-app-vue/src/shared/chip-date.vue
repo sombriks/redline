@@ -1,6 +1,6 @@
 <template>
   <div class="the-date">
-    <div v-if="!show" class="ma-2">{{ props.label }}</div>
+    <div v-if="!show && props.label" class="ma-2">{{ props.label }}</div>
     <v-chip v-if="!show" class="ma-2" rounded variant="outlined" @click="show = !show">
       {{ (date && date.toLocaleDateString()) || 'Selecionar data' }}
     </v-chip>
@@ -23,7 +23,7 @@
                     color="orange"
                     class="ma-2"
                     type="button"
-                    @click="show = !show"
+                    @click="close()"
                     icon="mdi-close"
                   ></v-btn>
                   <v-spacer></v-spacer>
@@ -50,7 +50,7 @@ import { ref, watch } from 'vue'
 import { prepareDate } from '@/services/formaters'
 
 const props = defineProps(['modelValue', 'label'])
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'close'])
 
 const show = ref(false)
 
@@ -58,12 +58,17 @@ const date = ref(prepareDate(props.modelValue))
 
 const doSave = () => {
   emit('update:modelValue', date.value)
+  close()
+}
+
+const close = () => {
   show.value = false
+  emit("close")
 }
 
 const clear = () => {
   emit('update:modelValue', null)
-  show.value = false
+  close()
 }
 
 watch(props, () => {
