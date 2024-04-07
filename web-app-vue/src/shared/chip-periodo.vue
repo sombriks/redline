@@ -6,7 +6,7 @@
       {{ fin?.toLocaleDateString() || '' }}
     </v-chip>
     <div v-if="edit" class="the-date center">
-      <chip-date v-if="edit" v-model="inicial" @update:model-value="edit = false"></chip-date>
+      <chip-date v-if="edit" v-model="inicial" @close="edit = false"></chip-date>
       <v-btn
         v-if="edit"
         icon="mdi-history"
@@ -14,7 +14,7 @@
         variant="outlined"
         @click="restauraPeriodo"
       ></v-btn>
-      <chip-date v-if="edit" v-model="final" @update:model-value="edit = false"></chip-date>
+      <chip-date v-if="edit" v-model="final" @close="edit = false"></chip-date>
     </div>
   </div>
 </template>
@@ -54,5 +54,6 @@ const restauraPeriodo = () => {
     emit('update:inicial', startOfYear(new Date()))
     emit('update:final', endOfYear(new Date()))
   }
+  edit.value = false
 }
 </script>
