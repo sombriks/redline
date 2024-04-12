@@ -1,15 +1,19 @@
 <template>
   <v-container fluid>
-    <detalhe-recorrencia @onSave="doSave"></detalhe-recorrencia>
-    <v-divider></v-divider>
-    <p v-if="recorrencias.length === 0">Não há recorrencias para exibir</p>
-    <detalhe-recorrencia
-      v-for="recorrencia in recorrencias"
-      :key="recorrencia.id"
-      :recorrencia="recorrencia"
-      @onSave="doSave"
-      @onDel="doDel"
-    ></detalhe-recorrencia>
+    <v-row align="center">
+      <detalhe-recorrencia @onSave="doSave"></detalhe-recorrencia>
+      <v-divider></v-divider>
+    </v-row>
+    <v-row align="center">
+      <p v-if="recorrencias.length === 0">Não há recorrencias para exibir</p>
+      <detalhe-recorrencia
+        v-for="recorrencia in recorrencias"
+        :key="recorrencia.id"
+        :recorrencia="recorrencia"
+        @onSave="doSave"
+        @onDel="doDel"
+      ></detalhe-recorrencia>
+    </v-row>
   </v-container>
 </template>
 <script setup>
