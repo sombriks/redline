@@ -1,6 +1,7 @@
 <template>
   <v-container fluid>
     <v-row align="center">
+      <h1>Dashboard</h1>
       <chip-periodo v-model:inicial="inicio" v-model:final="fim"></chip-periodo>
       <v-btn
         variant="outlined"
@@ -11,8 +12,13 @@
     </v-row>
     <v-row align="center">
       <bar-chart
+        title="Receita x Despesa do período"
+        label1="Receita"
+        label2="Despesa"
         :value1="dashboard.receitaPeriodo"
         :value2="dashboard.despesaPeriodo"
+        color1="lightgreen"
+        color2="red"
         height="4vh"
       ></bar-chart>
       <v-navigation-drawer v-model="drawer" location="bottom" temporary>
