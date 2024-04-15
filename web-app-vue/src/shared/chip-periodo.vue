@@ -1,6 +1,6 @@
 <template>
   <div class="the-date">
-    <div class="ma-2">{{ props.label || 'Período' }}</div>
+    <div class="ma-2">{{ props.label }}</div>
     <v-chip v-if="!edit" class="ma-2" rounded variant="outlined" @click="edit = !edit">
       {{ ini?.toLocaleDateString() || '' }} -
       {{ fin?.toLocaleDateString() || '' }}
