@@ -1,15 +1,14 @@
 <template>
   <div style="width: 100%" @click="legenda = !legenda">
     <h3>{{ props.title }}</h3>
-    <svg width="100%" :height="props.height" viewBox="0 0 20 20">
-      <!-- M cx cy L x0 y0 A rx ry rotation large-arc-flag sweep-flag x1 y1 -->
+    <svg width="100%" :height="props.height" viewBox="-10 -10 20 20">
       <path
         d="
-          M 10 10
-          L 10 0
-          A 10 10 0 0 1 10 20
-          A 10 10 0 0 1 10 0
-          L 10 10"
+          M 0 0
+          L 0 -10
+          A 10 10 0 0 1 0 10
+          A 10 10 0 0 1 0 -10
+          L 0 0"
         fill="red"
       />
     </svg>
