@@ -2,18 +2,8 @@
   <div style="width: 100%" @click="legenda = !legenda">
     <h3>{{ props.title }}</h3>
     <svg width="100%" :height="props.height" viewBox="0 0 20 20">
-      <circle
-        v-for="(e, i) in data"
-        :key="'data' + i"
-        r="5"
-        cx="10"
-        cy="10"
-        fill="transparent"
-        :stroke="e.color"
-        stroke-width="10"
-        :stroke-dasharray="`calc(${reduz(i, data)} * 31.4 / 100) 31.4`"
-        transform="rotate(-90) translate(-20)"
-      />
+      <!-- M cx cy L x0 y0 A rx ry rotation large-arc-flag sweep-flag x1 y1 -->
+      <path d="M 10 10 L 10 0 A 10 10 0 0 1 20 10" fill="red"/>
     </svg>
     <div v-for="(e, i) in data" :key="'label-' + i">
       <i v-if="legenda" :style="{ color: e.color }">{{ e.label }} - {{ e.value }}</i>

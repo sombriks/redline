@@ -28,17 +28,17 @@
       <v-divider></v-divider>
     </v-row>
     <v-row align="center">
-      <pie-chart
+      <simple-bar-chart
         title="Despesas do período por categoria"
-        height="20vh"
+        height="10vh"
         :data="[
           { label: 'Moradia', value: 4000, color: 'gray' },
           { label: 'Alimentação', value: 5000, color: 'red' },
-          { label: 'Internet', value: 5000, color: 'green' },
+          { label: 'Internet', value: 600, color: 'green' },
           { label: 'Empréstimos', value: 3000, color: 'brown' },
           { label: 'Transporte', value: 1500, color: 'blue' }
         ]"
-      ></pie-chart>
+      ></simple-bar-chart>
       <v-divider></v-divider>
     </v-row>
   </v-container>
