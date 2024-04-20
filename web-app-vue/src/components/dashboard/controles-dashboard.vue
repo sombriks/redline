@@ -5,20 +5,14 @@
       <chip-periodo v-model:inicial="inicio" v-model:final="fim"></chip-periodo>
     </v-row>
     <v-row align="center">
-      <comparison-bar-chart
+      <simple-bar-chart
         title="Receita x Despesa do período"
-        height="4vh"
+        height="6vh"
         :data="[
           { label: 'Receita', value: dashboard.receitaPeriodo, color: 'lightgreen' },
           { label: 'Despesa', value: dashboard.despesaPeriodo, color: 'red' }
         ]"
-        label1="Receita"
-        label2="Despesa"
-        :value1="dashboard.receitaPeriodo"
-        :value2="dashboard.despesaPeriodo"
-        color1="lightgreen"
-        color2="red"
-      ></comparison-bar-chart>
+      ></simple-bar-chart>
       <v-divider></v-divider>
     </v-row>
     <v-row align="center">
@@ -34,9 +28,9 @@
 <style scoped></style>
 <script setup>
 import { endOfMonth, startOfMonth } from 'date-fns'
-import { computed, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import ChipPeriodo from '@/shared/chip-periodo.vue'
-import ComparisonBarChart from '@/shared/charts/comparison-bar-chart.vue'
+import SimpleBarChart from '@/shared/charts/simple-bar-chart.vue'
 import PieChart from '@/shared/charts/pie-chart.vue'
 
 const inicio = ref(startOfMonth(new Date()))

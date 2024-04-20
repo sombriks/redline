@@ -13,7 +13,7 @@ import DashboardPage from "@/pages/dashboard-page.vue";
 
 export const routes = [
   { component: AuthPage, path: '/auth' },
-  { path: '/', redirect: '/historico' },
+  { path: '/', redirect: '/dashboard' },
   { component: DashboardPage, path: '/dashboard', label: 'Dashboard', icon: 'mdi-chart-bar' },
   { component: NovaMovimentacaoPage, path: '/nova-movimentacao', label: 'Nova movimentação', icon: 'mdi-currency-usd' },
   { component: ContasPage, path: '/contas', label: 'Contas', icon: 'mdi-card-account-details' },
