@@ -20,17 +20,17 @@
         title="Despesas do período por conta"
         height="20vh"
         :data="[
-          { label: 'Carteira', value: 1500, color: 'darkgreen' },
           { label: 'Banco', value: 5800.55, color: 'lightyellow' },
-          { label: 'Cartão', value: 2600.02, color: 'orange' }
+          { label: 'Cartão', value: 2600.02, color: 'orange' },
+          { label: 'Carteira', value: 1500, color: 'darkgreen' },
         ]"
       ></pie-chart>
       <v-divider></v-divider>
     </v-row>
     <v-row align="center">
-      <simple-bar-chart
+      <pie-chart
         title="Despesas do período por categoria"
-        height="10vh"
+        height="20vh"
         :data="[
           { label: 'Moradia', value: 4000, color: 'gray' },
           { label: 'Alimentação', value: 5000, color: 'red' },
@@ -38,7 +38,7 @@
           { label: 'Empréstimos', value: 3000, color: 'brown' },
           { label: 'Transporte', value: 1500, color: 'blue' }
         ]"
-      ></simple-bar-chart>
+      ></pie-chart>
       <v-divider></v-divider>
     </v-row>
   </v-container>
