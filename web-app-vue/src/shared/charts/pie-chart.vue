@@ -1,14 +1,15 @@
 <template>
   <div style="width: 100%" @click="legenda = !legenda">
     <h3>{{ props.title }}</h3>
-    <svg width="100%" :height="props.height" viewBox="-10 -10 20 20">
+    <svg width="100%" :height="props.height" :viewBox="`-${raio} -${raio} ${2 * raio} ${2 * raio}`">
       <path
-        d="
+        :d="`
           M 0 0
-          L 0 -10
-          A 10 10 0 0 1 0 10
-          A 10 10 0 0 1 0 -10
-          L 0 0"
+          L ${p1[0]} ${p1[1]}
+          A ${raio} ${raio} 0 0 1 ${p2[0]} ${p2[1]}
+          A ${raio} ${raio} 0 0 1 ${p3[0]} ${p3[1]}
+          L 0 0
+        `"
         fill="red"
       />
     </svg>
@@ -19,17 +20,18 @@
   </div>
 </template>
 <script setup>
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
+
+const raio = 1
+
+const a0 = 10
+const a1 = 360
+
+const p1 = [Math.cos((a0 * Math.PI) / 180) * raio, Math.sin((a0 * Math.PI) / 180) * raio]
+const p2 = [Math.cos((a1/2 * Math.PI) / 180) * raio, Math.sin((a1/2 * Math.PI) / 180) * raio]
+const p3 = [Math.cos((a1 * Math.PI) / 180) * raio, Math.sin((a1 * Math.PI) / 180) * raio]
 
 const props = defineProps(['title', 'height', 'data'])
+
 const legenda = ref(true)
-
-const biggest = computed(() => Math.max(...props.data.map((e) => e.value)))
-
-const reduz = (i, arr) => {
-  arr = [...arr.map((e) => (100 * e.value) / biggest.value)]
-  console.log(arr, i)
-  while (i-- > 0) arr.shift()
-  return arr.reduce((acc, e) => acc + e, 0)
-}
 </script>
