@@ -8,10 +8,7 @@
       <simple-bar-chart
         title="Receita x Despesa do período"
         height="6vh"
-        :data="[
-          { label: 'Receita', value: dashboard.receitaPeriodo, color: 'lightgreen' },
-          { label: 'Despesa', value: dashboard.despesaPeriodo, color: 'red' }
-        ]"
+        :data="dashboardState.store.dashboard.receitaDespesa"
       ></simple-bar-chart>
       <v-divider></v-divider>
     </v-row>
@@ -19,11 +16,7 @@
       <pie-chart
         title="Despesas do período por conta"
         height="20vh"
-        :data="[
-          { label: 'Banco', value: 5800.55, color: 'lightyellow' },
-          { label: 'Cartão', value: 2600.02, color: 'orange' },
-          { label: 'Carteira', value: 1500, color: 'darkgreen' },
-        ]"
+        :data="dashboardState.store.dashboard.despesaConta"
       ></pie-chart>
       <v-divider></v-divider>
     </v-row>
@@ -31,13 +24,7 @@
       <pie-chart
         title="Despesas do período por categoria"
         height="20vh"
-        :data="[
-          { label: 'Moradia', value: 4000, color: 'gray' },
-          { label: 'Alimentação', value: 5000, color: 'red' },
-          { label: 'Internet', value: 600, color: 'green' },
-          { label: 'Empréstimos', value: 3000, color: 'brown' },
-          { label: 'Transporte', value: 1500, color: 'blue' }
-        ]"
+        :data="dashboardState.store.dashboard.despesaCategoria"
       ></pie-chart>
       <v-divider></v-divider>
     </v-row>
@@ -50,9 +37,12 @@ import { reactive, ref } from 'vue'
 import ChipPeriodo from '@/shared/chip-periodo.vue'
 import SimpleBarChart from '@/shared/charts/simple-bar-chart.vue'
 import PieChart from '@/shared/charts/pie-chart.vue'
+import { useDashboardStore } from '@/stores/dashboardStore'
 
 const inicio = ref(startOfMonth(new Date()))
 const fim = ref(endOfMonth(new Date()))
+
+const dashboardState = useDashboardStore()
 
 const dashboard = reactive({
   receitaAcumulada: -100,
