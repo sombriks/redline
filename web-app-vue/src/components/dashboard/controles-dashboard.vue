@@ -6,9 +6,17 @@
     </v-row>
     <v-row align="center">
       <simple-bar-chart
-        title="Receita x Despesa do período"
+        title="Receitas x Despesas totais do período"
         height="6vh"
-        :data="dashboardState.store.dashboard.receitaDespesa"
+        :data="dashboardState.store.dashboard.receitaDespesaTotalPeriodo"
+      ></simple-bar-chart>
+      <v-divider></v-divider>
+    </v-row>
+    <v-row align="center">
+      <simple-bar-chart
+        title="Receitas x Despesas efetivadas do período"
+        height="6vh"
+        :data="dashboardState.store.dashboard.receitaDespesaEfetivadaPeriodo"
       ></simple-bar-chart>
       <v-divider></v-divider>
     </v-row>
@@ -28,12 +36,28 @@
       ></pie-chart>
       <v-divider></v-divider>
     </v-row>
+    <v-row align="center">
+      <pie-chart
+        title="Receitas do período por conta"
+        height="20vh"
+        :data="dashboardState.store.dashboard.receitaConta"
+      ></pie-chart>
+      <v-divider></v-divider>
+    </v-row>
+    <v-row align="center">
+      <pie-chart
+        title="Receitas do período por categoria"
+        height="20vh"
+        :data="dashboardState.store.dashboard.receitaCategoria"
+      ></pie-chart>
+      <v-divider></v-divider>
+    </v-row>
   </v-container>
 </template>
 <style scoped></style>
 <script setup>
 import { endOfMonth, startOfMonth } from 'date-fns'
-import { reactive, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import ChipPeriodo from '@/shared/chip-periodo.vue'
 import SimpleBarChart from '@/shared/charts/simple-bar-chart.vue'
 import PieChart from '@/shared/charts/pie-chart.vue'
@@ -44,10 +68,7 @@ const fim = ref(endOfMonth(new Date()))
 
 const dashboardState = useDashboardStore()
 
-const dashboard = reactive({
-  receitaAcumulada: -100,
-  receitaPeriodo: 300,
-  despesaAcumulada: -100,
-  despesaPeriodo: 370
+onMounted(async () => {
+  await dashboardState.sincronizarDashboard(inicio.value, fim.value)
 })
 </script>
