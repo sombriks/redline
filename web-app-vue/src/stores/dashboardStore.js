@@ -74,14 +74,20 @@ export const useDashboardStore = defineStore('dashboard-store', () => {
       saldos: {
         // Saldos relativos ao período
         anteriorGeral: 0,
-        anterior1Ano: 0,
+        anterior1Ano: -10,
         anterior6Meses: 0,
         anterior1Mes: 0,
         periodo: 0,
         projetado1Mes: 0,
-        projetado6Meses: 0,
+        projetado6Meses: 10,
         projetado1Ano: 0
-      }
+      },
+      vencimentos: {
+        aVencer: 3,
+        emAtraso: 0
+      },
+      limites: [],
+      planejamentos: []
     }
   })
 

@@ -80,7 +80,7 @@
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="saldos">
-          <!-- saldos (tabelinha/hero cards)-->
+          <!-- saldos (tabelinha/chips)-->
           <!--    anterior geral-->
           <!--    anterior 1 ano-->
           <!--    anterior 6 meses-->
@@ -90,17 +90,60 @@
           <!--    projetado 6 meses-->
           <!--    projetado 1 ano-->
           <v-expansion-panel-title>Saldos</v-expansion-panel-title>
-          <v-expansion-panel-text></v-expansion-panel-text>
+          <v-expansion-panel-text>
+            <chip-saldo
+              label="Saldo anterior geral:"
+              :saldo="dashboardState.store.dashboard.saldos.anteriorGeral"
+            />
+            <chip-saldo
+              label="Saldo ano anterior:"
+              :saldo="dashboardState.store.dashboard.saldos.anterior1Ano"
+            />
+            <chip-saldo
+              label="Saldo últimos 6 meses:"
+              :saldo="dashboardState.store.dashboard.saldos.anterior6Meses"
+            />
+            <chip-saldo
+              label="Saldo mês anterior:"
+              :saldo="dashboardState.store.dashboard.saldos.anterior1Mes"
+            />
+            <v-divider></v-divider>
+            <chip-saldo
+              label="Saldo do período:"
+              :saldo="dashboardState.store.dashboard.saldos.periodo"
+            />
+            <v-divider></v-divider>
+            <chip-saldo
+              label="Saldo projetado - 1 mês:"
+              :saldo="dashboardState.store.dashboard.saldos.projetado1Mes"
+            />
+            <chip-saldo
+              label="Saldo projetado - 6 meses:"
+              :saldo="dashboardState.store.dashboard.saldos.projetado6Meses"
+            />
+            <chip-saldo
+              label="Saldo projetado - 1 ano:"
+              :saldo="dashboardState.store.dashboard.saldos.projetado1Ano"
+            />
+          </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="vencimentos">
-          <!-- quantidade de contas vencidas (hero cards)-->
-          <!-- quantidade de contas a vencer (hero cards)-->
+          <!-- quantidade de contas vencidas (chips)-->
+          <!-- quantidade de contas a vencer (chips)-->
           <v-expansion-panel-title>Vencimentos</v-expansion-panel-title>
-          <v-expansion-panel-text></v-expansion-panel-text>
+          <v-expansion-panel-text>
+            <v-chip variant="outlined" class="ma-1" rounded size="large" color="cyan">
+              A vencer: {{ dashboardState.store.dashboard.vencimentos.aVencer }}
+            </v-chip>
+            <v-chip variant="outlined" class="ma-1" rounded size="large" color="orange">
+              Em atraso: {{ dashboardState.store.dashboard.vencimentos.emAtraso }}
+            </v-chip>
+          </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="limites">
-          <!-- limites por conta banco (stacked-bar?) -->
-          <!-- limites por conta cartão (stacked-bar?) -->
+          <!-- limites por conta banco -->
+          <!-- limites por conta cartão -->
+          <!-- situação dos planejamentos (linhas no plano com a REDLINE do limite da conta / cartão)-->
           <v-expansion-panel-title>Limites</v-expansion-panel-title>
           <v-expansion-panel-text></v-expansion-panel-text>
         </v-expansion-panel>
@@ -122,6 +165,7 @@ import SimpleBarChart from '@/shared/charts/simple-bar-chart.vue'
 import PieChart from '@/shared/charts/pie-chart.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
 import StackBarChart from '@/shared/charts/stack-bar-chart.vue'
+import ChipSaldo from '@/shared/chip-saldo.vue'
 
 const inicio = ref(startOfMonth(new Date()))
 const fim = ref(endOfMonth(new Date()))
