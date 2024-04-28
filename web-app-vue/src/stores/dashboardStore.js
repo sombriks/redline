@@ -8,35 +8,71 @@ export const useDashboardStore = defineStore('dashboard-store', () => {
 
   const store = reactive({
     dashboard: getRedLine()?.dashboard || {
-      receitaDespesaTotalPeriodo: [ // Receita x Despesa - simple-bar
+      receitaDespesaTotalPeriodo: [
+        // Receita x Despesa - simple-bar
         { label: 'Receita', value: 18000, color: 'lightgreen' },
         { label: 'Despesa', value: 14500, color: 'red' }
       ],
-      receitaDespesaEfetivadaPeriodo: [ // Receita x Despesa - simple-bar
+      receitaDespesaEfetivadaPeriodo: [
+        // Receita x Despesa - simple-bar
         { label: 'Receita', value: 0, color: 'lightgreen' },
         { label: 'Despesa', value: 300, color: 'red' }
       ],
-      despesaConta: [ // Despesas por conta - pie
+      despesaConta: [
+        // Despesas por conta - pie
         { label: 'Banco', value: 5800.55, color: 'lightyellow' },
         { label: 'Cartão', value: 2600.02, color: 'orange' },
         { label: 'Carteira', value: 1500, color: 'darkgreen' }
       ],
-      despesaCategoria: [ // Despesas por categoria - pie
+      despesaCategoria: [
+        // Despesas por categoria - pie
         { label: 'Moradia', value: 4000, color: 'gray' },
         { label: 'Alimentação', value: 5000, color: 'red' },
         { label: 'Internet', value: 600, color: 'green' },
         { label: 'Empréstimos', value: 3000, color: 'brown' },
         { label: 'Transporte', value: 1500, color: 'blue' }
       ],
-      receitaConta: [ // Receitas por conta
-        { label: 'Banco', value: 18000, color: 'lightgreen' },
-
+      receitaConta: [
+        // Receitas por conta
+        { label: 'Banco', value: 18000, color: 'lightgreen' }
       ],
-      receitaCategoria: [ // Receitas categoria
-        { label: 'Salário', value: 18000, color: 'lightgreen' },
-
+      receitaCategoria: [
+        // Receitas categoria
+        { label: 'Salário', value: 18000, color: 'lightgreen' }
       ],
-      saldos: { // Saldos relativos ao período
+      composicaoDespesas: [
+        {
+          label: 'Conta 1',
+          color: 'red',
+          data: [
+            { label: 'Moradia', value: 4000, color: 'gray' },
+            { label: 'Internet', value: 600, color: 'green' }
+          ]
+        },
+        {
+          label: 'Conta 2',
+          color: 'cyan',
+          data: [{ label: 'Empréstimos', value: 3000, color: 'brown' }]
+        },
+        {
+          label: 'Conta 3',
+          color: 'violet',
+          data: [
+            { label: 'Transporte', value: 1500, color: 'blue' },
+            { label: 'Alimentação', value: 5000, color: 'red' },
+            { label: 'Outros', value: 700, color: 'blue' }
+          ]
+        }
+      ],
+      composicaoReceitas: [
+        {
+          label: 'Conta 1',
+          color: 'lightblue',
+          data: [{ label: 'Salário', value: 18000, color: 'lightgreen' }]
+        }
+      ],
+      saldos: {
+        // Saldos relativos ao período
         anteriorGeral: 0,
         anterior1Ano: 0,
         anterior6Meses: 0,

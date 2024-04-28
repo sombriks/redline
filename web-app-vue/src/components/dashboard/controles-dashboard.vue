@@ -1,6 +1,7 @@
 <template>
   <v-container fluid>
     <v-row>
+      <h1>Dashboard</h1>
       <!-- filtro período -->
       <chip-periodo v-model:inicial="inicio" v-model:final="fim"></chip-periodo>
     </v-row>
@@ -13,13 +14,11 @@
           <v-expansion-panel-text>
             <simple-bar-chart
               title="Receitas x Despesas totais do período"
-              height="6vh"
               :data="dashboardState.store.dashboard.receitaDespesaTotalPeriodo"
             ></simple-bar-chart>
             <v-divider></v-divider>
             <simple-bar-chart
               title="Receitas x Despesas efetivadas do período"
-              height="6vh"
               :data="dashboardState.store.dashboard.receitaDespesaEfetivadaPeriodo"
             ></simple-bar-chart>
             <v-divider></v-divider>
@@ -68,9 +67,15 @@
           <!-- composição receitas (stacked bar conta/categorias)-->
           <v-expansion-panel-title>Composição</v-expansion-panel-title>
           <v-expansion-panel-text>
-            <stack-bar-chart title="Composição de despesas"></stack-bar-chart>
+            <stack-bar-chart
+              title="Composição de despesas"
+              :groups="dashboardState.store.dashboard.composicaoDespesas"
+            ></stack-bar-chart>
             <v-divider></v-divider>
-            <stack-bar-chart title="Composição de receitas"></stack-bar-chart>
+            <stack-bar-chart
+              title="Composição de receitas"
+              :groups="dashboardState.store.dashboard.composicaoReceitas"
+            ></stack-bar-chart>
             <v-divider></v-divider>
           </v-expansion-panel-text>
         </v-expansion-panel>
@@ -121,7 +126,7 @@ import StackBarChart from '@/shared/charts/stack-bar-chart.vue'
 const inicio = ref(startOfMonth(new Date()))
 const fim = ref(endOfMonth(new Date()))
 
-const folha = ref("rxd")
+const folha = ref('rxd')
 
 const dashboardState = useDashboardStore()
 
