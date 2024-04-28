@@ -1,8 +1,19 @@
 <template>
   <div style="width: 100%" @click="legenda = !legenda">
     <h3>{{ props.title }}</h3>
-    <svg v-if="data?.length" width="100%" :height="height">
+    <svg v-if="groups?.length" width="100%" :height="height">
     </svg>
+    <p v-if="!groups?.length">
+      Sem dados para exibir
+    </p>
+    <div v-for="(e, i) in groups" :key="'label-' + i">
+      <fieldset v-if="legenda">
+        <legend>{{e.label}}</legend>
+        <div v-for="(j,k) in e.data" :key="`label-${i}-${k}`">
+          <i :style="{ color: j.color }">{{ j.label }}: {{ j.value }}</i>
+        </div>
+      </fieldset>
+    </div>
   </div>
 </template>
 <script setup>
