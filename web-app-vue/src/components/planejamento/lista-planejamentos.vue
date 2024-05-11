@@ -1,22 +1,26 @@
 <template>
   <v-container fluid>
-    <detalhe-planejamento @onSave="savePlanejamento" />
-    <v-btn
-      variant="outlined"
-      rounded="rounded-circle"
-      @click="drawer = !drawer"
-      icon="mdi-dots-vertical"
-    ></v-btn>
-    <v-divider></v-divider>
-    <p v-if="planejamentos.length === 0">Não há planejamentos para exibir</p>
-    <detalhe-planejamento
-      v-for="plan in planejamentos"
-      :key="plan.id"
-      :planejamento="plan"
-      @onSave="savePlanejamento"
-      @onDel="delPlanejamento"
-    />
-    <v-navigation-drawer v-model="drawer" location="bottom" temporary></v-navigation-drawer>
+    <v-row align="center">
+      <detalhe-planejamento @onSave="savePlanejamento" />
+      <v-btn
+        variant="outlined"
+        rounded="rounded-circle"
+        @click="drawer = !drawer"
+        icon="mdi-dots-vertical"
+      ></v-btn>
+      <v-divider></v-divider>
+    </v-row>
+    <v-row align="center">
+      <p v-if="planejamentos.length === 0">Não há planejamentos para exibir</p>
+      <detalhe-planejamento
+        v-for="plan in planejamentos"
+        :key="plan.id"
+        :planejamento="plan"
+        @onSave="savePlanejamento"
+        @onDel="delPlanejamento"
+      />
+      <v-navigation-drawer v-model="drawer" location="bottom" temporary></v-navigation-drawer>
+    </v-row>
   </v-container>
 </template>
 <style scoped></style>

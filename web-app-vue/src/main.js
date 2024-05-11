@@ -5,6 +5,8 @@ import { router } from './services/router'
 
 import { vuetifyInstance } from '@/services/vuetifyInstance'
 
+import "vue-data-ui/style.css"
+
 import App from './App.vue'
 
 import './assets/main.css'

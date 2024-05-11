@@ -14,9 +14,10 @@
     "date-fns": "^2.30.0",
     "jwt-decode": "^3.1.2",
     "pinia": "^2.1.7",
-    "vue": "^3.4.21",
+    "vue": "^3.4.25",
+    "vue-data-ui": "^2.1.43",
     "vue-router": "^4.3.0",
-    "vuetify": "^3.5.11"
+    "vuetify": "^3.5.17"
   },
   "devDependencies": {
     "@mdi/font": "^7.2.96",

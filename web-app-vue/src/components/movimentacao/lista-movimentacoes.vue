@@ -237,7 +237,7 @@ const agrupamentoCategoria = computed(() => {
       ...c,
       saldo: prepareBalance(thisCategory)
     }
-  })
+  }).filter(ac => ac.saldo != 0)
   return categorias
 })
 
