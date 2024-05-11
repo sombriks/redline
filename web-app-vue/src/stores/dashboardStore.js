@@ -10,13 +10,13 @@ export const useDashboardStore = defineStore('dashboard-store', () => {
     dashboard: getRedLine()?.dashboard || {
       receitaDespesaTotalPeriodo: [
         // Receita x Despesa - simple-bar
-        { label: 'Receita', value: 18000, color: 'lightgreen' },
-        { label: 'Despesa', value: 14500, color: 'red' }
+        { label: 'Receita Total', value: 18000, color: 'lightgreen' },
+        { label: 'Despesa Total', value: 14500, color: 'red' }
       ],
       receitaDespesaEfetivadaPeriodo: [
         // Receita x Despesa - simple-bar
-        { label: 'Receita', value: 0, color: 'lightgreen' },
-        { label: 'Despesa', value: 300, color: 'red' }
+        { label: 'Receita Efetivada', value: 18000, color: 'lightgreen' },
+        { label: 'Despesa Efetivada', value: 1500, color: 'red' }
       ],
       despesaConta: [
         // Despesas por conta - pie
