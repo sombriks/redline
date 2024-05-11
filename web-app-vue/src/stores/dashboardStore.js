@@ -34,7 +34,7 @@ export const useDashboardStore = defineStore('dashboard-store', () => {
       ],
       receitaConta: [
         // Receitas por conta
-        { label: 'Banco', value: 18000, color: 'lightgreen' }
+        { label: 'Banco', value: 18000, color: 'lightyellow' }
       ],
       receitaCategoria: [
         // Receitas categoria
@@ -42,7 +42,7 @@ export const useDashboardStore = defineStore('dashboard-store', () => {
       ],
       composicaoDespesas: [
         {
-          label: 'Conta 1',
+          label: 'Banco',
           color: 'red',
           data: [
             { label: 'Moradia', value: 4000, color: 'gray' },
@@ -50,12 +50,12 @@ export const useDashboardStore = defineStore('dashboard-store', () => {
           ]
         },
         {
-          label: 'Conta 2',
+          label: 'Cartão',
           color: 'cyan',
           data: [{ label: 'Empréstimos', value: 3000, color: 'brown' }]
         },
         {
-          label: 'Conta 3',
+          label: 'Carteira',
           color: 'violet',
           data: [
             { label: 'Transporte', value: 1500, color: 'blue' },
@@ -83,6 +83,7 @@ export const useDashboardStore = defineStore('dashboard-store', () => {
         projetado1Ano: 0
       },
       vencimentos: {
+        quitadas: 7,
         aVencer: 3,
         emAtraso: 0
       },
