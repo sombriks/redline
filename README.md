@@ -7,7 +7,8 @@ Study project - Yet another personal finance app
 ## Overview
 
 - Keep track of your personal expenses and income
-- Draw nice charts
+- [Draw nice charts](https://vue-data-ui.graphieros.com/)
+- [Use nice UI components](https://vuetifyjs.com/)
 - Import and export data
 - [_Don't take this code too serious_](./docs/THINGS_TO_FIX.md)
 - <https://sombriks.atlassian.net/jira/software/projects/RED/boards/2>
