@@ -15,7 +15,7 @@ export const routes = [
   { component: AuthPage, path: '/auth' },
   { path: '/', redirect: '/dashboard' },
   { component: DashboardPage, path: '/dashboard', label: 'Dashboard', icon: 'mdi-chart-bar' },
-  { component: NovaMovimentacaoPage, path: '/nova-movimentacao', label: 'Nova movimentação', icon: 'mdi-currency-usd' },
+  { component: NovaMovimentacaoPage, path: '/nova-movimentacao', label: 'Novo lançamento', icon: 'mdi-currency-usd' },
   { component: ContasPage, path: '/contas', label: 'Contas', icon: 'mdi-card-account-details' },
   { component: CategoriasPage, path: '/categorias', label: 'Categorias', icon: 'mdi-playlist-check' },
   { component: HistoricoPage, path: '/historico', label: 'Histórico', icon: 'mdi-clipboard-text-search-outline' },

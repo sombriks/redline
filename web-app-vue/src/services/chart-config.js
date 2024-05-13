@@ -5,8 +5,8 @@ export const sparkBarConfig = {
     'backgroundColor': '#212121',
     'fontFamily': 'inherit',
     'layout': {
-      'percentage': true,
-      'target': 0
+      'percentage': false,
+      'target': 0 // must compute proper value
     },
     'gutter': {
       'backgroundColor': '#000000',
@@ -33,7 +33,7 @@ export const sparkBarConfig = {
         'bold': true
       },
       'value': {
-        'show': false,
+        'show': true,
         'bold': true
       }
     }

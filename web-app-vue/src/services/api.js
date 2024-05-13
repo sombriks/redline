@@ -185,3 +185,6 @@ export const delRecorrencia = async ({ id, recorrencia_id }) =>
 
 export const geraLancamentosRecorrencia = async ({ id, recorrencia_id }) =>
   await get({ uri: `/${id}/recorrencia/${recorrencia_id}/lancamentos` })
+
+export const getDashboard = async ({ id, inicio, fim }) =>
+  await get({ uri: uriParams({ uri: `/${id}/dashboard`, params: { inicio, fim } }) })

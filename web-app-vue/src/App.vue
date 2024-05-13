@@ -24,7 +24,7 @@ const show = ref(false)
     </v-app-bar>
     <v-navigation-drawer v-if="userStore.store.token" v-model="show">
       <v-list>
-        <v-list-item v-for="m in menu" :key="m.label" :active="m.path == $route.path">
+        <v-list-item v-for="m in menu" :key="m.label" :active="m.path === $route.path">
           <template v-slot:prepend>
             <v-icon variant="outlined" color="red-lighten-3" :icon="m.icon"></v-icon>
           </template>
