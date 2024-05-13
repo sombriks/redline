@@ -3,17 +3,18 @@
     v-if="!edit"
     rounded
     variant="outlined"
+    class="ma-2"
+    size="x-large"
     :color="categoria.cor || 'green-accent-2'"
     :prepend-icon="
-      planejamento?.tipo_movimentacao_id == 1
+      planejamento?.tipo_movimentacao_id === 1
         ? 'mdi-cash-plus'
-        : planejamento?.tipo_movimentacao_id == 2
+        : planejamento?.tipo_movimentacao_id === 2
         ? 'mdi-cash-minus'
         : 'mdi-cash'
     "
     :append-icon="planejamento?.id ? 'mdi-playlist-edit' : 'mdi-playlist-plus'"
-    class="ma-2"
-    size="x-large"
+    :title="props.planejamento?.descricao"
     @click="edit = true"
   >
     {{ planejamento?.id ? descricao : 'Novo planejamento' }}
@@ -86,7 +87,6 @@
     </v-form>
   </v-card>
 </template>
-<style scoped></style>
 <script setup>
 import { computed, onMounted, ref, toRaw, watch } from 'vue'
 import { numberRule, requiredRule } from '@/services/basic-rules'
@@ -106,13 +106,14 @@ const valid = ref(false)
 const plan = ref({})
 
 const descricao = computed(() => {
-  return `${props.planejamento.descricao} (${categoria.value.descricao}) | ${prepareMoney(
+  // TODO readicionar ${props.planejamento.descricao}
+  return `(${categoria.value.descricao}) | ${prepareMoney(
     props.planejamento.limite
   )}`
 })
 
 const categoria = computed(
-  () => categoriaStore.store.categorias?.find((c) => c.id == props.planejamento?.categoria_id) || {}
+  () => categoriaStore.store.categorias?.find((c) => c.id === props.planejamento?.categoria_id) || {}
 )
 
 watch(
@@ -154,3 +155,6 @@ const doDel = async () => {
   emit('onDel', plan.value)
 }
 </script>
+
+<style scoped>
+</style>

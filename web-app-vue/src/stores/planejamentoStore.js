@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { useUserStore } from '@/stores/userStore'
 import { reactive } from 'vue'
-import { getRedLine } from '@/services/redLine'
+import { getRedLine, setRedLine } from '@/services/redLine'
 import { delPlanejamento, insertPlanejamento, listPlanejamentos, updatePlanejamento } from "@/services/api";
 
 export const usePlanejamentoStore = defineStore('planejamento-store', () => {
@@ -19,7 +19,11 @@ export const usePlanejamentoStore = defineStore('planejamento-store', () => {
   const sincronizarPlanejamentos = async () => {
     const { id } = uState.userData
     const { q, limit, offset } = store.filtroPlanejamentos
+    store.planejamentos = []
     store.planejamentos = await listPlanejamentos({ id, q, limit, offset })
+    const redline = getRedLine()
+    redline.planejamentos = [...store.planejamentos]
+    setRedLine(redline)
   }
 
   const salvaPlanejamento = async planejamento => {

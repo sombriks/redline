@@ -12,7 +12,7 @@ import {
   findCategoriaRequest,
   findContaRequest,
   findMovimentacaoRequest,
-  findRecorrenciaRequest, geraLancamentosRequest,
+  findRecorrenciaRequest, geraLancamentosRequest, getDashboardRequest,
   insertCategoriaRequest,
   insertContaRequest,
   insertMovimentacaoRequest,
@@ -109,6 +109,8 @@ new ApiBuilder({router}).path(b => {
         b.get("/lancamentos", geraLancamentosRequest)
       })
     });
+
+    b.get("/dashboard", getDashboardRequest)
   });
 }).build();
 

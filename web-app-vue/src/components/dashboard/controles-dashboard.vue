@@ -146,7 +146,7 @@
           <!-- situação dos limites (linhas no plano com a REDLINE do limite da conta / cartão)-->
           <v-expansion-panel-title>Limites</v-expansion-panel-title>
           <v-expansion-panel-text>
-            <vue-data-ui component="VueUiXy" :config="lineChartConfig" :dataset="dataset"/>
+            <vue-data-ui component="VueUiXy" :config="lineChartConfig" :dataset="dataset" />
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="planejamentos">
@@ -165,7 +165,6 @@ import { computed, onMounted, ref } from 'vue'
 import { VueDataUi } from 'vue-data-ui'
 import ChipPeriodo from '@/shared/chip-periodo.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
-import StackBarChart from '@/shared/charts/stack-bar-chart.vue'
 import ChipSaldo from '@/shared/chip-saldo.vue'
 // TODO compute configs?
 import { donutConfig, lineChartConfig, sparkBarConfig, sparkStackBarConfig } from '@/services/chart-config'
@@ -178,31 +177,38 @@ const folha = ref('rxd')
 
 const dashboardState = useDashboardStore()
 
-const receitaDespesaBarConfig = computed(() => sparkBarConfig)
-
-const receitaDespesaTotalPeriodo = computed(() => {
+const receitaDespesaBarConfig = computed(() => {
   const total = dashboardState.store.dashboard.receitaDespesaTotalPeriodo
     .reduce((acc, e) => {
       acc += e.value
       return acc
     }, 0)
+  return {
+    style: {
+      ...sparkBarConfig.style,
+      layout: {
+        ...sparkBarConfig.style.layout,
+        independant: true,
+        percentage: false,
+        target: total
+      }
+    }
+  }
+})
+
+const receitaDespesaTotalPeriodo = computed(() => {
   return dashboardState.store.dashboard.receitaDespesaTotalPeriodo.map(r => ({
     ...r,
-    name: `${r.label} ${prepareMoney(r.value)}`,
-    value: 100 * r.value / total
+    name: r.label,
+    prefix: "R$ "
   }))
 })
 
 const receitaDespesaEfetivadaPeriodo = computed(() => {
-  const total = dashboardState.store.dashboard.receitaDespesaTotalPeriodo
-    .reduce((acc, e) => {
-      acc += e.value
-      return acc
-    }, 0)
   return dashboardState.store.dashboard.receitaDespesaEfetivadaPeriodo.map(r => ({
     ...r,
-    name: `${r.label} ${prepareMoney(r.value)}`,
-    value: 100 * r.value / total
+    name: r.label,
+    prefix: "R$ "
   }))
 })
 
