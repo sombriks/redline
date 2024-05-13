@@ -17,7 +17,9 @@
               :config="receitaDespesaBarConfig"
               :dataset="receitaDespesaTotalPeriodo"
             ></vue-data-ui>
+            <br/>
             <v-divider></v-divider>
+            <br/>
             <vue-data-ui
               component="VueUiSparkbar"
               :config="receitaDespesaBarConfig"
@@ -36,7 +38,9 @@
               :config="donutConfig"
               :dataset="despesaConta"
             ></vue-data-ui>
+            <br/>
             <v-divider></v-divider>
+            <br/>
             <h3>Despesas por categoria</h3>
             <vue-data-ui
               component="VueUiDonut"
@@ -56,7 +60,9 @@
               :config="donutConfig"
               :dataset="receitaConta"
             ></vue-data-ui>
+            <br/>
             <v-divider></v-divider>
+            <br/>
             <h3>Receitas por categoria</h3>
             <vue-data-ui
               component="VueUiDonut"
@@ -79,10 +85,12 @@
                 :dataset="conta.data"
               ></vue-data-ui>
             </div>
+            <br/>
             <v-divider></v-divider>
+            <br/>
             <h3>Composição de receitas</h3>
-            <div v-for="conta in composicaoReceitas" :key="conta.label">
-              <h4>{{ conta.label }}</h4>
+            <div v-for="conta in composicaoReceitas" :key="conta.descricao">
+              <h4>{{ conta.descricao }}</h4>
               <vue-data-ui
                 component="VueUiSparkStackbar"
                 :config="sparkStackBarConfig"
@@ -181,27 +189,25 @@ import { VueDataUi } from 'vue-data-ui'
 import ChipPeriodo from '@/shared/chip-periodo.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
 import ChipSaldo from '@/shared/chip-saldo.vue'
-// TODO compute configs?
 import {
   donutConfig,
   lineChartConfig,
   sparkBarConfig,
   sparkStackBarConfig
 } from '@/services/chart-config'
-import { prepareMoney } from '@/services/formaters'
 
 const inicio = ref(startOfMonth(new Date()))
 const fim = ref(endOfMonth(new Date()))
 
-const folha = ref('rxd')
+const folha = ref('')
 
 const dashboardState = useDashboardStore()
 
 const receitaDespesaBarConfig = computed(() => {
-  const total = dashboardState.store.dashboard.receitaDespesaTotalPeriodo.reduce((acc, e) => {
+  const total = dashboardState.store.dashboard.receitaDespesaTotalPeriodo?.reduce((acc, e) => {
     acc += e.value
     return acc
-  }, 0)
+  }, 0) || 0
   return {
     style: {
       ...sparkBarConfig.style,
@@ -216,7 +222,7 @@ const receitaDespesaBarConfig = computed(() => {
 })
 
 const receitaDespesaTotalPeriodo = computed(() => {
-  return dashboardState.store.dashboard.receitaDespesaTotalPeriodo.map((r) => ({
+  return dashboardState.store.dashboard.receitaDespesaTotalPeriodo?.map((r) => ({
     ...r,
     name: r.label,
     prefix: 'R$ '
@@ -224,7 +230,7 @@ const receitaDespesaTotalPeriodo = computed(() => {
 })
 
 const receitaDespesaEfetivadaPeriodo = computed(() => {
-  return dashboardState.store.dashboard.receitaDespesaEfetivadaPeriodo.map((r) => ({
+  return dashboardState.store.dashboard.receitaDespesaEfetivadaPeriodo?.map((r) => ({
     ...r,
     name: r.label,
     prefix: 'R$ '

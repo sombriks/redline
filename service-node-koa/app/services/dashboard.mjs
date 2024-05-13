@@ -17,13 +17,7 @@ export const getDashboard = async ({ usuario_id, inicio, fim }) => {
     receitaConta: await receitaConta({ usuario_id, inicio, fim }),
     receitaCategoria: await receitaCategoria({ usuario_id, inicio, fim }),
     composicaoDespesas: await composicaoDespesas({ usuario_id, inicio, fim }),
-    composicaoReceitas: [
-      {
-        label: 'Conta 1',
-        color: 'lightblue',
-        data: [{ label: 'Salário', value: 18000, color: 'lightgreen' }]
-      }
-    ],
+    composicaoReceitas: await composicaoReceitas({ usuario_id, inicio, fim }),
     saldos: {
       // Saldos relativos ao período
       anteriorGeral: 0,
@@ -156,6 +150,26 @@ async function composicaoDespesas({ usuario_id, inicio, fim }){
                             where conta_id = :conta_id
                               and vencimento between :inicio and :fim
                               and tipo_movimentacao_id = 2)
+        select descricao as label, cor as color, sum(valor) as value
+        from data_frame
+        group by descricao, cor
+    `,{conta_id, inicio, fim})
+  }
+  return contas.filter(c => c.data.length)
+}
+
+async function composicaoReceitas({ usuario_id, inicio, fim }){
+  const contas = await knex("conta").where({usuario_id})
+  for await (const conta of contas) {
+    const conta_id = conta.id
+    conta.color = conta.cor
+    conta.data = await knex.raw(`
+        with data_frame as (select categoria.*, movimentacao.*
+                            from movimentacao
+                                     left join categoria on categoria.id = movimentacao.categoria_id
+                            where conta_id = :conta_id
+                              and vencimento between :inicio and :fim
+                              and tipo_movimentacao_id = 1)
         select descricao as label, cor as color, sum(valor) as value
         from data_frame
         group by descricao, cor
