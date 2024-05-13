@@ -12,11 +12,17 @@
           <!-- receitas x despesas efetivadas (simple-bar) -->
           <v-expansion-panel-title>Receitas x Despesas</v-expansion-panel-title>
           <v-expansion-panel-text>
-            <vue-data-ui component="VueUiSparkbar" :config="receitaDespesaBarConfig"
-                         :dataset="receitaDespesaTotalPeriodo"></vue-data-ui>
+            <vue-data-ui
+              component="VueUiSparkbar"
+              :config="receitaDespesaBarConfig"
+              :dataset="receitaDespesaTotalPeriodo"
+            ></vue-data-ui>
             <v-divider></v-divider>
-            <vue-data-ui component="VueUiSparkbar" :config="receitaDespesaBarConfig"
-                         :dataset="receitaDespesaEfetivadaPeriodo"></vue-data-ui>
+            <vue-data-ui
+              component="VueUiSparkbar"
+              :config="receitaDespesaBarConfig"
+              :dataset="receitaDespesaEfetivadaPeriodo"
+            ></vue-data-ui>
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="despesas">
@@ -25,12 +31,18 @@
           <v-expansion-panel-title>Detalhes Despesas</v-expansion-panel-title>
           <v-expansion-panel-text>
             <h3>Despesas por conta</h3>
-            <vue-data-ui component="VueUiDonut" :config="donutConfig"
-                         :dataset="despesaConta"></vue-data-ui>
+            <vue-data-ui
+              component="VueUiDonut"
+              :config="donutConfig"
+              :dataset="despesaConta"
+            ></vue-data-ui>
             <v-divider></v-divider>
             <h3>Despesas por categoria</h3>
-            <vue-data-ui component="VueUiDonut" :config="donutConfig"
-                         :dataset="despesaCategoria"></vue-data-ui>
+            <vue-data-ui
+              component="VueUiDonut"
+              :config="donutConfig"
+              :dataset="despesaCategoria"
+            ></vue-data-ui>
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="receitas">
@@ -39,12 +51,18 @@
           <v-expansion-panel-title>Detalhes Receitas</v-expansion-panel-title>
           <v-expansion-panel-text>
             <h3>Receitas por conta</h3>
-            <vue-data-ui component="VueUiDonut" :config="donutConfig"
-                         :dataset="receitaConta"></vue-data-ui>
+            <vue-data-ui
+              component="VueUiDonut"
+              :config="donutConfig"
+              :dataset="receitaConta"
+            ></vue-data-ui>
             <v-divider></v-divider>
             <h3>Receitas por categoria</h3>
-            <vue-data-ui component="VueUiDonut" :config="donutConfig"
-                         :dataset="receitaCategoria"></vue-data-ui>
+            <vue-data-ui
+              component="VueUiDonut"
+              :config="donutConfig"
+              :dataset="receitaCategoria"
+            ></vue-data-ui>
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="comps">
@@ -52,27 +70,24 @@
           <!-- composição receitas (stacked bar conta/categorias)-->
           <v-expansion-panel-title>Composição</v-expansion-panel-title>
           <v-expansion-panel-text>
-            <!--            <stack-bar-chart-->
-            <!--              title="Composição de despesas"-->
-            <!--              :groups="dashboardState.store.dashboard.composicaoDespesas"-->
-            <!--            ></stack-bar-chart>-->
             <h3>Composição de despesas</h3>
-            <div v-for="conta in composicaoDespesas" :key="conta.label">
-              <h4>{{ conta.label }}</h4>
-              <vue-data-ui component="VueUiSparkStackbar" :config="sparkStackBarConfig"
-                           :dataset="conta.data"></vue-data-ui>
+            <div v-for="conta in composicaoDespesas" :key="conta.descricao">
+              <h4>{{ conta.descricao }}</h4>
+              <vue-data-ui
+                component="VueUiSparkStackbar"
+                :config="sparkStackBarConfig"
+                :dataset="conta.data"
+              ></vue-data-ui>
             </div>
             <v-divider></v-divider>
-            <!--            <stack-bar-chart-->
-            <!--              title="Composição de receitas"-->
-            <!--              :groups="dashboardState.store.dashboard.composicaoReceitas"-->
-            <!--            ></stack-bar-chart>-->
-            <!--            <v-divider></v-divider>-->
             <h3>Composição de receitas</h3>
             <div v-for="conta in composicaoReceitas" :key="conta.label">
               <h4>{{ conta.label }}</h4>
-              <vue-data-ui component="VueUiSparkStackbar" :config="sparkStackBarConfig"
-                           :dataset="conta.data"></vue-data-ui>
+              <vue-data-ui
+                component="VueUiSparkStackbar"
+                :config="sparkStackBarConfig"
+                :dataset="conta.data"
+              ></vue-data-ui>
             </div>
           </v-expansion-panel-text>
         </v-expansion-panel>
@@ -167,7 +182,12 @@ import ChipPeriodo from '@/shared/chip-periodo.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
 import ChipSaldo from '@/shared/chip-saldo.vue'
 // TODO compute configs?
-import { donutConfig, lineChartConfig, sparkBarConfig, sparkStackBarConfig } from '@/services/chart-config'
+import {
+  donutConfig,
+  lineChartConfig,
+  sparkBarConfig,
+  sparkStackBarConfig
+} from '@/services/chart-config'
 import { prepareMoney } from '@/services/formaters'
 
 const inicio = ref(startOfMonth(new Date()))
@@ -178,11 +198,10 @@ const folha = ref('rxd')
 const dashboardState = useDashboardStore()
 
 const receitaDespesaBarConfig = computed(() => {
-  const total = dashboardState.store.dashboard.receitaDespesaTotalPeriodo
-    .reduce((acc, e) => {
-      acc += e.value
-      return acc
-    }, 0)
+  const total = dashboardState.store.dashboard.receitaDespesaTotalPeriodo.reduce((acc, e) => {
+    acc += e.value
+    return acc
+  }, 0)
   return {
     style: {
       ...sparkBarConfig.style,
@@ -197,23 +216,23 @@ const receitaDespesaBarConfig = computed(() => {
 })
 
 const receitaDespesaTotalPeriodo = computed(() => {
-  return dashboardState.store.dashboard.receitaDespesaTotalPeriodo.map(r => ({
+  return dashboardState.store.dashboard.receitaDespesaTotalPeriodo.map((r) => ({
     ...r,
     name: r.label,
-    prefix: "R$ "
+    prefix: 'R$ '
   }))
 })
 
 const receitaDespesaEfetivadaPeriodo = computed(() => {
-  return dashboardState.store.dashboard.receitaDespesaEfetivadaPeriodo.map(r => ({
+  return dashboardState.store.dashboard.receitaDespesaEfetivadaPeriodo.map((r) => ({
     ...r,
     name: r.label,
-    prefix: "R$ "
+    prefix: 'R$ '
   }))
 })
 
 const despesaConta = computed(() => {
-  return dashboardState.store.dashboard.despesaConta.map(r => ({
+  return dashboardState.store.dashboard.despesaConta.map((r) => ({
     ...r,
     name: `${r.label}`,
     values: [r.value]
@@ -221,7 +240,7 @@ const despesaConta = computed(() => {
 })
 
 const despesaCategoria = computed(() => {
-  return dashboardState.store.dashboard.despesaCategoria.map(r => ({
+  return dashboardState.store.dashboard.despesaCategoria.map((r) => ({
     ...r,
     name: `${r.label}`,
     values: [r.value]
@@ -229,7 +248,7 @@ const despesaCategoria = computed(() => {
 })
 
 const receitaConta = computed(() => {
-  return dashboardState.store.dashboard.receitaConta.map(r => ({
+  return dashboardState.store.dashboard.receitaConta.map((r) => ({
     ...r,
     name: `${r.label}`,
     values: [r.value]
@@ -237,7 +256,7 @@ const receitaConta = computed(() => {
 })
 
 const receitaCategoria = computed(() => {
-  return dashboardState.store.dashboard.receitaCategoria.map(r => ({
+  return dashboardState.store.dashboard.receitaCategoria.map((r) => ({
     ...r,
     name: `${r.label}`,
     values: [r.value]
@@ -245,10 +264,10 @@ const receitaCategoria = computed(() => {
 })
 
 const composicaoDespesas = computed(() => {
-  return dashboardState.store.dashboard.composicaoDespesas.map(g => {
+  return dashboardState.store.dashboard.composicaoDespesas.map((g) => {
     return {
       ...g,
-      data: g.data.map(r => ({
+      data: g.data.map((r) => ({
         ...r,
         name: r.label
       }))
@@ -257,10 +276,10 @@ const composicaoDespesas = computed(() => {
 })
 
 const composicaoReceitas = computed(() => {
-  return dashboardState.store.dashboard.composicaoReceitas.map(g => {
+  return dashboardState.store.dashboard.composicaoReceitas.map((g) => {
     return {
       ...g,
-      data: g.data.map(r => ({
+      data: g.data.map((r) => ({
         ...r,
         name: r.label
       }))
@@ -278,42 +297,30 @@ const planejamentos = computed(() => {
 
 const dataset = ref([
   {
-    'name': 'name',
-    'series': [
-      1,
-      2,
-      3,
-      4,
-      4
-    ],
-    'color': '#6376DD',
-    'type': 'line',
-    'shape': 'circle',
-    'useArea': true,
-    'useProgression': true,
-    'dataLabels': true,
-    'smooth': true,
-    'dashed': false,
-    'useTag': 'none'
+    name: 'name',
+    series: [1, 2, 3, 4, 4],
+    color: '#6376DD',
+    type: 'line',
+    shape: 'circle',
+    useArea: true,
+    useProgression: true,
+    dataLabels: true,
+    smooth: true,
+    dashed: false,
+    useTag: 'none'
   },
   {
-    'name': 'name',
-    'series': [
-      3,
-      3,
-      3,
-      3,
-      3
-    ],
-    'color': '#d24141',
-    'type': 'line',
-    'shape': 'circle',
-    'useArea': false,
-    'useProgression': false,
-    'dataLabels': true,
-    'smooth': true,
-    'dashed': false,
-    'useTag': 'none'
+    name: 'name',
+    series: [3, 3, 3, 3, 3],
+    color: '#d24141',
+    type: 'line',
+    shape: 'circle',
+    useArea: false,
+    useProgression: false,
+    dataLabels: true,
+    smooth: true,
+    dashed: false,
+    useTag: 'none'
   }
 ])
 

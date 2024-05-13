@@ -21,9 +21,11 @@ import { useRecorrenciaStore } from '@/stores/recorrenciaStore'
 import DetalheRecorrencia from '@/components/recorrencia/detalhe-recorrencia.vue'
 import { computed, onMounted } from 'vue'
 import { useCategoriaStore } from '@/stores/categoriaStore'
+import { useContaStore } from '@/stores/contaStore'
 
 const recorrenciaStore = useRecorrenciaStore()
 const categoriaStore = useCategoriaStore()
+const contaStore = useContaStore()
 
 const recorrencias = computed(() => {
   return recorrenciaStore.store.recorrencias || []
@@ -45,7 +47,8 @@ const doDel = async (rec) => {
 onMounted(async () =>
   await Promise.all([
     recorrenciaStore.sincronizarRecorrencia(),
-    categoriaStore.sincronizarCategorias()
+    categoriaStore.sincronizarCategorias(),
+    contaStore.sincronizarContas()
   ])
 )
 </script>
