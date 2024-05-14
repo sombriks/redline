@@ -9,7 +9,8 @@ import RecorrenciasPage from '@/pages/recorrencias-page.vue'
 import ContasPage from '@/pages/contas-page.vue'
 import HistoricoPage from '@/pages/historico-page.vue'
 import EditarMovimentacaoPage from '@/pages/editar-movimentacao-page.vue'
-import DashboardPage from "@/pages/dashboard-page.vue";
+
+const DashboardPage = () => import("@/pages/dashboard-page.vue")
 
 export const routes = [
   { component: AuthPage, path: '/auth' },
