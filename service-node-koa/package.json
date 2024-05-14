@@ -8,6 +8,7 @@
   "scripts": {
     "start": "node -r dotenv-flow/config index.mjs",
     "dev:service": "cross-env NODE_ENV=development nodemon -r dotenv-flow/config",
+    "staging:service": "cross-env NODE_ENV=staging nodemon -r dotenv-flow/config",
     "test:service": "cross-env NODE_ENV=test mocha -r dotenv-flow/config -r app/config/_test_hooks.mjs --recursive app",
     "test:service:coverage": "c8 npm run test:service",
     "migrate:make": "knex migrate:make --knexfile app/config/db/knexfile.cjs -x mjs -- ",

@@ -61,10 +61,10 @@
             <h3>Composição de despesas</h3>
             <div v-for="conta in composicaoDespesas" :key="conta.descricao">
               <h4>{{ conta.descricao }}</h4>
-              <VueUiSparkStackbar
+              <VueUiSparkstackbar
                 :config="sparkStackBarConfig"
                 :dataset="conta.data"
-              ></VueUiSparkStackbar>
+              ></VueUiSparkstackbar>
             </div>
             <br />
             <v-divider></v-divider>
@@ -165,7 +165,7 @@
 <script setup>
 import { endOfMonth, startOfMonth } from 'date-fns'
 import { computed, onMounted, ref } from 'vue'
-import { VueUiDonut, VueUiSparkbar, VueUiSparkStackbar, VueUiXy } from 'vue-data-ui'
+import { VueUiDonut, VueUiSparkbar, VueUiSparkstackbar, VueUiXy } from 'vue-data-ui'
 import ChipPeriodo from '@/shared/chip-periodo.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
 import ChipSaldo from '@/shared/chip-saldo.vue'
@@ -185,7 +185,7 @@ const dashboardState = useDashboardStore()
 
 const receitaDespesaBarConfig = computed(() => {
   const total =
-    dashboardState.store.dashboard.receitaDespesaTotalPeriodo?.reduce((acc, e) => {
+    dashboardState.store.dashboard?.receitaDespesaTotalPeriodo?.reduce((acc, e) => {
       acc += e.value
       return acc
     }, 0) || 0
@@ -203,7 +203,7 @@ const receitaDespesaBarConfig = computed(() => {
 })
 
 const receitaDespesaTotalPeriodo = computed(() => {
-  return dashboardState.store.dashboard.receitaDespesaTotalPeriodo?.map((r) => ({
+  return dashboardState.store.dashboard?.receitaDespesaTotalPeriodo?.map((r) => ({
     ...r,
     name: r.label,
     prefix: 'R$ '
@@ -211,7 +211,7 @@ const receitaDespesaTotalPeriodo = computed(() => {
 })
 
 const receitaDespesaEfetivadaPeriodo = computed(() => {
-  return dashboardState.store.dashboard.receitaDespesaEfetivadaPeriodo?.map((r) => ({
+  return dashboardState.store.dashboard?.receitaDespesaEfetivadaPeriodo?.map((r) => ({
     ...r,
     name: r.label,
     prefix: 'R$ '
@@ -219,7 +219,7 @@ const receitaDespesaEfetivadaPeriodo = computed(() => {
 })
 
 const despesaConta = computed(() => {
-  return dashboardState.store.dashboard.despesaConta.map((r) => ({
+  return dashboardState.store.dashboard?.despesaConta?.map((r) => ({
     ...r,
     name: `${r.label}`,
     values: [r.value]
@@ -227,7 +227,7 @@ const despesaConta = computed(() => {
 })
 
 const despesaCategoria = computed(() => {
-  return dashboardState.store.dashboard.despesaCategoria.map((r) => ({
+  return dashboardState.store.dashboard?.despesaCategoria?.map((r) => ({
     ...r,
     name: `${r.label}`,
     values: [r.value]
@@ -235,7 +235,7 @@ const despesaCategoria = computed(() => {
 })
 
 const receitaConta = computed(() => {
-  return dashboardState.store.dashboard.receitaConta.map((r) => ({
+  return dashboardState.store.dashboard?.receitaConta?.map((r) => ({
     ...r,
     name: `${r.label}`,
     values: [r.value]
@@ -243,7 +243,7 @@ const receitaConta = computed(() => {
 })
 
 const receitaCategoria = computed(() => {
-  return dashboardState.store.dashboard.receitaCategoria.map((r) => ({
+  return dashboardState.store.dashboard?.receitaCategoria?.map((r) => ({
     ...r,
     name: `${r.label}`,
     values: [r.value]
@@ -251,7 +251,7 @@ const receitaCategoria = computed(() => {
 })
 
 const composicaoDespesas = computed(() => {
-  return dashboardState.store.dashboard.composicaoDespesas.map((g) => {
+  return dashboardState.store.dashboard?.composicaoDespesas?.map((g) => {
     return {
       ...g,
       data: g.data.map((r) => ({
@@ -263,7 +263,7 @@ const composicaoDespesas = computed(() => {
 })
 
 const composicaoReceitas = computed(() => {
-  return dashboardState.store.dashboard.composicaoReceitas.map((g) => {
+  return dashboardState.store.dashboard?.composicaoReceitas?.map((g) => {
     return {
       ...g,
       data: g.data.map((r) => ({
@@ -275,11 +275,11 @@ const composicaoReceitas = computed(() => {
 })
 
 const limites = computed(() => {
-  return dashboardState.store.dashboard.limites
+  return dashboardState.store.dashboard?.limites
 })
 
 const planejamentos = computed(() => {
-  return dashboardState.store.dashboard.planejamentos
+  return dashboardState.store.dashboard?.planejamentos
 })
 
 const dataset = ref([

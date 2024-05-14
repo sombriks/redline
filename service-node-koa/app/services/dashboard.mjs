@@ -75,14 +75,14 @@ async function receitaDespesaEfetivadaPeriodo({ usuario_id, inicio, fim }) {
 
 async function despesaConta({ usuario_id, inicio, fim }) {
   return knex.raw(`
-      with data_frame as (select conta.*, movimentacao.*
+      with data_frame as (select conta.descricao, conta.cor, movimentacao.valor
                           from conta
                                    join movimentacao on conta.id = movimentacao.conta_id
                           where usuario_id = :usuario_id
                             and tipo_movimentacao_id = 2
                             and vencimento between :inicio and :fim)
       select descricao  as label,
-             cor as color,
+             cor        as color,
              sum(valor) as value
       from data_frame
       group by descricao, cor
@@ -91,7 +91,7 @@ async function despesaConta({ usuario_id, inicio, fim }) {
 
 async function despesaCategoria({ usuario_id, inicio, fim }) {
   return knex.raw(`
-      with data_frame as (select categoria.*, movimentacao.*
+      with data_frame as (select categoria.descricao, categoria.cor, movimentacao.valor
                           from movimentacao
                                    left join categoria on categoria.id = movimentacao.categoria_id
                           where usuario_id = :usuario_id
@@ -108,7 +108,7 @@ async function despesaCategoria({ usuario_id, inicio, fim }) {
 
 async function receitaConta({ usuario_id, inicio, fim }) {
   return knex.raw(`
-      with data_frame as (select *
+      with data_frame as (select conta.descricao, conta.cor, movimentacao.valor
                           from conta
                                    join movimentacao on conta.id = movimentacao.conta_id
                           where usuario_id = :usuario_id
@@ -124,7 +124,7 @@ async function receitaConta({ usuario_id, inicio, fim }) {
 
 async function receitaCategoria({ usuario_id, inicio, fim }) {
   return knex.raw(`
-      with data_frame as (select categoria.*, movimentacao.*
+      with data_frame as (select categoria.descricao, categoria.cor, movimentacao.valor
                           from movimentacao
                                    left join categoria on categoria.id = movimentacao.categoria_id
                           where usuario_id = :usuario_id
@@ -144,7 +144,7 @@ async function composicaoDespesas({ usuario_id, inicio, fim }){
     const conta_id = conta.id
     conta.color = conta.cor
     conta.data = await knex.raw(`
-        with data_frame as (select categoria.*, movimentacao.*
+        with data_frame as (select categoria.descricao, categoria.cor, movimentacao.valor
                             from movimentacao
                                      left join categoria on categoria.id = movimentacao.categoria_id
                             where conta_id = :conta_id
@@ -164,7 +164,7 @@ async function composicaoReceitas({ usuario_id, inicio, fim }){
     const conta_id = conta.id
     conta.color = conta.cor
     conta.data = await knex.raw(`
-        with data_frame as (select categoria.*, movimentacao.*
+        with data_frame as (select categoria.descricao, categoria.cor, movimentacao.valor
                             from movimentacao
                                      left join categoria on categoria.id = movimentacao.categoria_id
                             where conta_id = :conta_id

@@ -1,5 +1,5 @@
 /**
-* @type { Object.<string, import("knex").Knex.Config> }
+* @type { import("knex").Knex.Config }
 */
 const _cfg = {
   client: 'sqlite3',
@@ -29,6 +29,11 @@ module.exports = {
     }
     // client: 'pg',
     // connection: process.env.PG_CONNECTION_URL
+  },
+  staging: {
+    ..._cfg,
+    client: 'pg',
+    connection: process.env.PG_CONNECTION_URL
   },
   production: {
     ..._cfg,
