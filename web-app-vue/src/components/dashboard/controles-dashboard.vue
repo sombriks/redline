@@ -61,10 +61,10 @@
             <h3>Composição de despesas</h3>
             <div v-for="conta in composicaoDespesas" :key="conta.descricao">
               <h4>{{ conta.descricao }}</h4>
-              <VueUiSparkstackbar
+              <VueUiSparkStackbar
                 :config="sparkStackBarConfig"
                 :dataset="conta.data"
-              ></VueUiSparkstackbar>
+              ></VueUiSparkStackbar>
             </div>
             <br />
             <v-divider></v-divider>
@@ -72,10 +72,10 @@
             <h3>Composição de receitas</h3>
             <div v-for="conta in composicaoReceitas" :key="conta.descricao">
               <h4>{{ conta.descricao }}</h4>
-              <VueUiSparkstackbar
+              <VueUiSparkStackbar
                 :config="sparkStackBarConfig"
                 :dataset="conta.data"
-              ></VueUiSparkstackbar>
+              ></VueUiSparkStackbar>
             </div>
           </v-expansion-panel-text>
         </v-expansion-panel>
@@ -165,7 +165,7 @@
 <script setup>
 import { endOfMonth, startOfMonth } from 'date-fns'
 import { computed, onMounted, ref } from 'vue'
-import { VueUiDonut, VueUiSparkbar, VueUiSparkstackbar, VueUiXy } from 'vue-data-ui'
+import { VueUiDonut, VueUiSparkbar, VueUiSparkStackbar, VueUiXy } from 'vue-data-ui'
 import ChipPeriodo from '@/shared/chip-periodo.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
 import ChipSaldo from '@/shared/chip-saldo.vue'
@@ -186,7 +186,7 @@ const dashboardState = useDashboardStore()
 const receitaDespesaBarConfig = computed(() => {
   const total =
     dashboardState.store.dashboard?.receitaDespesaTotalPeriodo?.reduce((acc, e) => {
-      acc += e.value
+      acc += parseFloat(e.value)
       return acc
     }, 0) || 0
   return {
@@ -206,7 +206,8 @@ const receitaDespesaTotalPeriodo = computed(() => {
   return dashboardState.store.dashboard?.receitaDespesaTotalPeriodo?.map((r) => ({
     ...r,
     name: r.label,
-    prefix: 'R$ '
+    prefix: 'R$ ',
+    value: parseFloat(r.value)
   }))
 })
 
@@ -214,7 +215,8 @@ const receitaDespesaEfetivadaPeriodo = computed(() => {
   return dashboardState.store.dashboard?.receitaDespesaEfetivadaPeriodo?.map((r) => ({
     ...r,
     name: r.label,
-    prefix: 'R$ '
+    prefix: 'R$ ',
+    value: parseFloat(r.value)
   }))
 })
 
@@ -222,7 +224,7 @@ const despesaConta = computed(() => {
   return dashboardState.store.dashboard?.despesaConta?.map((r) => ({
     ...r,
     name: `${r.label}`,
-    values: [r.value]
+    values: [parseFloat(r.value)]
   }))
 })
 
@@ -230,7 +232,7 @@ const despesaCategoria = computed(() => {
   return dashboardState.store.dashboard?.despesaCategoria?.map((r) => ({
     ...r,
     name: `${r.label}`,
-    values: [r.value]
+    values: [parseFloat(r.value)]
   }))
 })
 
@@ -238,7 +240,7 @@ const receitaConta = computed(() => {
   return dashboardState.store.dashboard?.receitaConta?.map((r) => ({
     ...r,
     name: `${r.label}`,
-    values: [r.value]
+    values: [parseFloat(r.value)]
   }))
 })
 
@@ -246,7 +248,7 @@ const receitaCategoria = computed(() => {
   return dashboardState.store.dashboard?.receitaCategoria?.map((r) => ({
     ...r,
     name: `${r.label}`,
-    values: [r.value]
+    values: [parseFloat(r.value)]
   }))
 })
 
@@ -256,7 +258,8 @@ const composicaoDespesas = computed(() => {
       ...g,
       data: g.data.map((r) => ({
         ...r,
-        name: r.label
+        name: r.label,
+        value: parseFloat(r.value)
       }))
     }
   })
@@ -268,7 +271,8 @@ const composicaoReceitas = computed(() => {
       ...g,
       data: g.data.map((r) => ({
         ...r,
-        name: r.label
+        name: r.label,
+        value: parseFloat(r.value)
       }))
     }
   })
