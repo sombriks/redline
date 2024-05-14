@@ -75,7 +75,7 @@ async function receitaDespesaEfetivadaPeriodo({ usuario_id, inicio, fim }) {
 
 async function despesaConta({ usuario_id, inicio, fim }) {
   return knex.raw(`
-      with data_frame as (select *
+      with data_frame as (select conta.*, movimentacao.*
                           from conta
                                    join movimentacao on conta.id = movimentacao.conta_id
                           where usuario_id = :usuario_id
