@@ -11,6 +11,7 @@ const req = async ({ method = 'POST', uri, payload }) => {
   const userStore = useUserStore()
   const generalStore = useGeneralStore()
   const url = `${import.meta.env.VITE_API_URL}${uri}`
+  // const url = `//localhost:3000${uri}`
   const headers = {
     'Content-Type': 'application/json',
     Accept: 'application/json'
