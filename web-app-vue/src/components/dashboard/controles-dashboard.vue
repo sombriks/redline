@@ -81,7 +81,6 @@
         </v-expansion-panel>
         <v-expansion-panel value="saldos">
           <!-- saldos (tabelinha/chips)-->
-          <!--    anterior geral-->
           <!--    anterior 1 ano-->
           <!--    anterior 6 meses-->
           <!--    anterior 1 mês-->
@@ -91,10 +90,6 @@
           <!--    projetado 1 ano-->
           <v-expansion-panel-title>Saldos</v-expansion-panel-title>
           <v-expansion-panel-text>
-            <chip-saldo
-              label="Saldo anterior geral:"
-              :saldo="dashboardState.store.dashboard.saldos.anteriorGeral"
-            />
             <chip-saldo
               label="Saldo ano anterior:"
               :saldo="dashboardState.store.dashboard.saldos.anterior1Ano"
@@ -114,15 +109,15 @@
             />
             <v-divider></v-divider>
             <chip-saldo
-              label="Saldo projetado - 1 mês:"
+              label="Saldo projetado 1 mês:"
               :saldo="dashboardState.store.dashboard.saldos.projetado1Mes"
             />
             <chip-saldo
-              label="Saldo projetado - 6 meses:"
+              label="Saldo projetado 6 meses:"
               :saldo="dashboardState.store.dashboard.saldos.projetado6Meses"
             />
             <chip-saldo
-              label="Saldo projetado - 1 ano:"
+              label="Saldo projetado 1 ano:"
               :saldo="dashboardState.store.dashboard.saldos.projetado1Ano"
             />
           </v-expansion-panel-text>

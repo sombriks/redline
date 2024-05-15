@@ -1,4 +1,5 @@
 import { knex } from '../config/db/index.mjs'
+import { addMonths, addYears } from 'date-fns'
 
 /**
  *
@@ -18,17 +19,7 @@ export const getDashboard = async ({ usuario_id, inicio, fim }) => {
     receitaCategoria: unwrap(await receitaCategoria({ usuario_id, inicio, fim })),
     composicaoDespesas: unwrap(await composicaoDespesas({ usuario_id, inicio, fim })),
     composicaoReceitas: unwrap(await composicaoReceitas({ usuario_id, inicio, fim })),
-    saldos: {
-      // Saldos relativos ao período
-      anteriorGeral: 0,
-      anterior1Ano: -10,
-      anterior6Meses: 0,
-      anterior1Mes: 0,
-      periodo: 0,
-      projetado1Mes: 0,
-      projetado6Meses: 10,
-      projetado1Ano: 0
-    },
+    saldos: await saldos({ usuario_id, inicio, fim }),
     vencimentos: {
       quitadas: 7,
       aVencer: 3,
@@ -98,7 +89,7 @@ async function despesaCategoria({ usuario_id, inicio, fim }) {
                             and tipo_movimentacao_id = 2
                             and vencimento between :inicio and :fim)
       select descricao  as label,
-             cor as color,
+             cor        as color,
              sum(valor) as value
       from data_frame
       group by descricao, cor
@@ -115,7 +106,7 @@ async function receitaConta({ usuario_id, inicio, fim }) {
                             and tipo_movimentacao_id = 1
                             and vencimento between :inicio and :fim)
       select descricao  as label,
-             cor as color,
+             cor        as color,
              sum(valor) as value
       from data_frame
       group by descricao, cor
@@ -131,15 +122,15 @@ async function receitaCategoria({ usuario_id, inicio, fim }) {
                             and tipo_movimentacao_id = 1
                             and vencimento between :inicio and :fim)
       select descricao  as label,
-             cor as color,
+             cor        as color,
              sum(valor) as value
       from data_frame
       group by descricao, cor
   `, { usuario_id, inicio, fim })
 }
 
-async function composicaoDespesas({ usuario_id, inicio, fim }){
-  const contas = await knex("conta").where({usuario_id})
+async function composicaoDespesas({ usuario_id, inicio, fim }) {
+  const contas = await knex('conta').where({ usuario_id })
   for await (const conta of contas) {
     const conta_id = conta.id
     conta.color = conta.cor
@@ -153,13 +144,13 @@ async function composicaoDespesas({ usuario_id, inicio, fim }){
         select descricao as label, cor as color, sum(valor) as value
         from data_frame
         group by descricao, cor
-    `,{conta_id, inicio, fim}))
+    `, { conta_id, inicio, fim }))
   }
   return contas.filter(c => c.data.length)
 }
 
-async function composicaoReceitas({ usuario_id, inicio, fim }){
-  const contas = await knex("conta").where({usuario_id})
+async function composicaoReceitas({ usuario_id, inicio, fim }) {
+  const contas = await knex('conta').where({ usuario_id })
   for await (const conta of contas) {
     const conta_id = conta.id
     conta.color = conta.cor
@@ -173,9 +164,51 @@ async function composicaoReceitas({ usuario_id, inicio, fim }){
         select descricao as label, cor as color, sum(valor) as value
         from data_frame
         group by descricao, cor
-    `,{conta_id, inicio, fim}))
+    `, { conta_id, inicio, fim }))
   }
   return contas.filter(c => c.data.length)
+}
+
+async function saldos({ usuario_id, inicio, fim }) {
+  return {
+    anterior1Ano: unwrapSaldos(await saldo({ usuario_id, inicio: addYears(inicio, -1).toISOString(), fim: inicio })),
+    anterior6Meses: unwrapSaldos(await saldo({ usuario_id, inicio: addMonths(inicio, -6).toISOString(), fim: inicio })),
+    anterior1Mes: unwrapSaldos(await saldo({ usuario_id, inicio: addMonths(inicio, -1).toISOString(), fim: inicio })),
+    periodo: unwrapSaldos(await saldo({ usuario_id, inicio, fim })),
+    projetado1Mes: unwrapSaldos(await saldo({
+      usuario_id,
+      inicio: addMonths(inicio, 1).toISOString(),
+      fim: addMonths(fim, 1).toISOString()
+    })),
+    projetado6Meses: unwrapSaldos(await saldo({
+      usuario_id,
+      inicio: addMonths(inicio, 1).toISOString(),
+      fim: addMonths(fim, 6).toISOString()
+    })),
+    projetado1Ano: unwrapSaldos(await saldo({
+      usuario_id,
+      inicio: addMonths(inicio, 1).toISOString(),
+      fim: addYears(fim, 1).toISOString()
+    })),
+  }
+}
+
+async function saldo({ usuario_id, inicio, fim }) {
+  return knex.raw(`
+      with entradas as (select sum(valor) as value
+                        from movimentacao
+                        where tipo_movimentacao_id = 1
+                          and conta_id in (select id from conta where usuario_id = :usuario_id)
+                          and vencimento between :inicio and :fim),
+           saidas as (select sum(valor) as value
+                      from movimentacao
+                      where tipo_movimentacao_id = 2
+                        and conta_id in (select id from conta where usuario_id = :usuario_id)
+                        and vencimento between :inicio and :fim)
+      select entradas.value - saidas.value as saldo
+      from entradas,
+           saidas
+  `, { usuario_id, inicio, fim })
 }
 
 /**
@@ -186,4 +219,9 @@ async function composicaoReceitas({ usuario_id, inicio, fim }){
 function unwrap(result) {
   // XXX check env or knex cfg instead
   return result.rows ?? result
+}
+
+function unwrapSaldos(result) {
+  const [{ saldo }] = unwrap(result)
+  return saldo
 }
