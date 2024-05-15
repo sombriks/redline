@@ -72,16 +72,15 @@
             <h3>Composição de receitas</h3>
             <div v-for="conta in composicaoReceitas" :key="conta.descricao">
               <h4>{{ conta.descricao }}</h4>
-              <VueUiSparkstackbar
+              <VueUiSparkStackbar
                 :config="sparkStackBarConfig"
                 :dataset="conta.data"
-              ></VueUiSparkstackbar>
+              ></VueUiSparkStackbar>
             </div>
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="saldos">
           <!-- saldos (tabelinha/chips)-->
-          <!--    anterior geral-->
           <!--    anterior 1 ano-->
           <!--    anterior 6 meses-->
           <!--    anterior 1 mês-->
@@ -91,10 +90,6 @@
           <!--    projetado 1 ano-->
           <v-expansion-panel-title>Saldos</v-expansion-panel-title>
           <v-expansion-panel-text>
-            <chip-saldo
-              label="Saldo anterior geral:"
-              :saldo="dashboardState.store.dashboard.saldos.anteriorGeral"
-            />
             <chip-saldo
               label="Saldo ano anterior:"
               :saldo="dashboardState.store.dashboard.saldos.anterior1Ano"
@@ -114,15 +109,15 @@
             />
             <v-divider></v-divider>
             <chip-saldo
-              label="Saldo projetado - 1 mês:"
+              label="Saldo projetado 1 mês:"
               :saldo="dashboardState.store.dashboard.saldos.projetado1Mes"
             />
             <chip-saldo
-              label="Saldo projetado - 6 meses:"
+              label="Saldo projetado 6 meses:"
               :saldo="dashboardState.store.dashboard.saldos.projetado6Meses"
             />
             <chip-saldo
-              label="Saldo projetado - 1 ano:"
+              label="Saldo projetado 1 ano:"
               :saldo="dashboardState.store.dashboard.saldos.projetado1Ano"
             />
           </v-expansion-panel-text>
@@ -185,8 +180,8 @@ const dashboardState = useDashboardStore()
 
 const receitaDespesaBarConfig = computed(() => {
   const total =
-    dashboardState.store.dashboard.receitaDespesaTotalPeriodo?.reduce((acc, e) => {
-      acc += e.value
+    dashboardState.store.dashboard?.receitaDespesaTotalPeriodo?.reduce((acc, e) => {
+      acc += parseFloat(e.value)
       return acc
     }, 0) || 0
   return {
@@ -203,83 +198,87 @@ const receitaDespesaBarConfig = computed(() => {
 })
 
 const receitaDespesaTotalPeriodo = computed(() => {
-  return dashboardState.store.dashboard.receitaDespesaTotalPeriodo?.map((r) => ({
+  return dashboardState.store.dashboard?.receitaDespesaTotalPeriodo?.map((r) => ({
     ...r,
     name: r.label,
-    prefix: 'R$ '
+    prefix: 'R$ ',
+    value: parseFloat(r.value)
   }))
 })
 
 const receitaDespesaEfetivadaPeriodo = computed(() => {
-  return dashboardState.store.dashboard.receitaDespesaEfetivadaPeriodo?.map((r) => ({
+  return dashboardState.store.dashboard?.receitaDespesaEfetivadaPeriodo?.map((r) => ({
     ...r,
     name: r.label,
-    prefix: 'R$ '
+    prefix: 'R$ ',
+    value: parseFloat(r.value)
   }))
 })
 
 const despesaConta = computed(() => {
-  return dashboardState.store.dashboard.despesaConta.map((r) => ({
+  return dashboardState.store.dashboard?.despesaConta?.map((r) => ({
     ...r,
     name: `${r.label}`,
-    values: [r.value]
+    values: [parseFloat(r.value)]
   }))
 })
 
 const despesaCategoria = computed(() => {
-  return dashboardState.store.dashboard.despesaCategoria.map((r) => ({
+  return dashboardState.store.dashboard?.despesaCategoria?.map((r) => ({
     ...r,
     name: `${r.label}`,
-    values: [r.value]
+    values: [parseFloat(r.value)]
   }))
 })
 
 const receitaConta = computed(() => {
-  return dashboardState.store.dashboard.receitaConta.map((r) => ({
+  return dashboardState.store.dashboard?.receitaConta?.map((r) => ({
     ...r,
     name: `${r.label}`,
-    values: [r.value]
+    values: [parseFloat(r.value)]
   }))
 })
 
 const receitaCategoria = computed(() => {
-  return dashboardState.store.dashboard.receitaCategoria.map((r) => ({
+  return dashboardState.store.dashboard?.receitaCategoria?.map((r) => ({
     ...r,
     name: `${r.label}`,
-    values: [r.value]
+    values: [parseFloat(r.value)]
   }))
 })
 
 const composicaoDespesas = computed(() => {
-  return dashboardState.store.dashboard.composicaoDespesas.map((g) => {
+  return dashboardState.store.dashboard?.composicaoDespesas?.map((g) => {
     return {
       ...g,
       data: g.data.map((r) => ({
         ...r,
-        name: r.label
+        name: r.label,
+        value: parseFloat(r.value)
       }))
     }
   })
 })
 
 const composicaoReceitas = computed(() => {
-  return dashboardState.store.dashboard.composicaoReceitas.map((g) => {
+  return dashboardState.store.dashboard?.composicaoReceitas?.map((g) => {
     return {
       ...g,
       data: g.data.map((r) => ({
         ...r,
-        name: r.label
+        name: r.label,
+        value: parseFloat(r.value)
       }))
     }
   })
 })
 
 const limites = computed(() => {
-  return dashboardState.store.dashboard.limites
+  return dashboardState.store.dashboard?.limites
 })
 
 const planejamentos = computed(() => {
-  return dashboardState.store.dashboard.planejamentos
+  return dashboardState.store.dashboard?.planejamentos
 })
 
 const dataset = ref([
