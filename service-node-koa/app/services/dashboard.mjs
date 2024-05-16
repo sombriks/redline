@@ -1,12 +1,7 @@
 import { knex } from '../config/db/index.mjs'
 import { addMonths, addYears } from 'date-fns'
 
-/**
- *
- * @param usuario_id
- * @param inicio
- * @param fim
- */
+
 export const getDashboard = async ({ usuario_id, inicio, fim }) => {
   inicio = new Date(inicio).toISOString()
   fim = new Date(fim).toISOString()
@@ -20,11 +15,7 @@ export const getDashboard = async ({ usuario_id, inicio, fim }) => {
     composicaoDespesas: unwrap(await composicaoDespesas({ usuario_id, inicio, fim })),
     composicaoReceitas: unwrap(await composicaoReceitas({ usuario_id, inicio, fim })),
     saldos: await saldos({ usuario_id, inicio, fim }),
-    vencimentos: {
-      quitadas: 7,
-      aVencer: 3,
-      emAtraso: 0
-    },
+    vencimentos: unwrap(await vencimentos({ usuario_id, inicio, fim })),
     limites: [],
     planejamentos: []
   }
@@ -189,7 +180,7 @@ async function saldos({ usuario_id, inicio, fim }) {
       usuario_id,
       inicio: addMonths(inicio, 1).toISOString(),
       fim: addYears(fim, 1).toISOString()
-    })),
+    }))
   }
 }
 
@@ -211,8 +202,33 @@ async function saldo({ usuario_id, inicio, fim }) {
   `, { usuario_id, inicio, fim })
 }
 
+async function vencimentos({ usuario_id, inicio, fim }) {
+  const [result] = unwrap(await knex.raw(`
+      with data_frame as (select vencimento, efetivada
+                          from movimentacao
+                          where conta_id in (select id from conta where usuario_id = :usuario_id)
+                            and vencimento between :inicio and :fim),
+           emAtraso as (select count(*) as contas
+                        from data_frame
+                        where efetivada is null
+                          and vencimento <= CURRENT_TIMESTAMP),
+           aVencer as (select count(*) as contas
+                       from data_frame
+                       where efetivada is null
+                         and vencimento >= CURRENT_TIMESTAMP),
+           quitadas as (select count(*) as contas
+                        from data_frame
+                        where efetivada is not null)
+      select emAtraso.contas as emAtraso, aVencer.contas as aVencer, quitadas.contas as quitadas
+      from emAtraso,
+           aVencer,
+           quitadas;
+  `, { usuario_id, inicio, fim }))
+  return result
+}
+
 /**
- * knex.raw behaves differently on sqlite and postgres
+ * knex.raw behaves differently when on sqlite or postgres
  *
  * @param result
  */
