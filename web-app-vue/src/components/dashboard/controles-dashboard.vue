@@ -131,10 +131,10 @@
               Quitadas: {{ dashboardState.store.dashboard.vencimentos.quitadas }}
             </v-chip>
             <v-chip variant="outlined" class="ma-1" rounded size="large" color="cyan">
-              A vencer: {{ dashboardState.store.dashboard.vencimentos.aVencer }}
+              A vencer: {{ dashboardState.store.dashboard.vencimentos.a_vencer }}
             </v-chip>
             <v-chip variant="outlined" class="ma-1" rounded size="large" color="orange">
-              Em atraso: {{ dashboardState.store.dashboard.vencimentos.emAtraso }}
+              Em atraso: {{ dashboardState.store.dashboard.vencimentos.em_atraso }}
             </v-chip>
           </v-expansion-panel-text>
         </v-expansion-panel>

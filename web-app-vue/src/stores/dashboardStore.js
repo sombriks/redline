@@ -10,7 +10,9 @@ export const useDashboardStore = defineStore('dashboard-store', () => {
   const store = reactive({
     dashboard: getRedLine()?.dashboard || {
       receitaDespesaTotalPeriodo: [],
-      receitaDespesaEfetivadaPeriodo: []
+      receitaDespesaEfetivadaPeriodo: [],
+      saldos: {},
+      vencimentos:{}
     }
   })
 

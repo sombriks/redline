@@ -208,20 +208,20 @@ async function vencimentos({ usuario_id, inicio, fim }) {
                           from movimentacao
                           where conta_id in (select id from conta where usuario_id = :usuario_id)
                             and vencimento between :inicio and :fim),
-           emAtraso as (select count(*) as contas
+           em_atraso as (select count(*) as contas
                         from data_frame
                         where efetivada is null
                           and vencimento <= CURRENT_TIMESTAMP),
-           aVencer as (select count(*) as contas
+           a_vencer as (select count(*) as contas
                        from data_frame
                        where efetivada is null
                          and vencimento >= CURRENT_TIMESTAMP),
            quitadas as (select count(*) as contas
                         from data_frame
                         where efetivada is not null)
-      select emAtraso.contas as emAtraso, aVencer.contas as aVencer, quitadas.contas as quitadas
-      from emAtraso,
-           aVencer,
+      select em_atraso.contas as em_atraso, a_vencer.contas as a_vencer, quitadas.contas as quitadas
+      from em_atraso,
+           a_vencer,
            quitadas;
   `, { usuario_id, inicio, fim }))
   return result
