@@ -1,5 +1,5 @@
 <script setup>
-import EditarMovimentacao from "@/components/movimentacao/editar-movimentacao.vue";
+import EditarMovimentacao from "@/pages/components/movimentacao/editar-movimentacao.vue";
 import { useRoute } from "vue-router";
 import { useMovimentacaoStore } from "@/stores/movimentacaoStore";
 import { ref } from "vue";

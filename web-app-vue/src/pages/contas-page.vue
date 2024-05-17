@@ -1,6 +1,6 @@
 <script setup>
 
-import ListaContas from "@/components/conta/lista-contas.vue";
+import ListaContas from "@/pages/components/conta/lista-contas.vue";
 </script>
 <template>
   <lista-contas></lista-contas>

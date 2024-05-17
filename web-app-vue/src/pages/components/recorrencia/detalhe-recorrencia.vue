@@ -98,11 +98,11 @@ import {
 } from 'date-fns'
 import { minValueRule, requiredRule } from '@/services/basic-rules'
 import { prepareDate, prepareMoney } from '@/services/formaters'
-import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
+import CategoriaAutocomplete from '@/pages/shared/categoria-autocomplete.vue'
 import { useRecorrenciaStore } from '@/stores/recorrenciaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
-import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
-import ChipPeriodo from '@/shared/chip-periodo.vue'
+import ContaAutocomplete from '@/pages/shared/conta-autocomplete.vue'
+import ChipPeriodo from '@/pages/shared/chip-periodo.vue'
 
 const recorrenciaStore = useRecorrenciaStore()
 const categoriaStore = useCategoriaStore()

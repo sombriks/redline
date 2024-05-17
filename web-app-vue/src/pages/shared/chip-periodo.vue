@@ -31,7 +31,7 @@
 <script setup>
 import { computed, defineModel, ref } from 'vue'
 import { prepareDate } from '@/services/formaters'
-import ChipDate from '@/shared/chip-date.vue'
+import ChipDate from '@/pages/shared/chip-date.vue'
 import { endOfMonth, startOfMonth } from 'date-fns'
 import { endOfYear, startOfYear } from 'date-fns/fp'
 

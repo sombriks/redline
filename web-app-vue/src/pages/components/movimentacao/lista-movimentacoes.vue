@@ -186,17 +186,17 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
-import DetalheMovimentacao from '@/components/movimentacao/detalhe-movimentacao.vue'
+import DetalheMovimentacao from '@/pages/components/movimentacao/detalhe-movimentacao.vue'
 import { router } from '@/services/router'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { useContaStore } from '@/stores/contaStore'
 import { prepareBalance, prepareDate } from '@/services/formaters'
 import { endOfMonth, format, startOfMonth } from 'date-fns'
-import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
-import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
-import ChipSaldo from '@/shared/chip-saldo.vue'
-import ChipConta from '@/shared/chip-conta.vue'
-import ChipPeriodo from '@/shared/chip-periodo.vue'
+import CategoriaAutocomplete from '@/pages/shared/categoria-autocomplete.vue'
+import ContaAutocomplete from '@/pages/shared/conta-autocomplete.vue'
+import ChipSaldo from '@/pages/shared/chip-saldo.vue'
+import ChipConta from '@/pages/shared/chip-conta.vue'
+import ChipPeriodo from '@/pages/shared/chip-periodo.vue'
 
 const movimentacaoStore = useMovimentacaoStore()
 const categoriaStore = useCategoriaStore()

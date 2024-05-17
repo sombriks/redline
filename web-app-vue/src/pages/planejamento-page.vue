@@ -1,6 +1,6 @@
 <script setup>
 
-import ListaPlanejamentos from "@/components/planejamento/lista-planejamentos.vue";
+import ListaPlanejamentos from "@/pages/components/planejamento/lista-planejamentos.vue";
 </script>
 
 <template>

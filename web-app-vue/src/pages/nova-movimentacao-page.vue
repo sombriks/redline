@@ -1,6 +1,6 @@
 <script setup>
 
-import NovaMovimentacao from "@/components/movimentacao/nova-movimentacao.vue";
+import NovaMovimentacao from "@/pages/components/movimentacao/nova-movimentacao.vue";
 </script>
 
 <template>

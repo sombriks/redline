@@ -51,7 +51,7 @@ import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { router } from "@/services/router";
 import { prepareDate, prepareMoney } from '@/services/formaters'
-import ChipConta from '@/shared/chip-conta.vue'
+import ChipConta from '@/pages/shared/chip-conta.vue'
 
 const props = defineProps(['movimentacao'])
 

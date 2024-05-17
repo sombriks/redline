@@ -37,7 +37,7 @@
 <script setup>
 import { useContaStore } from '@/stores/contaStore'
 import { computed, onMounted, reactive, ref } from 'vue'
-import DetalheConta from '@/components/conta/detalhe-conta.vue'
+import DetalheConta from '@/pages/components/conta/detalhe-conta.vue'
 
 const cState = useContaStore()
 
