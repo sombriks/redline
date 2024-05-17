@@ -18,7 +18,7 @@
 </template>
 <script setup>
 import { useRecorrenciaStore } from '@/stores/recorrenciaStore'
-import DetalheRecorrencia from '@/pages/components/recorrencia/detalhe-recorrencia.vue'
+import DetalheRecorrencia from '@/pages/recorrencia/detalhe-recorrencia.vue'
 import { computed, onMounted } from 'vue'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { useContaStore } from '@/stores/contaStore'

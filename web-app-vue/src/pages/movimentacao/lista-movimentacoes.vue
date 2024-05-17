@@ -186,7 +186,7 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
-import DetalheMovimentacao from '@/pages/components/movimentacao/detalhe-movimentacao.vue'
+import DetalheMovimentacao from '@/pages/movimentacao/detalhe-movimentacao.vue'
 import { router } from '@/services/router'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { useContaStore } from '@/stores/contaStore'

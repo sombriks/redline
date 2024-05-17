@@ -12,17 +12,19 @@
           <!-- receitas x despesas efetivadas (simple-bar) -->
           <v-expansion-panel-title>Receitas x Despesas</v-expansion-panel-title>
           <v-expansion-panel-text>
-            <VueUiSparkbar
+            <VueDataUi
+              component="VueUiSparkbar"
               :config="receitaDespesaBarConfig"
               :dataset="receitaDespesaTotalPeriodo"
-            ></VueUiSparkbar>
+            ></VueDataUi>
             <br />
             <v-divider></v-divider>
             <br />
-            <VueUiSparkbar
+            <VueDataUi
+              component="VueUiSparkbar"
               :config="receitaDespesaBarConfig"
               :dataset="receitaDespesaEfetivadaPeriodo"
-            ></VueUiSparkbar>
+            ></VueDataUi>
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="despesas">
@@ -31,12 +33,20 @@
           <v-expansion-panel-title>Detalhes Despesas</v-expansion-panel-title>
           <v-expansion-panel-text>
             <h3>Despesas por conta</h3>
-            <VueUiDonut :config="donutConfig" :dataset="despesaConta"></VueUiDonut>
+            <VueDataUi
+              component="VueUiDonut"
+              :config="donutConfig"
+              :dataset="despesaConta"
+            ></VueDataUi>
             <br />
             <v-divider></v-divider>
             <br />
             <h3>Despesas por categoria</h3>
-            <VueUiDonut :config="donutConfig" :dataset="despesaCategoria"></VueUiDonut>
+            <VueDataUi
+              component="VueUiDonut"
+              :config="donutConfig"
+              :dataset="despesaCategoria"
+            ></VueDataUi>
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="receitas">
@@ -45,12 +55,20 @@
           <v-expansion-panel-title>Detalhes Receitas</v-expansion-panel-title>
           <v-expansion-panel-text>
             <h3>Receitas por conta</h3>
-            <VueUiDonut :config="donutConfig" :dataset="receitaConta"></VueUiDonut>
+            <VueDataUi
+              component="VueUiDonut"
+              :config="donutConfig"
+              :dataset="receitaConta"
+            ></VueDataUi>
             <br />
             <v-divider></v-divider>
             <br />
             <h3>Receitas por categoria</h3>
-            <VueUiDonut :config="donutConfig" :dataset="receitaCategoria"></VueUiDonut>
+            <VueDataUi
+              component="VueUiDonut"
+              :config="donutConfig"
+              :dataset="receitaCategoria"
+            ></VueDataUi>
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="comps">
@@ -61,10 +79,11 @@
             <h3>Composição de despesas</h3>
             <div v-for="conta in composicaoDespesas" :key="conta.descricao">
               <h4>{{ conta.descricao }}</h4>
-              <VueUiSparkStackbar
+              <VueDataUi
+                component="VueUiSparkStackbar"
                 :config="sparkStackBarConfig"
                 :dataset="conta.data"
-              ></VueUiSparkStackbar>
+              ></VueDataUi>
             </div>
             <br />
             <v-divider></v-divider>
@@ -72,10 +91,11 @@
             <h3>Composição de receitas</h3>
             <div v-for="conta in composicaoReceitas" :key="conta.descricao">
               <h4>{{ conta.descricao }}</h4>
-              <VueUiSparkStackbar
+              <VueDataUi
+                component="VueUiSparkStackbar"
                 :config="sparkStackBarConfig"
                 :dataset="conta.data"
-              ></VueUiSparkStackbar>
+              ></VueDataUi>
             </div>
           </v-expansion-panel-text>
         </v-expansion-panel>
@@ -144,7 +164,7 @@
           <!-- situação dos limites (linhas no plano com a REDLINE do limite da conta / cartão)-->
           <v-expansion-panel-title>Limites</v-expansion-panel-title>
           <v-expansion-panel-text>
-            <VueUiXy :config="lineChartConfig" :dataset="dataset" />
+            <VueDataUi component="VueUiXy" :config="lineChartConfig" :dataset="dataset" />
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="planejamentos">
@@ -160,7 +180,7 @@
 <script setup>
 import { endOfMonth, startOfMonth } from 'date-fns'
 import { computed, onMounted, ref } from 'vue'
-import { VueUiDonut, VueUiSparkbar, VueUiSparkStackbar, VueUiXy } from 'vue-data-ui'
+import { VueDataUi } from 'vue-data-ui'
 import ChipPeriodo from '@/pages/shared/chip-periodo.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
 import ChipSaldo from '@/pages/shared/chip-saldo.vue'

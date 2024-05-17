@@ -1,16 +1,16 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
-import AuthPage from '@/pages/auth-page.vue'
-import NovaMovimentacaoPage from '@/pages/nova-movimentacao-page.vue'
-import CategoriasPage from '@/pages/categorias-page.vue'
-import ConfigPage from '@/pages/config-page.vue'
-import PlanejamentoPage from '@/pages/planejamento-page.vue'
-import RecorrenciasPage from '@/pages/recorrencias-page.vue'
-import ContasPage from '@/pages/contas-page.vue'
-import HistoricoPage from '@/pages/historico-page.vue'
-import EditarMovimentacaoPage from '@/pages/editar-movimentacao-page.vue'
-
-const DashboardPage = () => import("@/pages/dashboard-page.vue")
+import AuthPage from '@/pages/usuario/auth-page.vue'
+import NovaMovimentacaoPage from '@/pages/movimentacao/nova-movimentacao-page.vue'
+import CategoriasPage from '@/pages/categoria/categorias-page.vue'
+import ConfigPage from '@/pages/configuracao/config-page.vue'
+// import DashboardPage from "@/pages/dashboard/dashboard-page.vue"
+const DashboardPage = import("@/pages/dashboard/dashboard-page.vue")
+import PlanejamentoPage from '@/pages/planejamento/planejamento-page.vue'
+import RecorrenciasPage from '@/pages/recorrencia/recorrencias-page.vue'
+import ContasPage from '@/pages/conta/contas-page.vue'
+import HistoricoPage from '@/pages/movimentacao/historico-page.vue'
+import EditarMovimentacaoPage from '@/pages/movimentacao/editar-movimentacao-page.vue'
 
 export const routes = [
   { component: AuthPage, path: '/auth' },

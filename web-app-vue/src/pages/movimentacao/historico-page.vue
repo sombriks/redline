@@ -1,5 +1,5 @@
 <script setup>
-import ListaMovimentacoes from '@/pages/components/movimentacao/lista-movimentacoes.vue'
+import ListaMovimentacoes from '@/pages/movimentacao/lista-movimentacoes.vue'
 </script>
 
 <template>

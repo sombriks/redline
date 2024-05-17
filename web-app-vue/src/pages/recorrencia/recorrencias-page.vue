@@ -1,6 +1,6 @@
 <script setup>
 
-import ListRecorrencia from "@/pages/components/recorrencia/list-recorrencia.vue";
+import ListRecorrencia from "@/pages/recorrencia/list-recorrencia.vue";
 </script>
 
 <template>

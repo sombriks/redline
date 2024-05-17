@@ -31,7 +31,7 @@
   </v-navigation-drawer>
 </template>
 <script setup>
-import DetalhePlanejamento from '@/pages/components/planejamento/detalhe-planejamento.vue'
+import DetalhePlanejamento from '@/pages/planejamento/detalhe-planejamento.vue'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { usePlanejamentoStore } from '@/stores/planejamentoStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'

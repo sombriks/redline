@@ -16,7 +16,7 @@
 <script setup>
 import {onMounted, reactive, ref} from 'vue'
 import {useCategoriaStore} from '@/stores/categoriaStore'
-import DetalheCategoria from '@/pages/components/categoria/detalhe-categoria.vue'
+import DetalheCategoria from '@/pages/categoria/detalhe-categoria.vue'
 
 const cState = useCategoriaStore()
 
