@@ -5,7 +5,7 @@ import NovaMovimentacaoPage from '@/pages/movimentacao/nova-movimentacao-page.vu
 import CategoriasPage from '@/pages/categoria/categorias-page.vue'
 import ConfigPage from '@/pages/configuracao/config-page.vue'
 // import DashboardPage from "@/pages/dashboard/dashboard-page.vue"
-const DashboardPage = import("@/pages/dashboard/dashboard-page.vue")
+const DashboardPage = () => import("@/pages/dashboard/dashboard-page.vue")
 import PlanejamentoPage from '@/pages/planejamento/planejamento-page.vue'
 import RecorrenciasPage from '@/pages/recorrencia/recorrencias-page.vue'
 import ContasPage from '@/pages/conta/contas-page.vue'

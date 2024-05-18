@@ -43,7 +43,7 @@
         :rules="[numberRule]"
         type="number"
         v-model="contaEdit.limite"
-        label="Limite"
+        :label="contaEdit.tipo_conta_id == 2 ? 'Cheque especial' : 'Limite' "
         prepend-inner-icon="mdi-cash-100"
       ></v-text-field>
       <v-container>

@@ -164,7 +164,7 @@
           <!-- situação dos limites (linhas no plano com a REDLINE do limite da conta / cartão)-->
           <v-expansion-panel-title>Limites</v-expansion-panel-title>
           <v-expansion-panel-text>
-            <VueDataUi component="VueUiXy" :config="lineChartConfig" :dataset="dataset" />
+            <VueDataUi component="VueUiXy" :config="lineChartConfig" :dataset="limites" />
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="planejamentos">
@@ -179,7 +179,7 @@
 <style scoped></style>
 <script setup>
 import { endOfMonth, startOfMonth } from 'date-fns'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { VueDataUi } from 'vue-data-ui'
 import ChipPeriodo from '@/pages/shared/chip-periodo.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
@@ -301,34 +301,9 @@ const planejamentos = computed(() => {
   return dashboardState.store.dashboard?.planejamentos
 })
 
-const dataset = ref([
-  {
-    name: 'name',
-    series: [1, 2, 3, 4, 4],
-    color: '#6376DD',
-    type: 'line',
-    shape: 'circle',
-    useArea: true,
-    useProgression: true,
-    dataLabels: true,
-    smooth: true,
-    dashed: false,
-    useTag: 'none'
-  },
-  {
-    name: 'name',
-    series: [3, 3, 3, 3, 3],
-    color: '#d24141',
-    type: 'line',
-    shape: 'circle',
-    useArea: false,
-    useProgression: false,
-    dataLabels: true,
-    smooth: true,
-    dashed: false,
-    useTag: 'none'
-  }
-])
+watch([inicio, fim], async ([inicio, fim]) => {
+  await dashboardState.sincronizarDashboard(inicio, fim)
+})
 
 onMounted(async () => {
   await dashboardState.sincronizarDashboard(inicio.value, fim.value)
