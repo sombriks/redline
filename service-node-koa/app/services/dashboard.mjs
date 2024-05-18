@@ -16,30 +16,31 @@ export const getDashboard = async ({ usuario_id, inicio, fim }) => {
     composicaoReceitas: unwrap(await composicaoReceitas({ usuario_id, inicio, fim })),
     saldos: await saldos({ usuario_id, inicio, fim }),
     vencimentos: unwrap(await vencimentos({ usuario_id, inicio, fim })),
-    limites: [
-      {
-        name: 'name',
-        series: [1, 2, 3, 4, 4],
-        color: '#6376DD',
-        type: 'line',
-        shape: 'circle',
-        useArea: true,
-        useProgression: true,
-        dataLabels: true,
-        smooth: true,
-        useTag: 'none'
-      },
-      {
-        name: 'name',
-        series: [3, 3, 3, 3, 3],
-        color: '#d24141',
-        type: 'line',
-        shape: 'square',
-        dataLabels: true,
-        smooth: true,
-        useTag: 'none'
-      }
-    ],
+    limites: unwrap(await limites({ usuario_id, inicio, fim })),
+    //   [
+    //   {
+    //     name: 'name',
+    //     series: [1, 2, 3, 4, 4],
+    //     color: '#6376DD',
+    //     type: 'line',
+    //     shape: 'circle',
+    //     useArea: true,
+    //     useProgression: true,
+    //     dataLabels: true,
+    //     smooth: true,
+    //     useTag: 'none'
+    //   },
+    //   {
+    //     name: 'name',
+    //     series: [3, 3, 3, 3, 3],
+    //     color: '#d24141',
+    //     type: 'line',
+    //     shape: 'square',
+    //     dataLabels: true,
+    //     smooth: true,
+    //     useTag: 'none'
+    //   }
+    // ],
     planejamentos: []
   }
 }
@@ -252,17 +253,20 @@ async function vencimentos({ usuario_id, inicio, fim }) {
 
 async function limites({ usuario_id, inicio, fim }) {
   return knex.raw(`
-      select c.descricao                                                                       as label,
-             m.vencimento                                                                      as vencimento,
-             c.cor                                                                             as color,
-             (m.valor * (case m.tipo_movimentacao_id when 1 then 1 when 2 then -1 else 1 end)) as value,
-             c.limite                                                                          as redline
+      select m.id                                              as id,
+             c.descricao,
+             c.cor                                             as color,
+             sum((m.valor * (case m.tipo_movimentacao_id when 1 then 1 when 2 then -1 else 1 end)))
+                 over (partition by c.descricao order by m.id) as acc,
+             m.valor                                           as value,
+             t.descricao                                       as type,
+             c.limite                                          as redline
       from conta c
                join movimentacao m on c.id = m.conta_id
+               join tipo_movimentacao t on t.id = m.tipo_movimentacao_id
       where m.vencimento between :inicio and :fim
         and c.usuario_id = :usuario_id
         and c.tipo_conta_id in (2, 3)
-
   `, { usuario_id, inicio, fim })
 }
 

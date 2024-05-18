@@ -294,7 +294,20 @@ const composicaoReceitas = computed(() => {
 })
 
 const limites = computed(() => {
-  return dashboardState.store.dashboard?.limites
+  const contas = {}
+  dashboardState.store.dashboard?.limites?.forEach(limite => {
+    console.log(limite)
+    if (!contas[limite.descricao]) {
+      contas[limite.descricao] = {
+        name: limite.descricao,
+        color: limite.color,
+        type: 'line',
+        series: dashboardState.store.dashboard?.limites
+          ?.filter(l => l.descricao === limite.descricao).map(l => l.acc)
+      }
+    }
+  })
+  return Object.values(contas)
 })
 
 const planejamentos = computed(() => {
