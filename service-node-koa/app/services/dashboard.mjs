@@ -17,7 +17,7 @@ export const getDashboard = async ({ usuario_id, inicio, fim }) => {
     saldos: await saldos({ usuario_id, inicio, fim }),
     vencimentos: unwrap(await vencimentos({ usuario_id, inicio, fim })),
     limites: unwrap(await limites({ usuario_id, inicio, fim })),
-    planejamentos: []
+    planejamentos: unwrap(await planejamentos({ usuario_id, inicio, fim }))
   }
 }
 
@@ -230,7 +230,7 @@ async function vencimentos({ usuario_id, inicio, fim }) {
 async function limites({ usuario_id, inicio, fim }) {
   return knex.raw(`
       select m.id                                              as id,
-             c.descricao,
+             c.descricao                                       as descricao,
              c.cor                                             as color,
              sum((m.valor * (case m.tipo_movimentacao_id when 1 then 1 when 2 then -1 else 1 end)))
                  over (partition by c.descricao order by m.id) as acc,
@@ -238,11 +238,35 @@ async function limites({ usuario_id, inicio, fim }) {
              t.descricao                                       as type,
              c.limite                                          as redline
       from conta c
-               join movimentacao m on c.id = m.conta_id
+               join movimentacao m
+                    on c.id = m.conta_id
                join tipo_movimentacao t on t.id = m.tipo_movimentacao_id
-      where m.vencimento between :inicio and :fim
+      where m.vencimento between :inicio
+          and :fim
         and c.usuario_id = :usuario_id
         and c.tipo_conta_id in (2, 3)
+  `, { usuario_id, inicio, fim })
+}
+
+async function planejamentos({ usuario_id, inicio, fim }) {
+  return knex.raw(`
+      with data_frame as (select m.id                                              as id,
+                                 m.categoria_id                                    as categoria_id,
+                                 m.descricao                                       as descricao,
+                                 c.cor                                             as color,
+                                 m.valor                                           as value,
+                                 m.tipo_movimentacao_id                            as tipo_movimentacao_id,
+                                 sum((m.valor * (case m.tipo_movimentacao_id when 1 then 1 else -1 end)))
+                                     over (partition by c.descricao order by m.id) as acc
+                          from categoria c
+                                   join movimentacao m on c.id = m.categoria_id
+                          where m.vencimento between :inicio and :fim
+                            and c.usuario_id = :usuario_id)
+      select *
+      from planejamento p
+               join data_frame d on d.categoria_id = p.categoria_id
+      where p.inicial <= :inicio
+        and p.final >= :fim
   `, { usuario_id, inicio, fim })
 }
 
