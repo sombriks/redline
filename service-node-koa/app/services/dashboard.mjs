@@ -17,30 +17,6 @@ export const getDashboard = async ({ usuario_id, inicio, fim }) => {
     saldos: await saldos({ usuario_id, inicio, fim }),
     vencimentos: unwrap(await vencimentos({ usuario_id, inicio, fim })),
     limites: unwrap(await limites({ usuario_id, inicio, fim })),
-    //   [
-    //   {
-    //     name: 'name',
-    //     series: [1, 2, 3, 4, 4],
-    //     color: '#6376DD',
-    //     type: 'line',
-    //     shape: 'circle',
-    //     useArea: true,
-    //     useProgression: true,
-    //     dataLabels: true,
-    //     smooth: true,
-    //     useTag: 'none'
-    //   },
-    //   {
-    //     name: 'name',
-    //     series: [3, 3, 3, 3, 3],
-    //     color: '#d24141',
-    //     type: 'line',
-    //     shape: 'square',
-    //     dataLabels: true,
-    //     smooth: true,
-    //     useTag: 'none'
-    //   }
-    // ],
     planejamentos: []
   }
 }

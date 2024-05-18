@@ -27,6 +27,33 @@
             ></VueDataUi>
           </v-expansion-panel-text>
         </v-expansion-panel>
+        <v-expansion-panel value="limites">
+          <!-- limites por conta banco -->
+          <!-- limites por conta cartão -->
+          <!-- situação dos limites (linhas no plano com a REDLINE do limite da conta / cartão)-->
+          <v-expansion-panel-title>Limites</v-expansion-panel-title>
+          <v-expansion-panel-text>
+            <div v-for="(limite, i) in limites" :key="i">
+              <VueUiXy :config="lineChartConfig" :dataset="limite" />
+            </div>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+        <v-expansion-panel value="vencimentos">
+          <!-- quantidade de contas vencidas (chips)-->
+          <!-- quantidade de contas a vencer (chips)-->
+          <v-expansion-panel-title>Vencimentos</v-expansion-panel-title>
+          <v-expansion-panel-text>
+            <v-chip variant="outlined" class="ma-1" rounded size="large" color="green">
+              Quitadas: {{ dashboardState.store.dashboard.vencimentos.quitadas }}
+            </v-chip>
+            <v-chip variant="outlined" class="ma-1" rounded size="large" color="cyan">
+              A vencer: {{ dashboardState.store.dashboard.vencimentos.a_vencer }}
+            </v-chip>
+            <v-chip variant="outlined" class="ma-1" rounded size="large" color="orange">
+              Em atraso: {{ dashboardState.store.dashboard.vencimentos.em_atraso }}
+            </v-chip>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
         <v-expansion-panel value="despesas">
           <!-- despesas por conta (pizza) -->
           <!-- despesas por categoria (pizza) -->
@@ -71,7 +98,7 @@
             ></VueDataUi>
           </v-expansion-panel-text>
         </v-expansion-panel>
-        <v-expansion-panel value="comps">
+        <v-expansion-panel value="composicao">
           <!-- composição despesas (stacked bar conta/categorias)-->
           <!-- composição receitas (stacked bar conta/categorias)-->
           <v-expansion-panel-title>Composição</v-expansion-panel-title>
@@ -142,31 +169,6 @@
             />
           </v-expansion-panel-text>
         </v-expansion-panel>
-        <v-expansion-panel value="vencimentos">
-          <!-- quantidade de contas vencidas (chips)-->
-          <!-- quantidade de contas a vencer (chips)-->
-          <v-expansion-panel-title>Vencimentos</v-expansion-panel-title>
-          <v-expansion-panel-text>
-            <v-chip variant="outlined" class="ma-1" rounded size="large" color="green">
-              Quitadas: {{ dashboardState.store.dashboard.vencimentos.quitadas }}
-            </v-chip>
-            <v-chip variant="outlined" class="ma-1" rounded size="large" color="cyan">
-              A vencer: {{ dashboardState.store.dashboard.vencimentos.a_vencer }}
-            </v-chip>
-            <v-chip variant="outlined" class="ma-1" rounded size="large" color="orange">
-              Em atraso: {{ dashboardState.store.dashboard.vencimentos.em_atraso }}
-            </v-chip>
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-        <v-expansion-panel value="limites">
-          <!-- limites por conta banco -->
-          <!-- limites por conta cartão -->
-          <!-- situação dos limites (linhas no plano com a REDLINE do limite da conta / cartão)-->
-          <v-expansion-panel-title>Limites</v-expansion-panel-title>
-          <v-expansion-panel-text>
-            <VueDataUi component="VueUiXy" :config="lineChartConfig" :dataset="limites" />
-          </v-expansion-panel-text>
-        </v-expansion-panel>
         <v-expansion-panel value="planejamentos">
           <!-- situação dos planejamentos (linhas no plano com a REDLINE do planejamento)-->
           <v-expansion-panel-title>Planejamentos</v-expansion-panel-title>
@@ -180,7 +182,7 @@
 <script setup>
 import { endOfMonth, startOfMonth } from 'date-fns'
 import { computed, onMounted, ref, watch } from 'vue'
-import { VueDataUi } from 'vue-data-ui'
+import { VueDataUi, VueUiXy } from 'vue-data-ui'
 import ChipPeriodo from '@/pages/shared/chip-periodo.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
 import ChipSaldo from '@/pages/shared/chip-saldo.vue'
@@ -298,13 +300,29 @@ const limites = computed(() => {
   dashboardState.store.dashboard?.limites?.forEach(limite => {
     console.log(limite)
     if (!contas[limite.descricao]) {
-      contas[limite.descricao] = {
-        name: limite.descricao,
-        color: limite.color,
-        type: 'line',
-        series: dashboardState.store.dashboard?.limites
-          ?.filter(l => l.descricao === limite.descricao).map(l => l.acc)
-      }
+      contas[limite.descricao] = [
+        {
+          shape: 'square',
+          name: 'Limite',
+          color: 'red',
+          type: 'line',
+          series: dashboardState.store.dashboard?.limites
+            ?.filter(l => l.descricao === limite.descricao).map(l => l.redline)
+        },
+        {
+          name: limite.descricao,
+          useProgression: true,
+          color: limite.color,
+          dataLabels: true,
+          shape: 'circle',
+          useTag: 'none',
+          useArea: true,
+          smooth: true,
+          type: 'line',
+          series: dashboardState.store.dashboard?.limites
+            ?.filter(l => l.descricao === limite.descricao).map(l => l.acc)
+        }
+      ]
     }
   })
   return Object.values(contas)
