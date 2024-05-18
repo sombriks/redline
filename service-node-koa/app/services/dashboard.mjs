@@ -16,7 +16,7 @@ export const getDashboard = async ({ usuario_id, inicio, fim }) => {
     composicaoReceitas: unwrap(await composicaoReceitas({ usuario_id, inicio, fim })),
     saldos: await saldos({ usuario_id, inicio, fim }),
     vencimentos: unwrap(await vencimentos({ usuario_id, inicio, fim })),
-    limites: [],
+    limites: unwrap(await limites({ usuario_id, inicio, fim })),
     planejamentos: []
   }
 }
@@ -208,23 +208,42 @@ async function vencimentos({ usuario_id, inicio, fim }) {
                           from movimentacao
                           where conta_id in (select id from conta where usuario_id = :usuario_id)
                             and vencimento between :inicio and :fim),
-           emAtraso as (select count(*) as contas
+           em_atraso as (select count(*) as contas
+                         from data_frame
+                         where efetivada is null
+                           and vencimento <= CURRENT_TIMESTAMP),
+           a_vencer as (select count(*) as contas
                         from data_frame
                         where efetivada is null
-                          and vencimento <= CURRENT_TIMESTAMP),
-           aVencer as (select count(*) as contas
-                       from data_frame
-                       where efetivada is null
-                         and vencimento >= CURRENT_TIMESTAMP),
+                          and vencimento >= CURRENT_TIMESTAMP),
            quitadas as (select count(*) as contas
                         from data_frame
                         where efetivada is not null)
-      select emAtraso.contas as emAtraso, aVencer.contas as aVencer, quitadas.contas as quitadas
-      from emAtraso,
-           aVencer,
+      select em_atraso.contas as em_atraso, a_vencer.contas as a_vencer, quitadas.contas as quitadas
+      from em_atraso,
+           a_vencer,
            quitadas;
   `, { usuario_id, inicio, fim }))
   return result
+}
+
+async function limites({ usuario_id, inicio, fim }) {
+  return knex.raw(`
+      select m.id                                              as id,
+             c.descricao,
+             c.cor                                             as color,
+             sum((m.valor * (case m.tipo_movimentacao_id when 1 then 1 when 2 then -1 else 1 end)))
+                 over (partition by c.descricao order by m.id) as acc,
+             m.valor                                           as value,
+             t.descricao                                       as type,
+             c.limite                                          as redline
+      from conta c
+               join movimentacao m on c.id = m.conta_id
+               join tipo_movimentacao t on t.id = m.tipo_movimentacao_id
+      where m.vencimento between :inicio and :fim
+        and c.usuario_id = :usuario_id
+        and c.tipo_conta_id in (2, 3)
+  `, { usuario_id, inicio, fim })
 }
 
 /**
