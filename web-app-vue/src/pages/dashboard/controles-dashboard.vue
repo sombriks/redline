@@ -12,19 +12,17 @@
           <!-- receitas x despesas efetivadas (simple-bar) -->
           <v-expansion-panel-title>Receitas x Despesas</v-expansion-panel-title>
           <v-expansion-panel-text>
-            <VueDataUi
-              component="VueUiSparkbar"
+            <VueUiSparkbar
               :config="receitaDespesaBarConfig"
               :dataset="receitaDespesaTotalPeriodo"
-            ></VueDataUi>
+            ></VueUiSparkbar>
             <br />
             <v-divider></v-divider>
             <br />
-            <VueDataUi
-              component="VueUiSparkbar"
+            <VueUiSparkbar
               :config="receitaDespesaBarConfig"
               :dataset="receitaDespesaEfetivadaPeriodo"
-            ></VueDataUi>
+            ></VueUiSparkbar>
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="limites">
@@ -60,20 +58,18 @@
           <v-expansion-panel-title>Detalhes Despesas</v-expansion-panel-title>
           <v-expansion-panel-text>
             <h3>Despesas por conta</h3>
-            <VueDataUi
-              component="VueUiDonut"
+            <VueUiDonut
               :config="donutConfig"
               :dataset="despesaConta"
-            ></VueDataUi>
+            ></VueUiDonut>
             <br />
             <v-divider></v-divider>
             <br />
             <h3>Despesas por categoria</h3>
-            <VueDataUi
-              component="VueUiDonut"
+            <VueUiDonut
               :config="donutConfig"
               :dataset="despesaCategoria"
-            ></VueDataUi>
+            ></VueUiDonut>
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="receitas">
@@ -82,20 +78,18 @@
           <v-expansion-panel-title>Detalhes Receitas</v-expansion-panel-title>
           <v-expansion-panel-text>
             <h3>Receitas por conta</h3>
-            <VueDataUi
-              component="VueUiDonut"
+            <VueUiDonut
               :config="donutConfig"
               :dataset="receitaConta"
-            ></VueDataUi>
+            ></VueUiDonut>
             <br />
             <v-divider></v-divider>
             <br />
             <h3>Receitas por categoria</h3>
-            <VueDataUi
-              component="VueUiDonut"
+            <VueUiDonut
               :config="donutConfig"
               :dataset="receitaCategoria"
-            ></VueDataUi>
+            ></VueUiDonut>
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="composicao">
@@ -106,11 +100,10 @@
             <h3>Composição de despesas</h3>
             <div v-for="conta in composicaoDespesas" :key="conta.descricao">
               <h4>{{ conta.descricao }}</h4>
-              <VueDataUi
-                component="VueUiSparkStackbar"
+              <VueUiSparkStackbar
                 :config="sparkStackBarConfig"
                 :dataset="conta.data"
-              ></VueDataUi>
+              ></VueUiSparkStackbar>
             </div>
             <br />
             <v-divider></v-divider>
@@ -118,11 +111,10 @@
             <h3>Composição de receitas</h3>
             <div v-for="conta in composicaoReceitas" :key="conta.descricao">
               <h4>{{ conta.descricao }}</h4>
-              <VueDataUi
-                component="VueUiSparkStackbar"
+              <VueUiSparkStackbar
                 :config="sparkStackBarConfig"
                 :dataset="conta.data"
-              ></VueDataUi>
+              ></VueUiSparkStackbar>
             </div>
           </v-expansion-panel-text>
         </v-expansion-panel>
@@ -182,7 +174,7 @@
 <script setup>
 import { endOfMonth, startOfMonth } from 'date-fns'
 import { computed, onMounted, ref, watch } from 'vue'
-import { VueDataUi, VueUiXy } from 'vue-data-ui'
+import { VueUiDonut, VueUiSparkbar, VueUiSparkStackbar, VueUiXy } from 'vue-data-ui'
 import ChipPeriodo from '@/pages/shared/chip-periodo.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
 import ChipSaldo from '@/pages/shared/chip-saldo.vue'
@@ -298,7 +290,6 @@ const composicaoReceitas = computed(() => {
 const limites = computed(() => {
   const contas = {}
   dashboardState.store.dashboard?.limites?.forEach(limite => {
-    console.log(limite)
     if (!contas[limite.descricao]) {
       contas[limite.descricao] = [
         {
@@ -307,7 +298,8 @@ const limites = computed(() => {
           color: 'red',
           type: 'line',
           series: dashboardState.store.dashboard?.limites
-            ?.filter(l => l.descricao === limite.descricao).map(l => l.redline)
+            ?.filter(l => l.descricao === limite.descricao)
+            .map(l => l.redline)
         },
         {
           name: limite.descricao,
@@ -320,7 +312,8 @@ const limites = computed(() => {
           smooth: true,
           type: 'line',
           series: dashboardState.store.dashboard?.limites
-            ?.filter(l => l.descricao === limite.descricao).map(l => l.acc)
+            ?.filter(l => l.descricao === limite.descricao)
+            .map(l => l.acc)
         }
       ]
     }
