@@ -1,10 +1,10 @@
 <script setup>
 
-import NovaMovimentacao from "@/pages/movimentacao/nova-movimentacao.vue";
+import EditarMovimentacao from '@/pages/movimentacao/editar-movimentacao.vue'
 </script>
 
 <template>
-  <nova-movimentacao></nova-movimentacao>
+  <editar-movimentacao></editar-movimentacao>
 </template>
 
 <style scoped>

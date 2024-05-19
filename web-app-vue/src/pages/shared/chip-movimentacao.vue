@@ -1,9 +1,12 @@
 <template>
-  <v-chip>{{ aaa }}</v-chip>
+  <v-chip @click="onClick"
+    >{{ props.movimentacao?.descricao }} {{ props.movimentacao?.valor }}</v-chip
+  >
 </template>
 <script setup>
-import { ref } from 'vue'
+const props = defineProps(['movimentacao'])
+const emit = defineEmits(['click'])
 
-const aaa = ref('aaa')
+const onClick = () => emit('click')
 </script>
 <style scoped></style>

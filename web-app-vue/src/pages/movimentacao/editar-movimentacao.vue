@@ -73,6 +73,7 @@
             ></v-btn>
             <v-spacer v-if="props?.movimentacao?.id"></v-spacer>
             <v-btn
+              v-if="props?.movimentacao?.id"
               variant="outlined"
               color="red"
               class="ma-2"
@@ -87,35 +88,99 @@
   </v-card>
 </template>
 <script setup>
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
+import { useContaStore } from '@/stores/contaStore'
+import { useCategoriaStore } from '@/stores/categoriaStore'
 import { numberRule, requiredRule } from '@/services/basic-rules'
+import { router } from '@/services/router'
+import ChipDate from '@/pages/shared/chip-date.vue'
 import ContaAutocomplete from '@/pages/shared/conta-autocomplete.vue'
 import CategoriaAutocomplete from '@/pages/shared/categoria-autocomplete.vue'
-import { useRouter } from 'vue-router'
-import ChipDate from '@/pages/shared/chip-date.vue'
 
-const router = useRouter()
 const props = defineProps(['movimentacao'])
 
-const movimentacaoStore = useMovimentacaoStore()
+const contaState = useContaStore()
+const categoriaState = useCategoriaStore()
+const movimentacaoState = useMovimentacaoStore()
 
-const movForm = reactive({ ...props.movimentacao })
+const resetMovimentacao = () => {
+  return props?.movimentacao?.id
+    ? { ...props?.movimentacao }
+    : {
+        descricao: 'movimentação',
+        valor: 10,
+        criacao: new Date(),
+        alteracao: new Date(),
+        vencimento: new Date(),
+        efetivada: null,
+        tipo_movimentacao_id: 2,
+        conta_id: null,
+        categoria_id: null,
+        recorrencia_id: null
+      }
+}
+
+const resetConta = () => ({})
+
+const movForm = reactive(resetMovimentacao())
+
+const contaSelecionada = reactive(resetConta())
+
+const contaEfetivada = ref(false)
 
 const valid = ref(false)
 
+const sync = async () => {
+  await Promise.all([
+    contaState.sincronizarContas(),
+    categoriaState.sincronizarCategorias(),
+    movimentacaoState.sincronizarMovimentacoes()
+  ])
+}
+
 const salvarMovimentacao = async () => {
   if (!valid.value) return
-  await movimentacaoStore.salvarMovimentacao(movForm)
-  await router.push('/historico')
+  await movimentacaoState.salvarMovimentacao(movForm)
+  Object.assign(movForm, resetMovimentacao())
+  Object.assign(contaSelecionada, resetConta())
+  router.push('/historico')
 }
 
 const excluirMovimentacao = async () => {
   if (confirm(`Deseja realmente excluir a movimentação #${props.movimentacao.id}`)) {
-    await movimentacaoStore.excluirMovimentacao(props.movimentacao)
+    await movimentacaoState.excluirMovimentacao(props.movimentacao)
     await router.push('/historico')
   }
 }
+
+watch(
+  () => movForm.conta_id,
+  () => {
+    const conta = contaState.store.contas.find((c) => c.id == movForm?.conta_id)
+    Object.assign(contaSelecionada, conta)
+    if (conta?.tipo_conta_id == 3) {
+      // cartão de crédito
+      const date = new Date()
+      date.setDate(conta.dia_vencimento)
+      const dateFechamento = new Date()
+      dateFechamento.setDate(conta.dia_fechamento)
+      if (dateFechamento <= new Date()) {
+        date.setMonth(date.getMonth() + 1)
+      }
+      movForm.vencimento = date
+    }
+  }
+)
+
+watch(
+  () => contaEfetivada.value,
+  () => {
+    if (!contaEfetivada.value) movForm.efetivada = null
+  }
+)
+
+onMounted(sync)
 </script>
 <style scoped>
 .column {

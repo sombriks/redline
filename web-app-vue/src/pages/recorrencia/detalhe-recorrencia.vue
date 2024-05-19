@@ -35,7 +35,7 @@
     :append-icon="props.recorrencia?.id ? 'mdi-playlist-edit' : 'mdi-playlist-plus'"
     @click="!props.recorrencia?.id ? (mode = 2) : mode++"
   >
-    <v-card-text>{{ descricao }}</v-card-text>
+    <v-card-text>{{ descricao }} - {{ periodo }}</v-card-text>
   </v-card>
   <v-card v-if="mode === 2" elevation="24" min-width="300">
     <v-form v-model="valid" @submit.prevent.stop="doSave">
@@ -173,6 +173,12 @@ const compacto = computed(() => {
 const descricao = computed(() => {
   if (rec.id) return `${rec.descricao} (${categoria.value.descricao}) | ${resultado.value}`
   return 'Nova recorrência'
+})
+
+const periodo = computed(() => {
+  return `${prepareDate(rec.inicial).toLocaleDateString()} a ${prepareDate(
+    rec.final
+  ).toLocaleDateString()}`
 })
 
 const resultado = computed(() => {
