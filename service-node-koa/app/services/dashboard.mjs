@@ -229,44 +229,45 @@ async function vencimentos({ usuario_id, inicio, fim }) {
 
 async function limites({ usuario_id, inicio, fim }) {
   return knex.raw(`
-      select m.id                                              as id,
-             c.descricao                                       as descricao,
-             c.cor                                             as color,
-             sum((m.valor * (case m.tipo_movimentacao_id when 1 then 1 when 2 then -1 else 1 end)))
-                 over (partition by c.descricao order by m.id) as acc,
-             m.valor                                           as value,
-             t.descricao                                       as type,
-             c.limite                                          as redline
+      with data_frame as (select m.id, conta_id, valor, tipo_movimentacao_id, t.descricao as type
+                          from movimentacao m
+                                   join tipo_movimentacao t on m.tipo_movimentacao_id = t.id
+                          where m.vencimento between :inicio and :fim
+                            and m.conta_id in (select id from conta where usuario_id = :usuario_id))
+      select m.id                                   as id,
+             c.descricao                            as descricao,
+             c.cor                                  as color,
+             c.limite                               as redline,
+             m.type                                 as type,
+             m.valor                                as value,
+             sum(m.valor * (case m.tipo_movimentacao_id when 1 then 1 else -1 end))
+             over (partition by c.id order by m.id) as acc
       from conta c
-               join movimentacao m
-                    on c.id = m.conta_id
-               join tipo_movimentacao t on t.id = m.tipo_movimentacao_id
-      where m.vencimento between :inicio
-          and :fim
+               left join data_frame m on c.id = m.conta_id
+      where c.tipo_conta_id in (2, 3)
         and c.usuario_id = :usuario_id
-        and c.tipo_conta_id in (2, 3)
   `, { usuario_id, inicio, fim })
 }
 
 async function planejamentos({ usuario_id, inicio, fim }) {
   return knex.raw(`
-      with data_frame as (select m.id                                              as id,
-                                 m.categoria_id                                    as categoria_id,
-                                 m.descricao                                       as descricao,
-                                 c.cor                                             as color,
-                                 m.valor                                           as value,
-                                 m.tipo_movimentacao_id                            as tipo_movimentacao_id,
-                                 sum((m.valor * (case m.tipo_movimentacao_id when 1 then 1 else -1 end)))
-                                     over (partition by c.descricao order by m.id) as acc
-                          from categoria c
-                                   join movimentacao m on c.id = m.categoria_id
+      with data_frame as (select m.id, categoria_id, valor, tipo_movimentacao_id, t.descricao as type
+                          from movimentacao m
+                                   join tipo_movimentacao t on m.tipo_movimentacao_id = t.id
                           where m.vencimento between :inicio and :fim
-                            and c.usuario_id = :usuario_id)
-      select *
+                            and m.conta_id in (select id from conta where usuario_id = :usuario_id))
+      select m.id                                   as id,
+             p.descricao                            as descricao,
+             c.cor                                  as color,
+             p.limite                               as redline,
+             m.type                                 as type,
+             m.valor                                as value,
+             sum(m.valor * (case m.tipo_movimentacao_id when 1 then 1 else -1 end))
+             over (partition by c.id order by m.id) as acc
       from planejamento p
-               join data_frame d on d.categoria_id = p.categoria_id
-      where p.inicial <= :inicio
-        and p.final >= :fim
+               join categoria c on p.categoria_id = c.id
+               left join data_frame m on c.id = m.categoria_id
+      where c.usuario_id = :usuario_id
   `, { usuario_id, inicio, fim })
 }
 

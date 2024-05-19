@@ -52,24 +52,27 @@
             </v-chip>
           </v-expansion-panel-text>
         </v-expansion-panel>
+        <v-expansion-panel value="planejamentos">
+          <!-- situação dos planejamentos (linhas no plano com a REDLINE do planejamento)-->
+          <v-expansion-panel-title>Planejamentos</v-expansion-panel-title>
+          <v-expansion-panel-text>
+            <div v-for="(planejamento, i) in planejamentos" :key="i">
+              <VueUiXy :config="lineChartConfig" :dataset="planejamento" />
+            </div>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
         <v-expansion-panel value="despesas">
           <!-- despesas por conta (pizza) -->
           <!-- despesas por categoria (pizza) -->
           <v-expansion-panel-title>Detalhes Despesas</v-expansion-panel-title>
           <v-expansion-panel-text>
             <h3>Despesas por conta</h3>
-            <VueUiDonut
-              :config="donutConfig"
-              :dataset="despesaConta"
-            ></VueUiDonut>
+            <VueUiDonut :config="donutConfig" :dataset="despesaConta"></VueUiDonut>
             <br />
             <v-divider></v-divider>
             <br />
             <h3>Despesas por categoria</h3>
-            <VueUiDonut
-              :config="donutConfig"
-              :dataset="despesaCategoria"
-            ></VueUiDonut>
+            <VueUiDonut :config="donutConfig" :dataset="despesaCategoria"></VueUiDonut>
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="receitas">
@@ -78,18 +81,12 @@
           <v-expansion-panel-title>Detalhes Receitas</v-expansion-panel-title>
           <v-expansion-panel-text>
             <h3>Receitas por conta</h3>
-            <VueUiDonut
-              :config="donutConfig"
-              :dataset="receitaConta"
-            ></VueUiDonut>
+            <VueUiDonut :config="donutConfig" :dataset="receitaConta"></VueUiDonut>
             <br />
             <v-divider></v-divider>
             <br />
             <h3>Receitas por categoria</h3>
-            <VueUiDonut
-              :config="donutConfig"
-              :dataset="receitaCategoria"
-            ></VueUiDonut>
+            <VueUiDonut :config="donutConfig" :dataset="receitaCategoria"></VueUiDonut>
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="composicao">
@@ -160,11 +157,6 @@
               :saldo="dashboardState.store.dashboard.saldos.projetado1Ano"
             />
           </v-expansion-panel-text>
-        </v-expansion-panel>
-        <v-expansion-panel value="planejamentos">
-          <!-- situação dos planejamentos (linhas no plano com a REDLINE do planejamento)-->
-          <v-expansion-panel-title>Planejamentos</v-expansion-panel-title>
-          <v-expansion-panel-text></v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
     </v-row>
@@ -289,7 +281,7 @@ const composicaoReceitas = computed(() => {
 
 const limites = computed(() => {
   const contas = {}
-  dashboardState.store.dashboard?.limites?.forEach(limite => {
+  dashboardState.store.dashboard?.limites?.forEach((limite) => {
     if (!contas[limite.descricao]) {
       contas[limite.descricao] = [
         {
@@ -298,8 +290,8 @@ const limites = computed(() => {
           color: 'red',
           type: 'line',
           series: dashboardState.store.dashboard?.limites
-            ?.filter(l => l.descricao === limite.descricao)
-            .map(l => l.redline)
+            ?.filter((l) => l.descricao === limite.descricao)
+            .map((l) => -l.redline)
         },
         {
           name: limite.descricao,
@@ -312,8 +304,8 @@ const limites = computed(() => {
           smooth: true,
           type: 'line',
           series: dashboardState.store.dashboard?.limites
-            ?.filter(l => l.descricao === limite.descricao)
-            .map(l => l.acc)
+            ?.filter((l) => l.descricao === limite.descricao)
+            .map((l) => l.acc)
         }
       ]
     }
@@ -322,7 +314,37 @@ const limites = computed(() => {
 })
 
 const planejamentos = computed(() => {
-  return dashboardState.store.dashboard?.planejamentos
+  const planejamentos = {}
+  dashboardState.store.dashboard?.planejamentos?.forEach((planejamento) => {
+    if(!planejamentos[planejamento.descricao]) {
+      planejamentos[planejamento.descricao] = [
+        {
+          shape: 'square',
+          name: 'Limite',
+          color: 'red',
+          type: 'line',
+          series: dashboardState.store.dashboard?.planejamentos
+            ?.filter((l) => l.descricao === planejamento.descricao)
+            .map((l) => l.redline)
+        },
+        {
+          name: planejamento.descricao,
+          useProgression: true,
+          color: planejamento.color,
+          dataLabels: true,
+          shape: 'circle',
+          useTag: 'none',
+          useArea: true,
+          smooth: true,
+          type: 'line',
+          series: dashboardState.store.dashboard?.planejamentos
+            ?.filter((l) => l.descricao === planejamento.descricao)
+            .map((l) => -l.acc)
+        }
+      ]
+    }
+  })
+  return Object.values(planejamentos)
 })
 
 watch([inicio, fim], async ([inicio, fim]) => {
