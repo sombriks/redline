@@ -40,6 +40,13 @@
         {{ createMode ? 'Cancelar' : 'Criar conta' }}
       </v-btn>
     </v-form>
+
+    <v-divider />
+    <div class="column center">
+      <a class="item" href="https://github.com/sombriks/redline" target="_blank">
+        Este aplicativo é de código aberto</a
+      >
+    </div>
   </v-card>
 </template>
 <script setup>
@@ -90,5 +97,23 @@ label,
 input,
 button {
   margin: 0.5em;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  margin: 5px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.center {
+  align-items: center;
 }
 </style>

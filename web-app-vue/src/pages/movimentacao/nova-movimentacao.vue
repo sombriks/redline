@@ -1,10 +1,18 @@
 <template>
-  <v-card elevation="24" min-width="320">
+  <v-card
+    elevation="24"
+    min-width="320"
+    :title="
+      props?.movimentacao?.id
+        ? `Editar movimentação #${props.movimentacao.id}`
+        : 'Nova movimentação'
+    "
+  >
     <v-card-text>
       <v-form v-model="valid" @submit.prevent.stop="salvarMovimentacao">
         <div class="column">
           <!-- tipo de movimentação (entrada / saída) -->
-          <v-radio-group class="item" v-model="novaMovimentacao.tipo_movimentacao_id" inline>
+          <v-radio-group class="item" v-model="movForm.tipo_movimentacao_id" inline>
             <v-radio :value="1" label="Entrada"></v-radio>
             <v-radio :value="2" label="Saída"></v-radio>
           </v-radio-group>
@@ -13,35 +21,36 @@
             class="item"
             :rules="[requiredRule, numberRule]"
             type="number"
-            v-model="novaMovimentacao.valor"
+            v-model="movForm.valor"
             label="Valor"
             prepend-inner-icon="mdi-cash-100"
           />
-          <!-- novaMovimentacao.categoria_id -->
-          <categoria-autocomplete class="item" v-model="novaMovimentacao.categoria_id" />
-          <!-- novaMovimentacao.conta_id -->
-          <conta-autocomplete
-            class="item"
-            v-model="novaMovimentacao.conta_id"
-            :rules="[requiredRule]"
-          />
-          <!-- descrição -->
+          <!--  movEdit.categoria_id-->
+          <categoria-autocomplete class="item" v-model="movForm.categoria_id" />
+          <!--  movEdit.conta_id-->
+          <conta-autocomplete class="item" v-model="movForm.conta_id" :rules="[requiredRule]" />
+          <!--  movEdit.descricao-->
           <v-text-field
             class="item"
             :rules="[requiredRule]"
-            v-model="novaMovimentacao.descricao"
+            v-model="movForm.descricao"
             label="Descrição"
           />
           <!-- efetivada? -->
-          <v-checkbox class="item" v-model="contaEfetivada" label="Paga?" />
+          <v-checkbox
+            v-if="!props?.movimentacao?.id"
+            class="item"
+            v-model="contaEfetivada"
+            label="Paga?"
+          />
           <!-- vencimento (dia do cartão se conta cartão) -->
-          <chip-date class="item" label="Vencimento" v-model="novaMovimentacao.vencimento" />
+          <chip-date class="item" label="Vencimento" v-model="movForm.vencimento" />
           <!-- efetivada (data) -->
           <chip-date
             v-if="contaEfetivada"
             class="item"
             label="Efetivada"
-            v-model="novaMovimentacao.efetivada"
+            v-model="movForm.efetivada"
           />
           <!-- recorrência (painel estendido) pra criar recorrência // criar depois //-->
           <v-divider />
@@ -79,6 +88,8 @@ import ChipDate from '@/pages/shared/chip-date.vue'
 import ContaAutocomplete from '@/pages/shared/conta-autocomplete.vue'
 import CategoriaAutocomplete from '@/pages/shared/categoria-autocomplete.vue'
 
+const props = defineProps(['movimentacao'])
+
 const contaState = useContaStore()
 const categoriaState = useCategoriaStore()
 const movimentacaoState = useMovimentacaoStore()
@@ -98,7 +109,7 @@ const resetMovimentacao = () => ({
 
 const resetConta = () => ({})
 
-const novaMovimentacao = reactive(resetMovimentacao())
+const movForm = reactive(resetMovimentacao())
 
 const contaSelecionada = reactive(resetConta())
 
@@ -116,16 +127,16 @@ const sync = async () => {
 
 const salvarMovimentacao = async () => {
   if (!valid.value) return
-  await movimentacaoState.salvarMovimentacao(novaMovimentacao)
-  Object.assign(novaMovimentacao, resetMovimentacao())
+  await movimentacaoState.salvarMovimentacao(movForm)
+  Object.assign(movForm, resetMovimentacao())
   Object.assign(contaSelecionada, resetConta())
   router.push('/historico')
 }
 
 watch(
-  () => novaMovimentacao.conta_id,
+  () => movForm.conta_id,
   () => {
-    const conta = contaState.store.contas.find((c) => c.id == novaMovimentacao?.conta_id)
+    const conta = contaState.store.contas.find((c) => c.id == movForm?.conta_id)
     Object.assign(contaSelecionada, conta)
     if (conta?.tipo_conta_id == 3) {
       // cartão de crédito
@@ -136,7 +147,7 @@ watch(
       if (dateFechamento <= new Date()) {
         date.setMonth(date.getMonth() + 1)
       }
-      novaMovimentacao.vencimento = date
+      movForm.vencimento = date
     }
   }
 )
@@ -144,7 +155,7 @@ watch(
 watch(
   () => contaEfetivada.value,
   () => {
-    if (!contaEfetivada.value) novaMovimentacao.efetivada = null
+    if (!contaEfetivada.value) movForm.efetivada = null
   }
 )
 

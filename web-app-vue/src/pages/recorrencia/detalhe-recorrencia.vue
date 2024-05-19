@@ -1,6 +1,6 @@
 <template>
   <v-chip
-    v-if="mode < 2"
+    v-if="mode === 0"
     rounded
     variant="outlined"
     :color="props.recorrencia?.cor || 'green-accent-2'"
@@ -19,6 +19,24 @@
     <span v-if="mode === 0">{{ compacto }}</span>
     <span v-if="mode === 1">{{ descricao }}</span>
   </v-chip>
+  <v-card
+    v-if="mode === 1"
+    variant="outlined"
+    class="margin-1em"
+    :title="compacto"
+    :color="props.recorrencia?.cor || 'green-accent-2'"
+    :prepend-icon="
+      props.recorrencia?.id
+        ? props.recorrencia?.tipo_movimentacao_id == 1
+          ? 'mdi-cash-plus'
+          : 'mdi-cash-minus'
+        : 'mdi-cash'
+    "
+    :append-icon="props.recorrencia?.id ? 'mdi-playlist-edit' : 'mdi-playlist-plus'"
+    @click="!props.recorrencia?.id ? (mode = 2) : mode++"
+  >
+    <v-card-text>{{ descricao }}</v-card-text>
+  </v-card>
   <v-card v-if="mode === 2" elevation="24" min-width="300">
     <v-form v-model="valid" @submit.prevent.stop="doSave">
       <v-container>
@@ -45,7 +63,11 @@
           prepend-inner-icon="mdi-repeat-variant"
         >
         </v-select>
-        <chip-periodo v-model:inicial="rec.inicial" v-model:final="rec.final" reset="anual"></chip-periodo>
+        <chip-periodo
+          v-model:inicial="rec.inicial"
+          v-model:final="rec.final"
+          reset="anual"
+        ></chip-periodo>
         <v-text-field
           class="item"
           :rules="[requiredRule, minValueRule(1)]"
@@ -182,3 +204,8 @@ const doDel = async () => {
   Object.assign(rec, reset())
 }
 </script>
+<style scoped>
+.margin-1em {
+  margin: 1em;
+}
+</style>
