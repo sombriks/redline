@@ -1,5 +1,5 @@
 <template>
-  <v-chip @click="onClick"
+  <v-chip variant="outlined" rounded @click="onClick"
     >{{ props.movimentacao?.descricao }} {{ props.movimentacao?.valor }}</v-chip
   >
 </template>

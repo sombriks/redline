@@ -64,6 +64,7 @@
             type="submit"
             icon="mdi-check"
           ></v-btn>
+          <v-spacer v-if="!planejamento?.id"></v-spacer>
           <v-btn
             variant="outlined"
             color="orange"

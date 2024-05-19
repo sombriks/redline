@@ -36,13 +36,19 @@
     </v-row>
     <v-row v-if="!agrupamento" align="center" class="vh-80-scroll">
       <p v-if="!movimentacoes.length">Não há movimentações para exibir</p>
-      <v-expansion-panels>
-        <detalhe-movimentacao
-          v-for="movimentacao in movimentacoes"
-          :key="movimentacao.id"
-          :movimentacao="movimentacao"
-        />
-      </v-expansion-panels>
+      <!--      <v-expansion-panels>-->
+      <!--        <detalhe-movimentacao-->
+      <!--          v-for="movimentacao in movimentacoes"-->
+      <!--          :key="movimentacao.id"-->
+      <!--          :movimentacao="movimentacao"-->
+      <!--        />-->
+      <!--      </v-expansion-panels>-->
+      <chip-movimentacao
+        v-for="movimentacao in movimentacoes"
+        :key="movimentacao.id"
+        :movimentacao="movimentacao"
+        @click="router.push(`/editar-movimentacao/${movimentacao.id}`)"
+      ></chip-movimentacao>
     </v-row>
     <v-row v-if="agrupamento === 'conta'" align="center" class="vh-80-scroll">
       <v-list width="100%">
@@ -197,6 +203,7 @@ import ContaAutocomplete from '@/pages/shared/conta-autocomplete.vue'
 import ChipSaldo from '@/pages/shared/chip-saldo.vue'
 import ChipConta from '@/pages/shared/chip-conta.vue'
 import ChipPeriodo from '@/pages/shared/chip-periodo.vue'
+import ChipMovimentacao from '@/pages/shared/chip-movimentacao.vue'
 
 const movimentacaoStore = useMovimentacaoStore()
 const categoriaStore = useCategoriaStore()
@@ -231,13 +238,15 @@ const agrupamentoConta = computed(() => {
 })
 
 const agrupamentoCategoria = computed(() => {
-  const categorias = categoriaStore.store.categorias.map((c) => {
-    const thisCategory = movimentacoes.value.filter((m) => m.categoria_id == c.id)
-    return {
-      ...c,
-      saldo: prepareBalance(thisCategory)
-    }
-  }).filter(ac => ac.saldo != 0)
+  const categorias = categoriaStore.store.categorias
+    .map((c) => {
+      const thisCategory = movimentacoes.value.filter((m) => m.categoria_id == c.id)
+      return {
+        ...c,
+        saldo: prepareBalance(thisCategory)
+      }
+    })
+    .filter((ac) => ac.saldo != 0)
   return categorias
 })
 

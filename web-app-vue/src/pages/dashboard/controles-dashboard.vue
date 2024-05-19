@@ -321,7 +321,7 @@ const planejamentos = computed(() => {
         {
           shape: 'square',
           name: 'Limite',
-          color: 'red',
+          color: planejamento.type === "ENTRADA" ? 'lightgreem' : 'red',
           type: 'line',
           series: dashboardState.store.dashboard?.planejamentos
             ?.filter((l) => l.descricao === planejamento.descricao)
@@ -339,7 +339,7 @@ const planejamentos = computed(() => {
           type: 'line',
           series: dashboardState.store.dashboard?.planejamentos
             ?.filter((l) => l.descricao === planejamento.descricao)
-            .map((l) => -l.acc)
+            .map((l) => planejamento.type === "ENTRADA" ? l.acc : -l.acc)
         }
       ]
     }
