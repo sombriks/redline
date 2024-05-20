@@ -1,3 +1,14 @@
+<template>
+  <v-chip
+    rounded
+    variant="outlined"
+    :prepend-icon="contaIcon"
+    :color="props.color || props.conta?.cor"
+    :append-icon="props.appendIcon"
+    @click="emit('click')"
+    >{{ props.conta?.descricao }}
+  </v-chip>
+</template>
 <script setup>
 import { computed } from 'vue'
 
@@ -11,15 +22,3 @@ const contaIcon = computed(() => {
   return 'mdi-wallet'
 })
 </script>
-
-<template>
-  <v-chip
-    rounded
-    variant="outlined"
-    :prepend-icon="contaIcon"
-    :color="props.color || props.conta?.cor"
-    :append-icon="props.appendIcon"
-    @click="emit('click')"
-    >{{ props.conta?.descricao }}
-  </v-chip>
-</template>

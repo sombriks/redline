@@ -22,7 +22,8 @@
   <v-card
     v-if="mode === 1"
     variant="outlined"
-    class="margin-1em"
+    rounded="xl"
+    class="ma-2"
     :title="compacto"
     :color="props.recorrencia?.cor || 'green-accent-2'"
     :prepend-icon="
@@ -37,7 +38,7 @@
   >
     <v-card-text>{{ descricao }} - {{ periodo }}</v-card-text>
   </v-card>
-  <v-card v-if="mode === 2" elevation="24" min-width="300">
+  <v-card v-if="mode === 2" elevation="24" min-width="300" class="ma-2">
     <v-form v-model="valid" @submit.prevent.stop="doSave">
       <v-container>
         <v-color-picker v-model="rec.cor"></v-color-picker>
@@ -86,6 +87,7 @@
             type="submit"
             icon="mdi-check"
           ></v-btn>
+          <v-spacer v-if="!rec?.id"></v-spacer>
           <v-btn
             variant="outlined"
             color="orange"
@@ -211,7 +213,4 @@ const doDel = async () => {
 }
 </script>
 <style scoped>
-.margin-1em {
-  margin: 1em;
-}
 </style>

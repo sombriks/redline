@@ -34,15 +34,8 @@
       <i v-if="filtro.conta_id">conta {{ statusFiltro.conta?.descricao }},&nbsp;</i>
       <i v-if="filtro.dataFim">de {{ statusFiltro.inicio }} até {{ statusFiltro.fim }}&nbsp;</i>
     </v-row>
-    <v-row v-if="!agrupamento" align="center" class="vh-80-scroll">
+    <v-row v-if="!agrupamento" align="center">
       <p v-if="!movimentacoes.length">Não há movimentações para exibir</p>
-      <!--      <v-expansion-panels>-->
-      <!--        <detalhe-movimentacao-->
-      <!--          v-for="movimentacao in movimentacoes"-->
-      <!--          :key="movimentacao.id"-->
-      <!--          :movimentacao="movimentacao"-->
-      <!--        />-->
-      <!--      </v-expansion-panels>-->
       <chip-movimentacao
         v-for="movimentacao in movimentacoes"
         :key="movimentacao.id"
@@ -175,20 +168,6 @@
     </v-card>
   </v-dialog>
 </template>
-<style scoped>
-.alinha {
-  display: flex;
-}
-
-.alinha-item {
-  margin: 5px;
-}
-
-.vh-80-scroll {
-  max-height: 80vh;
-  overflow-y: scroll;
-}
-</style>
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
@@ -282,3 +261,13 @@ const limpaConta = () => {
   filtro.conta_id = null
 }
 </script>
+<style scoped>
+.alinha {
+  display: flex;
+}
+
+.alinha-item {
+  margin: 5px;
+}
+
+</style>
