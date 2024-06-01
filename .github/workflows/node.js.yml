@@ -149,7 +149,7 @@ jobs:
       - name: Update and tag modified manifests
         run: |
           git config user.name "Mr. Bob Tags"
-          git config user.email action-bot@github.com
+          git config user.email sombriks@gmail.com
           git status          
           git pull
           git add .
