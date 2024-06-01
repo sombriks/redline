@@ -43,12 +43,18 @@
         :rules="[numberRule]"
         type="number"
         v-model="contaEdit.limite"
-        :label="contaEdit.tipo_conta_id == 2 ? 'Cheque especial' : 'Limite' "
+        :label="contaEdit.tipo_conta_id == 2 ? 'Cheque especial' : 'Limite'"
         prepend-inner-icon="mdi-cash-100"
       ></v-text-field>
       <v-container>
         <v-row align="center">
-          <v-btn class="ma-2" color="green" type="submit" icon="mdi-check"></v-btn>
+          <v-btn
+            variant="outlined"
+            class="ma-2"
+            color="green"
+            type="submit"
+            icon="mdi-check"
+          ></v-btn>
           <v-spacer v-if="!contaEdit.id"></v-spacer>
           <v-btn
             variant="outlined"
@@ -77,7 +83,7 @@
 import { computed, reactive, ref } from 'vue'
 import { useContaStore } from '@/stores/contaStore'
 import { dayOfMonthRule, numberRule, requiredRule } from '@/services/basic-rules'
-import ChipConta from '@/pages/shared/chip-conta.vue'
+import ChipConta from '@/shared/chip-conta.vue'
 
 const cState = useContaStore()
 

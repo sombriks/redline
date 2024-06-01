@@ -6,20 +6,20 @@ import CategoriasPage from '@/pages/categoria/categorias-page.vue'
 import ConfigPage from '@/pages/configuracao/config-page.vue'
 // import DashboardPage from "@/pages/dashboard/dashboard-page.vue"
 const DashboardPage = () => import("@/pages/dashboard/dashboard-page.vue")
-import PlanejamentoPage from '@/pages/planejamento/planejamento-page.vue'
+const PlanejamentoPage = () => import('@/pages/planejamento/planejamento-page.vue')
 import RecorrenciasPage from '@/pages/recorrencia/recorrencias-page.vue'
 import ContasPage from '@/pages/conta/contas-page.vue'
-import HistoricoPage from '@/pages/movimentacao/movimentacao-page.vue'
+import MovimentacaoPage from '@/pages/movimentacao/movimentacao-page.vue'
 import EditarMovimentacaoPage from '@/pages/movimentacao/editar-movimentacao-page.vue'
 
 export const routes = [
-  { component: AuthPage, path: '/auth' },
   { path: '/', redirect: '/dashboard' },
+  { component: AuthPage, path: '/auth' },
   { component: DashboardPage, path: '/dashboard', label: 'Dashboard', icon: 'mdi-chart-bar' },
-  { component: NovaMovimentacaoPage, path: '/nova-movimentacao', label: 'Novo lançamento', icon: 'mdi-currency-usd' },
+  { component: NovaMovimentacaoPage, path: '/nova-movimentacao', label: 'Novo lançamento', icon: 'mdi-cash-plus' },
+  { component: MovimentacaoPage, path: '/historico', label: 'Lançamentos', icon: 'mdi-clipboard-text-search-outline' },
   { component: ContasPage, path: '/contas', label: 'Contas', icon: 'mdi-card-account-details' },
   { component: CategoriasPage, path: '/categorias', label: 'Categorias', icon: 'mdi-playlist-check' },
-  { component: HistoricoPage, path: '/historico', label: 'Lançamentos', icon: 'mdi-clipboard-text-search-outline' },
   { component: EditarMovimentacaoPage, path: '/editar-movimentacao/:id' },
   { component: PlanejamentoPage, path: '/planejamento', label: 'Planejamento', icon: 'mdi-clipboard-edit-outline' },
   { component: RecorrenciasPage, path: '/recorrencias', label: 'Recorrências', icon: 'mdi-history' },

@@ -26,13 +26,14 @@
     <v-row class="barra-filtros-ativos" align="center">
       <!-- filtros ativos -->
       <i>Max {{ filtro.limit }} resultados,&nbsp;</i>
-      <i v-if="filtro.tipo_movimentacao_id == 1">somente entradas,&nbsp;</i>
-      <i v-if="filtro.tipo_movimentacao_id == 2">somente saídas,&nbsp;</i>
-      <i v-if="filtro.efetivada == true">somente efetivadas,&nbsp;</i>
-      <i v-if="filtro.efetivada == false">somente pendentes,&nbsp;</i>
+      <i v-if="filtro.tipo_movimentacao_id === 1">somente entradas,&nbsp;</i>
+      <i v-if="filtro.tipo_movimentacao_id === 2">somente saídas,&nbsp;</i>
+      <i v-if="filtro.efetivada === true">somente efetivadas,&nbsp;</i>
+      <i v-if="filtro.efetivada === false">somente pendentes,&nbsp;</i>
       <i v-if="filtro.categoria_id">categoria {{ statusFiltro.categoria?.descricao }},&nbsp;</i>
       <i v-if="filtro.conta_id">conta {{ statusFiltro.conta?.descricao }},&nbsp;</i>
       <i v-if="filtro.dataFim">de {{ statusFiltro.inicio }} até {{ statusFiltro.fim }}&nbsp;</i>
+      <v-divider thickness="5"></v-divider>
     </v-row>
     <v-row v-if="!agrupamento" align="center">
       <p v-if="!movimentacoes.length">Não há movimentações para exibir</p>
@@ -40,7 +41,7 @@
         v-for="movimentacao in movimentacoes"
         :key="movimentacao.id"
         :movimentacao="movimentacao"
-        @click="router.push(`/editar-movimentacao/${movimentacao.id}`)"
+        @click="movimentacaoClick"
       ></chip-movimentacao>
     </v-row>
     <v-row v-if="agrupamento === 'conta'" align="center" class="vh-80-scroll">
@@ -137,8 +138,6 @@
           </v-row>
           <v-row align="center">
             <!-- período -->
-            <!--            <chip-date label="Data inicial" v-model="filtro.dataInicio"></chip-date>-->
-            <!--            <chip-date label="Data final" v-model="filtro.dataFim"></chip-date>-->
             <chip-periodo
               label="Período"
               v-model:inicial="filtro.dataInicio"
@@ -171,18 +170,17 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
-import DetalheMovimentacao from '@/pages/movimentacao/detalhe-movimentacao.vue'
 import { router } from '@/services/router'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { useContaStore } from '@/stores/contaStore'
 import { prepareBalance, prepareDate } from '@/services/formaters'
 import { endOfMonth, format, startOfMonth } from 'date-fns'
-import CategoriaAutocomplete from '@/pages/shared/categoria-autocomplete.vue'
-import ContaAutocomplete from '@/pages/shared/conta-autocomplete.vue'
-import ChipSaldo from '@/pages/shared/chip-saldo.vue'
-import ChipConta from '@/pages/shared/chip-conta.vue'
-import ChipPeriodo from '@/pages/shared/chip-periodo.vue'
-import ChipMovimentacao from '@/pages/shared/chip-movimentacao.vue'
+import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
+import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
+import ChipSaldo from '@/shared/chip-saldo.vue'
+import ChipConta from '@/shared/chip-conta.vue'
+import ChipPeriodo from '@/shared/chip-periodo.vue'
+import ChipMovimentacao from '@/shared/chip-movimentacao.vue'
 
 const movimentacaoStore = useMovimentacaoStore()
 const categoriaStore = useCategoriaStore()
@@ -260,6 +258,13 @@ const limpaCategoria = () => {
 const limpaConta = () => {
   filtro.conta_id = null
 }
+
+const movimentacaoClick = (e) => {
+  if (e.mode === 1) {
+    // 0 -> modo chip, 1 -> modo card
+    router.push(`/editar-movimentacao/${e.movimentacao.id}`)
+  }
+}
 </script>
 <style scoped>
 .alinha {
@@ -269,5 +274,4 @@ const limpaConta = () => {
 .alinha-item {
   margin: 5px;
 }
-
 </style>

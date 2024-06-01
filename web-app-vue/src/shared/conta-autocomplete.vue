@@ -26,7 +26,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useContaStore } from '@/stores/contaStore'
-import ChipConta from '@/pages/shared/chip-conta.vue'
+import ChipConta from '@/shared/chip-conta.vue'
 
 const contaState = useContaStore()
 const props = defineProps(['modelValue', 'rules'])

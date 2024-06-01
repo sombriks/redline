@@ -1,23 +1,18 @@
 <template>
-  <v-chip
-    v-if="!edit"
-    rounded
-    variant="outlined"
-    :color="props.categoria?.cor || 'green-accent-2'"
-    class="ma-2"
-    size="x-large"
-    :append-icon="props.categoria.id ? 'mdi-playlist-edit' : 'mdi-playlist-plus'"
-    @click="edit = !edit"
-  >
-    {{ props.categoria.descricao }}
-  </v-chip>
+  <chip-categoria :categoria="categoria" v-if="!edit" @click="edit = !edit"></chip-categoria>
   <v-card v-if="edit" elevation="24" min-width="300px" class="ma-2">
     <v-form v-model="valid" @submit.prevent.stop="doEdit">
       <v-color-picker v-model="catEdit.cor"></v-color-picker>
       <v-text-field :rules="[requiredRule]" v-model="catEdit.descricao" label="Nome"></v-text-field>
       <v-container>
         <v-row align="center">
-          <v-btn class="ma-2" variant="outlined" color="green" type="submit" icon="mdi-check"></v-btn>
+          <v-btn
+            class="ma-2"
+            variant="outlined"
+            color="green"
+            type="submit"
+            icon="mdi-check"
+          ></v-btn>
           <v-spacer v-if="!catEdit.id"></v-spacer>
           <v-btn
             variant="outlined"
@@ -43,8 +38,9 @@
   </v-card>
 </template>
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, ref } from 'vue'
 import { requiredRule } from '@/services/basic-rules'
+import ChipCategoria from '@/shared/chip-categoria.vue'
 
 const props = defineProps(['categoria'])
 const emit = defineEmits(['onRemove', 'onEdit'])

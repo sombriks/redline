@@ -94,9 +94,9 @@ import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { numberRule, requiredRule } from '@/services/basic-rules'
 import { router } from '@/services/router'
-import ChipDate from '@/pages/shared/chip-date.vue'
-import ContaAutocomplete from '@/pages/shared/conta-autocomplete.vue'
-import CategoriaAutocomplete from '@/pages/shared/categoria-autocomplete.vue'
+import ChipDate from '@/shared/chip-date.vue'
+import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
+import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 
 const props = defineProps(['movimentacao'])
 
