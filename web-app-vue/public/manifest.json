@@ -10,7 +10,7 @@
   "theme_color": "#000000",
   "icons": [
     {
-      "src": "https://app.redline.sombriks.org/icon-512.png",
+      "src": "/512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
