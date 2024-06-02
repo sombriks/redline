@@ -1,0 +1,44 @@
+{
+  "background_color": "#ff3939",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Redline finance",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "Redline",
+  "start_url": "/",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "https://app.redline.sombriks.org/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.ico"
+    },
+    {
+      "src": "/favicon.ico",
+      "type": "image/x-icon"
+    }
+  ],
+  "id": "app.redline.sombriks.org",
+  "description": "Sample personal finance application",
+  "lang": "pt",
+  "display_override": [
+    "standalone",
+    "fullscreen",
+    "window-controls-overlay"
+  ],
+  "categories": [
+    "business",
+    "finance",
+    "lifestyle",
+    "productivity",
+    "utilities"
+  ],
+  "share_target": {
+    "method": "GET"
+  }
+}
