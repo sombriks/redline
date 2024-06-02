@@ -167,9 +167,9 @@
 import { endOfMonth, startOfMonth } from 'date-fns'
 import { computed, onMounted, ref, watch } from 'vue'
 import { VueUiDonut, VueUiSparkbar, VueUiSparkStackbar, VueUiXy } from 'vue-data-ui'
-import ChipPeriodo from '@/pages/shared/chip-periodo.vue'
+import ChipPeriodo from '@/shared/chip-periodo.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
-import ChipSaldo from '@/pages/shared/chip-saldo.vue'
+import ChipSaldo from '@/shared/chip-saldo.vue'
 import {
   donutConfig,
   lineChartConfig,
@@ -321,7 +321,7 @@ const planejamentos = computed(() => {
         {
           shape: 'square',
           name: 'Limite',
-          color: 'red',
+          color: planejamento.type === "ENTRADA" ? 'lightgreen' : 'red',
           type: 'line',
           series: dashboardState.store.dashboard?.planejamentos
             ?.filter((l) => l.descricao === planejamento.descricao)
@@ -339,7 +339,7 @@ const planejamentos = computed(() => {
           type: 'line',
           series: dashboardState.store.dashboard?.planejamentos
             ?.filter((l) => l.descricao === planejamento.descricao)
-            .map((l) => -l.acc)
+            .map((l) => planejamento.type === "ENTRADA" ? l.acc : -l.acc)
         }
       ]
     }

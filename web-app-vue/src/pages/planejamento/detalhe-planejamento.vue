@@ -64,6 +64,7 @@
             type="submit"
             icon="mdi-check"
           ></v-btn>
+          <v-spacer v-if="!planejamento?.id"></v-spacer>
           <v-btn
             variant="outlined"
             color="orange"
@@ -90,11 +91,11 @@
 <script setup>
 import { computed, onMounted, ref, toRaw, watch } from 'vue'
 import { numberRule, requiredRule } from '@/services/basic-rules'
-import CategoriaAutocomplete from '@/pages/shared/categoria-autocomplete.vue'
+import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { endOfYear, startOfYear } from 'date-fns/fp'
 import { prepareMoney } from '@/services/formaters'
-import ChipPeriodo from '@/pages/shared/chip-periodo.vue'
+import ChipPeriodo from '@/shared/chip-periodo.vue'
 
 const categoriaStore = useCategoriaStore()
 
@@ -106,8 +107,7 @@ const valid = ref(false)
 const plan = ref({})
 
 const descricao = computed(() => {
-  // TODO readicionar ${props.planejamento.descricao}
-  return `(${categoria.value.descricao}) | ${prepareMoney(
+  return `${categoria.value.descricao} | ${prepareMoney(
     props.planejamento.limite
   )}`
 })

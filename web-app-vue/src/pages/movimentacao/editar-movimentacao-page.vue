@@ -1,3 +1,6 @@
+<template>
+  <editar-movimentacao :movimentacao="movimentacao"></editar-movimentacao>
+</template>
 <script setup>
 import EditarMovimentacao from "@/pages/movimentacao/editar-movimentacao.vue";
 import { useRoute } from "vue-router";
@@ -8,13 +11,5 @@ const movimentacaoStore = useMovimentacaoStore()
 const route = useRoute()
 
 const movimentacao = ref(movimentacaoStore.getMovimentacao(route.params.id))
-
 </script>
-
-<template>
-  <editar-movimentacao :movimentacao="movimentacao"></editar-movimentacao>
-</template>
-
-<style scoped>
-
-</style>
+<style scoped></style>

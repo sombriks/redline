@@ -1,6 +1,6 @@
 <template>
   <v-chip
-    v-if="mode < 2"
+    v-if="mode === 0"
     rounded
     variant="outlined"
     :color="props.recorrencia?.cor || 'green-accent-2'"
@@ -19,7 +19,26 @@
     <span v-if="mode === 0">{{ compacto }}</span>
     <span v-if="mode === 1">{{ descricao }}</span>
   </v-chip>
-  <v-card v-if="mode === 2" elevation="24" min-width="300">
+  <v-card
+    v-if="mode === 1"
+    variant="outlined"
+    rounded="xl"
+    class="ma-2"
+    :title="compacto"
+    :color="props.recorrencia?.cor || 'green-accent-2'"
+    :prepend-icon="
+      props.recorrencia?.id
+        ? props.recorrencia?.tipo_movimentacao_id == 1
+          ? 'mdi-cash-plus'
+          : 'mdi-cash-minus'
+        : 'mdi-cash'
+    "
+    :append-icon="props.recorrencia?.id ? 'mdi-playlist-edit' : 'mdi-playlist-plus'"
+    @click="!props.recorrencia?.id ? (mode = 2) : mode++"
+  >
+    <v-card-text>{{ descricao }} - {{ periodo }}</v-card-text>
+  </v-card>
+  <v-card v-if="mode === 2" elevation="24" min-width="300" class="ma-2">
     <v-form v-model="valid" @submit.prevent.stop="doSave">
       <v-container>
         <v-color-picker v-model="rec.cor"></v-color-picker>
@@ -45,7 +64,11 @@
           prepend-inner-icon="mdi-repeat-variant"
         >
         </v-select>
-        <chip-periodo v-model:inicial="rec.inicial" v-model:final="rec.final" reset="anual"></chip-periodo>
+        <chip-periodo
+          v-model:inicial="rec.inicial"
+          v-model:final="rec.final"
+          reset="anual"
+        ></chip-periodo>
         <v-text-field
           class="item"
           :rules="[requiredRule, minValueRule(1)]"
@@ -64,6 +87,7 @@
             type="submit"
             icon="mdi-check"
           ></v-btn>
+          <v-spacer v-if="!rec?.id"></v-spacer>
           <v-btn
             variant="outlined"
             color="orange"
@@ -98,11 +122,11 @@ import {
 } from 'date-fns'
 import { minValueRule, requiredRule } from '@/services/basic-rules'
 import { prepareDate, prepareMoney } from '@/services/formaters'
-import CategoriaAutocomplete from '@/pages/shared/categoria-autocomplete.vue'
+import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 import { useRecorrenciaStore } from '@/stores/recorrenciaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
-import ContaAutocomplete from '@/pages/shared/conta-autocomplete.vue'
-import ChipPeriodo from '@/pages/shared/chip-periodo.vue'
+import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
+import ChipPeriodo from '@/shared/chip-periodo.vue'
 
 const recorrenciaStore = useRecorrenciaStore()
 const categoriaStore = useCategoriaStore()
@@ -153,6 +177,12 @@ const descricao = computed(() => {
   return 'Nova recorrência'
 })
 
+const periodo = computed(() => {
+  return `${prepareDate(rec.inicial).toLocaleDateString()} a ${prepareDate(
+    rec.final
+  ).toLocaleDateString()}`
+})
+
 const resultado = computed(() => {
   return `${parcelas.value}x de ${prepareMoney(rec.valorParcela)} (${
     recorrenciaStore.store.tiposRecorrencia.find((tr) => tr.id == rec.tipo_recorrencia_id)
@@ -182,3 +212,5 @@ const doDel = async () => {
   Object.assign(rec, reset())
 }
 </script>
+<style scoped>
+</style>
