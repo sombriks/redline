@@ -58,6 +58,9 @@ import { numberRule, requiredRule } from '@/services/basic-rules'
 import { router } from '@/services/router'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
 import ChipDate from '@/shared/chip-date.vue'
+import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
+
+const movimentacaoStore = useMovimentacaoStore()
 
 const valid = ref(false)
 const formTransferencia = reactive({
@@ -67,9 +70,15 @@ const formTransferencia = reactive({
   vencimento: Date.now()
 })
 
-const transferir = () => {
-  if (!valid.value) return console.log('invalid form state')
-  console.log('save save save')
+const transferir = async () => {
+  try {
+    if (!valid.value) return console.log('invalid form state')
+    await movimentacaoStore.transferir({ ...formTransferencia })
+    alert('transferência criada com sucesso')
+  } catch (e) {
+    console.log(e)
+    alert('Não foi possível realizar a transferência')
+  }
 }
 </script>
 <style scoped>

@@ -8,6 +8,7 @@ import {
   insertMovimentacao,
   lisTiposMovimentacao,
   listMovimentacoes,
+  saveTransferencia,
   updateMovimentacao
 } from '@/services/api'
 
@@ -67,12 +68,19 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
 
   const getMovimentacao = (id) => store.movimentacoes?.find((m) => m.id == id)
 
+  const transferir = async ({ contaOrigem, contaDestino, valor, vencimento }) => {
+    const { id } = uState.userData
+    await saveTransferencia({ id, contaOrigem, contaDestino, valor, vencimento })
+    await sincronizarMovimentacoes()
+  }
+
   return {
     store,
     sincronizarMovimentacoes,
     salvarMovimentacao,
     excluirMovimentacao,
     aplicarFiltro,
-    getMovimentacao
+    getMovimentacao,
+    transferir
   }
 })
