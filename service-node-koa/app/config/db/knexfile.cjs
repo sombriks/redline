@@ -1,25 +1,27 @@
 /**
-* @type { import("knex").Knex.Config }
-*/
+ * @type { import('knex').Knex.Config }
+ */
 const _cfg = {
   client: 'sqlite3',
   useNullAsDefault: true,
   connection: {
-    filename: `${__dirname}/../../../redline.sqlite3`,
+    filename: `${__dirname}/../../../redline.sqlite3`
   },
   pool: {
     min: 2,
-    max: 10
+    max: 10,
+    afterCreate: (conn, cb) =>
+      conn.run('PRAGMA foreign_keys = ON', cb)
   },
   migrations: {
     directory: `${__dirname}/migrations`,
-    loadExtensions: [".mjs"],
-  },
+    loadExtensions: ['.mjs']
+  }
 }
 
 /**
-* @type { Object.<string, import("knex").Knex.Config> }
-*/
+ * @type { Object.<string, import('knex').Knex.Config> }
+ */
 module.exports = {
   development: { ..._cfg },
   test: {

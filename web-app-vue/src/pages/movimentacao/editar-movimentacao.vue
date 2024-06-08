@@ -36,6 +36,8 @@
             v-model="movForm.descricao"
             label="Descrição"
           />
+          <!-- vencimento (dia do cartão se conta cartão) -->
+          <chip-date class="item" label="Vencimento" v-model="movForm.vencimento" />
           <!-- efetivada? -->
           <v-checkbox
             v-if="!props?.movimentacao?.id"
@@ -43,8 +45,6 @@
             v-model="contaEfetivada"
             label="Paga?"
           />
-          <!-- vencimento (dia do cartão se conta cartão) -->
-          <chip-date class="item" label="Vencimento" v-model="movForm.vencimento" />
           <!-- efetivada (data) -->
           <chip-date
             v-if="contaEfetivada || props?.movimentacao?.id"
