@@ -232,7 +232,7 @@ export const lineChartConfig= {
   'useCssAnimation': true,
   'chart': {
     'fontFamily': 'inherit',
-    'backgroundColor': '#000000',
+    'backgroundColor': '#212121',
     'color': '#d5d5d5',
     'height': 600,
     'width': 1000,

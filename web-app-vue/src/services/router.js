@@ -11,6 +11,7 @@ import RecorrenciasPage from '@/pages/recorrencia/recorrencias-page.vue'
 import ContasPage from '@/pages/conta/contas-page.vue'
 import MovimentacaoPage from '@/pages/movimentacao/movimentacao-page.vue'
 import EditarMovimentacaoPage from '@/pages/movimentacao/editar-movimentacao-page.vue'
+import PagamentoPage from '@/pages/pagamento/pagamento-page.vue'
 
 export const routes = [
   { path: '/', redirect: '/dashboard' },
@@ -18,6 +19,7 @@ export const routes = [
   { component: DashboardPage, path: '/dashboard', label: 'Dashboard', icon: 'mdi-chart-bar' },
   { component: NovaMovimentacaoPage, path: '/nova-movimentacao', label: 'Novo lançamento', icon: 'mdi-cash-plus' },
   { component: MovimentacaoPage, path: '/historico', label: 'Lançamentos', icon: 'mdi-clipboard-text-search-outline' },
+  { component: PagamentoPage, path: "/pagamento", label: "Pagar/Transferir", icon: 'mdi-cash-multiple' },
   { component: ContasPage, path: '/contas', label: 'Contas', icon: 'mdi-card-account-details' },
   { component: CategoriasPage, path: '/categorias', label: 'Categorias', icon: 'mdi-playlist-check' },
   { component: EditarMovimentacaoPage, path: '/editar-movimentacao/:id' },

@@ -12,16 +12,11 @@
           <!-- receitas x despesas efetivadas (simple-bar) -->
           <v-expansion-panel-title>Receitas x Despesas</v-expansion-panel-title>
           <v-expansion-panel-text>
-            <VueUiSparkbar
-              :config="receitaDespesaBarConfig"
-              :dataset="receitaDespesaTotalPeriodo"
+            <VueUiSparkbar :config="receitaDespesaBarConfig"
+                           :dataset="receitaDespesaTotalPeriodo"
             ></VueUiSparkbar>
-            <br />
-            <v-divider></v-divider>
-            <br />
-            <VueUiSparkbar
-              :config="receitaDespesaBarConfig"
-              :dataset="receitaDespesaEfetivadaPeriodo"
+            <VueUiSparkbar :config="receitaDespesaBarConfig"
+                           :dataset="receitaDespesaEfetivadaPeriodo"
             ></VueUiSparkbar>
           </v-expansion-panel-text>
         </v-expansion-panel>
@@ -32,6 +27,7 @@
           <v-expansion-panel-title>Limites</v-expansion-panel-title>
           <v-expansion-panel-text>
             <div v-for="(limite, i) in limites" :key="i">
+              <h3>{{limite[1].name}}</h3>
               <VueUiXy :config="lineChartConfig" :dataset="limite" />
             </div>
           </v-expansion-panel-text>
@@ -57,6 +53,7 @@
           <v-expansion-panel-title>Planejamentos</v-expansion-panel-title>
           <v-expansion-panel-text>
             <div v-for="(planejamento, i) in planejamentos" :key="i">
+              <h3>{{planejamento[1].name}}</h3>
               <VueUiXy :config="lineChartConfig" :dataset="planejamento" />
             </div>
           </v-expansion-panel-text>
@@ -316,12 +313,12 @@ const limites = computed(() => {
 const planejamentos = computed(() => {
   const planejamentos = {}
   dashboardState.store.dashboard?.planejamentos?.forEach((planejamento) => {
-    if(!planejamentos[planejamento.descricao]) {
+    if (!planejamentos[planejamento.descricao]) {
       planejamentos[planejamento.descricao] = [
         {
           shape: 'square',
           name: 'Limite',
-          color: planejamento.type === "ENTRADA" ? 'lightgreen' : 'red',
+          color: planejamento.type === 'ENTRADA' ? 'lightgreen' : 'red',
           type: 'line',
           series: dashboardState.store.dashboard?.planejamentos
             ?.filter((l) => l.descricao === planejamento.descricao)
@@ -339,7 +336,7 @@ const planejamentos = computed(() => {
           type: 'line',
           series: dashboardState.store.dashboard?.planejamentos
             ?.filter((l) => l.descricao === planejamento.descricao)
-            .map((l) => planejamento.type === "ENTRADA" ? l.acc : -l.acc)
+            .map((l) => planejamento.type === 'ENTRADA' ? l.acc : -l.acc)
         }
       ]
     }
