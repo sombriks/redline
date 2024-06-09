@@ -17,7 +17,6 @@ export const listMovimentacaoByUsuario = async (params) => {
       knex('conta').where({ usuario_id }).select('id'))
 }
 
-
 export const listMovimentacaoByConta = async (params) => {
   const {
     conta_id = -1
@@ -116,6 +115,36 @@ export const removeMovimentacao = async (id = -1) =>
   knex('movimentacao')
     .where({ id })
     .del()
+
+export const transferencia = async ({ origem, destino, categoria, valor, vencimento }) => {
+  const saida = {
+    descricao: `${origem.descricao} => ${destino.descricao}`,
+    valor,
+    criacao: new Date().toISOString(),
+    alteracao: new Date().toISOString(),
+    vencimento: new Date(vencimento).toISOString(),
+    efetivada: new Date(vencimento).toISOString(),
+    conta_id: origem.id,
+    categoria_id: categoria.id,
+    tipo_movimentacao_id: 2 // saída
+  }
+  const entrada = {
+    descricao: `${destino.descricao} <= ${origem.descricao}`,
+    valor,
+    criacao: new Date().toISOString(),
+    alteracao: new Date().toISOString(),
+    vencimento: new Date(vencimento).toISOString(),
+    efetivada: new Date(vencimento).toISOString(),
+    conta_id: destino.id,
+    categoria_id: categoria.id,
+    tipo_movimentacao_id: 1 // entrada
+  }
+
+  const [{ idEntrada }] = await insertMovimentacao(entrada)
+  const [{ idSaida }] = await insertMovimentacao(saida)
+
+  return { idEntrada, idSaida }
+}
 
 export const uploadMovimentacoes = async ({ id, header, lines }) => {
   const headerMap = { tipo: -1, conta: -1, categoria: -1, vencimento: -1, efetivada: -1, valor: -1, 'descrição': -1 }

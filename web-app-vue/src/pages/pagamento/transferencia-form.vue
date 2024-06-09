@@ -15,6 +15,12 @@
             v-model="formTransferencia.contaDestino"
             :rules="[requiredRule]"
           />
+          <categoria-autocomplete
+            class="item"
+            label="Categoria da transferência"
+            v-model="formTransferencia.categoria"
+            :rules="[requiredRule]"
+          />
           <v-text-field
             class="item"
             :rules="[requiredRule, numberRule]"
@@ -58,18 +64,29 @@ import { numberRule, requiredRule } from '@/services/basic-rules'
 import { router } from '@/services/router'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
 import ChipDate from '@/shared/chip-date.vue'
+import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
+import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
+
+const movimentacaoStore = useMovimentacaoStore()
 
 const valid = ref(false)
 const formTransferencia = reactive({
   contaOrigem: 0,
   contaDestino: 0,
+  categoria: 0,
   valor: 0,
   vencimento: Date.now()
 })
 
-const transferir = () => {
-  if (!valid.value) return console.log('invalid form state')
-  console.log('save save save')
+const transferir = async () => {
+  try {
+    if (!valid.value) return console.log('invalid form state')
+    await movimentacaoStore.transferir({ ...formTransferencia })
+    alert('transferência criada com sucesso')
+  } catch (e) {
+    console.log(e)
+    alert('Não foi possível realizar a transferência')
+  }
 }
 </script>
 <style scoped>

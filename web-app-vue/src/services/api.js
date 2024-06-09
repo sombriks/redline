@@ -87,17 +87,17 @@ export const delCategoria = async ({ id, categoria }) =>
 export const lisTiposMovimentacao = async () => await get({ uri: '/tipo-movimentacao' })
 
 export const listMovimentacoes = async ({
-                                          tipo_movimentacao_id = undefined,
-                                          categoria_id = undefined,
-                                          dataInicio = undefined,
-                                          conta_id = undefined,
-                                          dataFim = undefined,
-                                          efetivada = undefined,
-                                          offset = 0,
-                                          limit = 50,
-                                          id,
-                                          q = ''
-                                        }) =>
+  tipo_movimentacao_id = undefined,
+  categoria_id = undefined,
+  dataInicio = undefined,
+  conta_id = undefined,
+  dataFim = undefined,
+  efetivada = undefined,
+  offset = 0,
+  limit = 50,
+  id,
+  q = ''
+}) =>
   await get({
     uri: uriParams({
       uri: `/${id}/movimentacao`,
@@ -123,6 +123,23 @@ export const updateMovimentacao = async ({ id, conta_id, movimentacao }) =>
 
 export const delMovimentacao = async ({ id, conta_id, movimentacao }) =>
   await del({ uri: `/${id}/movimentacao/${conta_id}/${movimentacao.id}` })
+
+export const saveTransferencia = async ({
+  contaDestino,
+  contaOrigem,
+  vencimento,
+  categoria,
+  valor,
+  id
+}) =>
+  await post({
+    uri: `/${id}/movimentacao/${contaOrigem}/transferir/${contaDestino}`,
+    payload: {
+      vencimento,
+      categoria,
+      valor
+    }
+  })
 
 export const uploadCsv = async ({ id, file }) =>
   await post({ uri: `/${id}/movimentacao/upload`, payload: { file } })
