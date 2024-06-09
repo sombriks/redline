@@ -1,13 +1,15 @@
 <script setup>
-import { useUserStore } from '@/stores/userStore'
 import { ref } from 'vue'
-import { routes } from '@/services/router'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
 import { useGeneralStore } from '@/stores/generalStore'
 
 const generalStore = useGeneralStore()
 const userStore = useUserStore()
-const menu = routes.filter((r) => r.label)
+const router = useRouter()
+
 const show = ref(false)
+const menu = router.getRoutes().filter((r) => !!r.meta.label)
 </script>
 <template>
   <v-layout class="rounded rounded-md">
@@ -24,12 +26,12 @@ const show = ref(false)
     </v-app-bar>
     <v-navigation-drawer v-if="userStore.store.token" v-model="show">
       <v-list>
-        <v-list-item v-for="m in menu" :key="m.label" :active="m.path === $route.path">
+        <v-list-item v-for="m in menu" :key="m.meta.label" :active="m.path === $route.path">
           <template v-slot:prepend>
-            <v-icon variant="outlined" color="red-lighten-3" :icon="m.icon"></v-icon>
+            <v-icon variant="outlined" color="red-lighten-3" :icon="m.meta.icon"></v-icon>
           </template>
           <v-list-item-title>
-            <router-link :to="m.path">{{ m.label }}</router-link>
+            <router-link :to="m.path">{{ m.meta.label }}</router-link>
           </v-list-item-title>
         </v-list-item>
       </v-list>

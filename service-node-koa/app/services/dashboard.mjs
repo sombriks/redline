@@ -5,7 +5,7 @@ import { addMonths, addYears } from 'date-fns'
 export const getDashboard = async ({ usuario_id, inicio, fim }) => {
   inicio = new Date(inicio).toISOString()
   fim = new Date(fim).toISOString()
-  return {
+  const result = {
     receitaDespesaTotalPeriodo: unwrap(await receitaDespesaTotalPeriodo({ usuario_id, inicio, fim })),
     receitaDespesaEfetivadaPeriodo: unwrap(await receitaDespesaEfetivadaPeriodo({ usuario_id, inicio, fim })),
     despesaConta: unwrap(await despesaConta({ usuario_id, inicio, fim })),
@@ -19,6 +19,7 @@ export const getDashboard = async ({ usuario_id, inicio, fim }) => {
     limites: unwrap(await limites({ usuario_id, inicio, fim })),
     planejamentos: unwrap(await planejamentos({ usuario_id, inicio, fim }))
   }
+  return result
 }
 
 async function receitaDespesaTotalPeriodo({ usuario_id, inicio, fim }) {
@@ -26,12 +27,13 @@ async function receitaDespesaTotalPeriodo({ usuario_id, inicio, fim }) {
       with data_frame as (select *
                           from movimentacao
                           where conta_id in (select id from conta where usuario_id = :usuario_id)
-                            and vencimento between :inicio and :fim)
-      select 'Receita total' as label, sum(valor) as value, 'lightgreen' as color
+                            and vencimento between :inicio and :fim
+                            and interna is not true)
+      select 'Receita total' as label, coalesce(sum(valor),0) as value, 'lightgreen' as color
       from data_frame
       where tipo_movimentacao_id = 1
       union
-      select 'Despesa total' as label, sum(valor) as value, 'red' as color
+      select 'Despesa total' as label, coalesce(sum(valor),0) as value, 'red' as color
       from data_frame
       where tipo_movimentacao_id = 2
   `, { usuario_id, inicio, fim })
@@ -43,7 +45,8 @@ async function receitaDespesaEfetivadaPeriodo({ usuario_id, inicio, fim }) {
                           from movimentacao
                           where conta_id in (select id from conta where usuario_id = :usuario_id)
                             and vencimento between :inicio and :fim
-                            and efetivada is not null)
+                            and efetivada is not null
+                            and interna is not true)
       select 'Receita efetivada' as label, sum(valor) as value, 'lightgreen' as color
       from data_frame
       where tipo_movimentacao_id = 1
@@ -62,6 +65,7 @@ async function despesaConta({ usuario_id, inicio, fim }) {
                                    join movimentacao on conta.id = movimentacao.conta_id
                           where usuario_id = :usuario_id
                             and tipo_movimentacao_id = 2
+                            and interna is not true
                             and vencimento between :inicio and :fim)
       select descricao  as label,
              cor        as color,
@@ -78,6 +82,7 @@ async function despesaCategoria({ usuario_id, inicio, fim }) {
                                    left join categoria on categoria.id = movimentacao.categoria_id
                           where usuario_id = :usuario_id
                             and tipo_movimentacao_id = 2
+                            and interna is not true
                             and vencimento between :inicio and :fim)
       select descricao  as label,
              cor        as color,
@@ -95,6 +100,7 @@ async function receitaConta({ usuario_id, inicio, fim }) {
                                    join movimentacao on conta.id = movimentacao.conta_id
                           where usuario_id = :usuario_id
                             and tipo_movimentacao_id = 1
+                            and interna is not true
                             and vencimento between :inicio and :fim)
       select descricao  as label,
              cor        as color,
@@ -111,6 +117,7 @@ async function receitaCategoria({ usuario_id, inicio, fim }) {
                                    left join categoria on categoria.id = movimentacao.categoria_id
                           where usuario_id = :usuario_id
                             and tipo_movimentacao_id = 1
+                            and interna is not true
                             and vencimento between :inicio and :fim)
       select descricao  as label,
              cor        as color,
@@ -207,7 +214,8 @@ async function vencimentos({ usuario_id, inicio, fim }) {
       with data_frame as (select vencimento, efetivada
                           from movimentacao
                           where conta_id in (select id from conta where usuario_id = :usuario_id)
-                            and vencimento between :inicio and :fim),
+                            and vencimento between :inicio and :fim 
+                            and interna is not true),
            em_atraso as (select count(*) as contas
                          from data_frame
                          where efetivada is null

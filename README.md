@@ -16,7 +16,23 @@ Study project - Yet another personal finance app
 
 ![jerry-maguire-show-me-the-money.gif](docs/jerry-maguire-show-me-the-money.gif)
 
-## Project setup
+## Project setup, how to run, how to test, etc
 
 See [individual](service-node-koa/README.md) [readme's](web-app-vue/README.md)
 for each project.
+
+## Noteworthy
+
+- It all started for fun with a [db schema](docs/redline.sql) for a personal
+  finance app.
+- Then we added a node with koa backend to study api building, and a frontend
+  made with vue3, vuetify and a few other cool libraries.
+- Then the project was used to study
+  [docker](service-node-koa/infrastructure/Dockerfile)
+  [containers](web-app-vue/infrastructure/Dockerfile).
+- At some moment it was used to
+  [study kubernetes](service-node-koa/infrastructure/k8s/deployment.yml).
+- And finally Continuous Delivery with GitOps, using ArgoCD to observe the
+  desired state for the cluster and applying it when it changes.
+- There is [a few things to be done](docs/THINGS_TO_FIX.md) to proper call it a
+  respectable code reference, but i think it's cool.

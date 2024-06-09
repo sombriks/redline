@@ -76,6 +76,7 @@ describe("Movimentacao API test", () => {
       const novaMovimentacao = {
         tipo_movimentacao_id: 1,
         descricao: "Teste movimentação",
+        categoria_id: categoria.id,
         conta_id: conta.id,
         valor: 100,
         vencimento: "2024-02-04",
@@ -99,6 +100,7 @@ describe("Movimentacao API test", () => {
       const novaMovimentacao = {
         tipo_movimentacao_id: 1,
         descricao: "Test movimentação",
+        categoria_id: categoria.id,
         conta_id: conta.id,
         valor: 100,
         vencimento: "2024-02-04",
@@ -123,6 +125,7 @@ describe("Movimentacao API test", () => {
       const novaMovimentacao = {
         tipo_movimentacao_id: 1,
         descricao: "Test movimentação",
+        categoria_id: categoria.id,
         conta_id: conta.id,
         valor: 100,
         vencimento: "2024-02-04",
@@ -153,6 +156,7 @@ describe("Movimentacao API test", () => {
       const novaMovimentacao = {
         tipo_movimentacao_id: 1,
         descricao: "Test movimentação",
+        categoria_id: categoria.id,
         conta_id: conta.id,
         valor: 100,
         vencimento: "2024-02-04",

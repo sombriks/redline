@@ -2,7 +2,13 @@
   <v-container fluid>
     <v-row align="center">
       <v-form v-model="valid" @submit.prevent.stop="transferir">
-        <div class="column min300">
+        <div class="column">
+          <categoria-autocomplete
+            class="item"
+            label="Categoria da transferência"
+            v-model="formTransferencia.categoria"
+            :rules="[requiredRule]"
+          />
           <conta-autocomplete
             class="item"
             label="Conta de origem"
@@ -13,12 +19,6 @@
             class="item"
             label="Conta de destino"
             v-model="formTransferencia.contaDestino"
-            :rules="[requiredRule]"
-          />
-          <categoria-autocomplete
-            class="item"
-            label="Categoria da transferência"
-            v-model="formTransferencia.categoria"
             :rules="[requiredRule]"
           />
           <v-text-field
@@ -60,13 +60,14 @@
 </template>
 <script setup>
 import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { numberRule, requiredRule } from '@/services/basic-rules'
-import { router } from '@/services/router'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
 import ChipDate from '@/shared/chip-date.vue'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 
+const router = useRouter()
 const movimentacaoStore = useMovimentacaoStore()
 
 const valid = ref(false)
@@ -83,6 +84,7 @@ const transferir = async () => {
     if (!valid.value) return console.log('invalid form state')
     await movimentacaoStore.transferir({ ...formTransferencia })
     alert('transferência criada com sucesso')
+    await router.push('/historico')
   } catch (e) {
     console.log(e)
     alert('Não foi possível realizar a transferência')

@@ -154,8 +154,8 @@
 </template>
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
-import { router } from '@/services/router'
 import { lengthRule, requiredRule } from '@/services/basic-rules'
 import { prepareByte, readTextFile } from '@/services/formaters'
 import { downloadCsv, uploadCsv } from '@/services/api'
@@ -165,6 +165,8 @@ import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
 import { endOfMonth, startOfMonth } from 'date-fns'
 import ChipPeriodo from '@/shared/chip-periodo.vue'
+
+const router = useRouter()
 
 const wantImport = ref(false)
 const wantExport = ref(false)

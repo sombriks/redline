@@ -21,7 +21,7 @@ import {
   listContasRequest,
   listMovimentacaoRequest,
   listPlanejamentoRequest,
-  listRecorrenciaRequest,
+  listRecorrenciaRequest, pagamentoRequest,
   removeMovimentacaoRequest, transferenciaRequest,
   updateCategoriaRequest,
   updateContaRequest,
@@ -83,6 +83,7 @@ new ApiBuilder({ router }).path(b => {
       b.path('/:conta_id', contaOwnedBy, b => {
         b.post(insertMovimentacaoRequest)
         b.post('/transferir/:conta_destino_id', transferenciaRequest)
+        b.post('/pagar/:conta_destino_id', pagamentoRequest)
         b.path('/:id', b => {
           b.get(findMovimentacaoRequest)
           b.put(updateMovimentacaoRequest)

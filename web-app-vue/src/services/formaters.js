@@ -37,7 +37,7 @@ export const readTextFile = (file) => {
 
 export const prepareBalance = (movimentacoes) => {
   if (!movimentacoes.length) return 0
-  return movimentacoes.reduce(
+  return movimentacoes.filter(m => !m.interna).reduce(
     (p, c) => {
       return { valor: isPositiveOrNegative(p) + isPositiveOrNegative(c), tipo_movimentacao_id: 1 }
     },

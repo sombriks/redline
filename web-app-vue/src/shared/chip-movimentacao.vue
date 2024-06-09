@@ -15,7 +15,9 @@
     "
     :prepend-icon="contaIcon"
     @click="onClick"
-    >{{ data }} | {{ valor }}
+    >
+    <i v-if="!!props.movimentacao.interna">{{ data }} | {{ valor }}</i>
+    <span v-else>{{ data }} | {{ valor }}</span>
   </v-chip>
   <v-card
     v-if="mode === 1"
@@ -36,6 +38,9 @@
       </chip-descricao>
       <chip-descricao size="default">{{ props.movimentacao?.descricao }}</chip-descricao>
       <chip-descricao size="default" :color="corPagamento">{{ statusPagamento }}</chip-descricao>
+      <chip-descricao size="default" v-if="!!props.movimentacao?.interna">
+        <i>interna/entre contas</i>
+      </chip-descricao>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
@@ -84,8 +89,8 @@ const categoria = computed(() =>
 )
 
 const contaIcon = computed(() => {
-  if (parseInt(conta?.value.tipo_conta_id) === 2) return 'mdi-bank'
-  if (parseInt(conta?.value.tipo_conta_id) === 3) return 'mdi-credit-card'
+  if (parseInt(conta?.value?.tipo_conta_id) === 2) return 'mdi-bank'
+  if (parseInt(conta?.value?.tipo_conta_id) === 3) return 'mdi-credit-card'
   return 'mdi-wallet'
 })
 

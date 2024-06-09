@@ -114,6 +114,16 @@
             </v-radio-group>
           </v-row>
           <v-row align="center">
+            <!-- ver transferências -->
+            <v-radio-group inline v-model="filtro.interna">
+              <template v-slot:label>
+                <div>Ver transferências/pagamentos</div>
+              </template>
+              <v-radio :value="false" label="Não"></v-radio>
+              <v-radio :value="true" label="Sim"></v-radio>
+            </v-radio-group>
+          </v-row>
+          <v-row align="center">
             <!-- paginação -->
             <v-radio-group inline v-model="filtro.limit">
               <template v-slot:label>
@@ -169,8 +179,8 @@
 </template>
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
-import { router } from '@/services/router'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { useContaStore } from '@/stores/contaStore'
 import { prepareBalance, prepareDate } from '@/services/formaters'
@@ -186,10 +196,13 @@ const movimentacaoStore = useMovimentacaoStore()
 const categoriaStore = useCategoriaStore()
 const contaStore = useContaStore()
 
+const router = useRouter()
+
 const drawer = ref(false)
 
 const filtro = reactive({
   tipo_movimentacao_id: null,
+  interna: false,
   efetivada: null,
   categoria_id: null,
   dataInicio: startOfMonth(new Date()),
@@ -203,28 +216,26 @@ const agrupamento = ref(null)
 const movimentacoes = computed(() => movimentacaoStore.store?.movimentacoes || [])
 
 const agrupamentoConta = computed(() => {
-  const contas = contaStore.store.contas.map((c) => {
-    const thisAccount = movimentacoes.value.filter((m) => m.conta_id == c.id)
+  return contaStore.store.contas.map((c) => {
+    const thisAccount = movimentacoes.value.filter((m) => m.conta_id === c.id)
     // console.log(thisAccount)
     return {
       ...c,
       saldo: prepareBalance(thisAccount)
     }
   })
-  return contas
 })
 
 const agrupamentoCategoria = computed(() => {
-  const categorias = categoriaStore.store.categorias
+  return categoriaStore.store.categorias
     .map((c) => {
-      const thisCategory = movimentacoes.value.filter((m) => m.categoria_id == c.id)
+      const thisCategory = movimentacoes.value.filter((m) => m.categoria_id === c.id)
       return {
         ...c,
         saldo: prepareBalance(thisCategory)
       }
     })
-    .filter((ac) => ac.saldo != 0)
-  return categorias
+    .filter((ac) => ac.saldo !== 0)
 })
 
 const saldo = computed(() => prepareBalance(movimentacoes.value))
