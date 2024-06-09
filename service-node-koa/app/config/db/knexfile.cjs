@@ -9,9 +9,7 @@ const _cfg = {
   },
   pool: {
     min: 2,
-    max: 10,
-    afterCreate: (conn, cb) =>
-      conn.run('PRAGMA foreign_keys = ON', cb) // does not work with postgres
+    max: 10
   },
   migrations: {
     directory: `${__dirname}/migrations`,
@@ -23,29 +21,33 @@ const _cfg = {
  * @type { Object.<string, import('knex').Knex.Config> }
  */
 module.exports = {
-  development: { ..._cfg },
+  development: {
+    ..._cfg,
+    pool: {
+      ..._cfg.pool,
+      afterCreate: (conn, cb) =>
+        conn.run('PRAGMA foreign_keys = ON', cb) // does not work with postgres
+    }
+  },
   test: {
     ..._cfg,
     connection: {
       filename: ':memory:'
+    },
+    pool: {
+      ..._cfg.pool,
+      afterCreate: (conn, cb) =>
+        conn.run('PRAGMA foreign_keys = ON', cb) // does not work with postgres
     }
   },
   staging: {
     ..._cfg,
     client: 'pg',
-    connection: process.env.PG_CONNECTION_URL,
-    pool: {
-      ..._cfg.pool,
-      afterCreate: undefined
-    }
+    connection: process.env.PG_CONNECTION_URL
   },
   production: {
     ..._cfg,
     client: 'pg',
-    connection: process.env.PG_CONNECTION_URL,
-    pool: {
-      ..._cfg.pool,
-      afterCreate: undefined
-    }
+    connection: process.env.PG_CONNECTION_URL
   }
 }
