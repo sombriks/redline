@@ -7,6 +7,32 @@
     </v-row>
     <v-row>
       <v-expansion-panels v-model="folha" variant="accordion">
+        <v-expansion-panel value="composicao">
+          <!-- composição despesas (stacked bar conta/categorias)-->
+          <!-- composição receitas (stacked bar conta/categorias)-->
+          <v-expansion-panel-title>Composição</v-expansion-panel-title>
+          <v-expansion-panel-text>
+            <h3>Composição de despesas</h3>
+            <div v-for="conta in composicaoDespesas" :key="conta.descricao">
+              <h4>{{ conta.descricao }}</h4>
+              <VueUiSparkStackbar
+                :config="sparkStackBarConfig"
+                :dataset="conta.data"
+              ></VueUiSparkStackbar>
+            </div>
+            <br />
+            <v-divider></v-divider>
+            <br />
+            <h3>Composição de receitas</h3>
+            <div v-for="conta in composicaoReceitas" :key="conta.descricao">
+              <h4>{{ conta.descricao }}</h4>
+              <VueUiSparkStackbar
+                :config="sparkStackBarConfig"
+                :dataset="conta.data"
+              ></VueUiSparkStackbar>
+            </div>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
         <v-expansion-panel value="rxd">
           <!-- receitas x despesas totais (simple-bar) -->
           <!-- receitas x despesas efetivadas (simple-bar) -->
@@ -84,32 +110,6 @@
             <br />
             <h3>Receitas por categoria</h3>
             <VueUiDonut :config="donutConfig" :dataset="receitaCategoria"></VueUiDonut>
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-        <v-expansion-panel value="composicao">
-          <!-- composição despesas (stacked bar conta/categorias)-->
-          <!-- composição receitas (stacked bar conta/categorias)-->
-          <v-expansion-panel-title>Composição</v-expansion-panel-title>
-          <v-expansion-panel-text>
-            <h3>Composição de despesas</h3>
-            <div v-for="conta in composicaoDespesas" :key="conta.descricao">
-              <h4>{{ conta.descricao }}</h4>
-              <VueUiSparkStackbar
-                :config="sparkStackBarConfig"
-                :dataset="conta.data"
-              ></VueUiSparkStackbar>
-            </div>
-            <br />
-            <v-divider></v-divider>
-            <br />
-            <h3>Composição de receitas</h3>
-            <div v-for="conta in composicaoReceitas" :key="conta.descricao">
-              <h4>{{ conta.descricao }}</h4>
-              <VueUiSparkStackbar
-                :config="sparkStackBarConfig"
-                :dataset="conta.data"
-              ></VueUiSparkStackbar>
-            </div>
           </v-expansion-panel-text>
         </v-expansion-panel>
         <v-expansion-panel value="saldos">

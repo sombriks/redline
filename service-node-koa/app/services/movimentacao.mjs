@@ -140,6 +140,8 @@ export const transferencia = async ({ origem, destino, categoria, valor, vencime
     tipo_movimentacao_id: 1 // entrada
   }
 
+  // TODO flag para marcar movimentações internas (ignorar ao somar todas as contas)
+
   const [{ idEntrada }] = await insertMovimentacao(entrada)
   const [{ idSaida }] = await insertMovimentacao(saida)
 

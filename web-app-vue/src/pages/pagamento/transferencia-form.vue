@@ -83,6 +83,7 @@ const transferir = async () => {
     if (!valid.value) return console.log('invalid form state')
     await movimentacaoStore.transferir({ ...formTransferencia })
     alert('transferência criada com sucesso')
+    await router.push('/historico')
   } catch (e) {
     console.log(e)
     alert('Não foi possível realizar a transferência')
