@@ -49,3 +49,11 @@ There are npm scripts to help on database migration:
 ```bash
 npm run migrate:make new_script # give a proper name for the migrate
 ```
+
+```bash
+npm run migrate:latest # apply all pending migrates
+```
+
+```bash
+npm run migrate:rollback # undo latest applied migrate batch
+```

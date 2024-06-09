@@ -78,7 +78,9 @@ describe('Movimentacao service test', () => {
   it('Should save a new movimentacao', async () => {
     const usuario = await getAdmin()
     const [conta] = await listContas({ usuario_id: usuario.id })
+    const [categoria] = await listCategorias({ usuario_id: usuario.id, q: 'OUTROS' })
     const result = await novaEntrada({
+      categoria_id: categoria.id,
       conta_id: conta.id,
       valor: 200,
       descricao: 'teste dinheiro 2'

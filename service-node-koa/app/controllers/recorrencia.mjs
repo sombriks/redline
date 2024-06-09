@@ -1,6 +1,7 @@
 import {
   delRecorrencia,
-  findRecorrencia, geraLancamentos,
+  findRecorrencia,
+  geraLancamentos,
   insertRecorrencia,
   listRecorrencia,
   updateRecorrencia
@@ -36,6 +37,5 @@ export const delRecorrenciaRequest = async ctx => {
 
 export const geraLancamentosRequest = async ctx => {
   const { usuario_id, id } = ctx.request.params
-  const result = await geraLancamentos({ usuario_id, id })
-  ctx.body = result
+  ctx.body = await geraLancamentos({ usuario_id, id })
 }
