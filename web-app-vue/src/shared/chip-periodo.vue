@@ -7,13 +7,38 @@
     </v-chip>
     <div v-if="edit" class="the-date center">
       <chip-date v-if="edit" v-model="inicial" @close="edit = false"></chip-date>
-      <v-btn
-        v-if="edit"
-        icon="mdi-history"
-        title="Restaurar para mês atual"
-        variant="outlined"
-        @click="restauraPeriodo"
-      ></v-btn>
+      <v-menu v-if="edit" transition="slide-y-transition" :close-on-content-click="false">
+        <template v-slot:activator="{ props }">
+          <v-btn
+            icon="mdi-history"
+            title="Restaurar para mês atual"
+            variant="outlined"
+            v-bind="props"
+          ></v-btn>
+        </template>
+        <v-sheet border rounded>
+          <v-btn
+            border="0"
+            variant="outlined"
+            icon="mdi-chevron-double-left"
+            @click="voltaAno"
+          ></v-btn>
+          <v-btn border="0" variant="outlined" icon="mdi-chevron-left" @click="voltaMes"></v-btn>
+          <v-btn
+            border="0"
+            variant="outlined"
+            :icon="link ? 'mdi-link' : 'mdi-link-off'"
+            @click="link = !link"
+          ></v-btn>
+          <v-btn border="0" variant="outlined" icon="mdi-chevron-right" @click="vaiMes"></v-btn>
+          <v-btn
+            border="0"
+            variant="outlined"
+            icon="mdi-chevron-double-right"
+            @click="vaiAno"
+          ></v-btn>
+        </v-sheet>
+      </v-menu>
       <chip-date v-if="edit" v-model="final" @close="edit = false"></chip-date>
     </div>
   </div>
@@ -23,6 +48,7 @@
   display: flex;
   flex-wrap: wrap;
 }
+
 .center {
   align-items: center;
   justify-content: center;
@@ -32,8 +58,7 @@
 import { computed, defineModel, ref } from 'vue'
 import { prepareDate } from '@/services/formaters'
 import ChipDate from '@/shared/chip-date.vue'
-import { endOfMonth, startOfMonth } from 'date-fns'
-import { endOfYear, startOfYear } from 'date-fns/fp'
+import { addMonths, addYears } from 'date-fns'
 
 const props = defineProps(['label', 'reset'])
 const emit = defineEmits(['update:inicial', 'update:final'])
@@ -43,17 +68,25 @@ const final = defineModel('final')
 
 const edit = ref(false)
 
+const link = ref(true)
+
 const ini = computed(() => prepareDate(inicial))
 const fin = computed(() => prepareDate(final))
 
-const restauraPeriodo = () => {
-  if (!props.reset || props.reset === 'mensal') {
-    emit('update:inicial', startOfMonth(new Date()))
-    emit('update:final', endOfMonth(new Date()))
-  } else if (props.reset === 'anual') {
-    emit('update:inicial', startOfYear(new Date()))
-    emit('update:final', endOfYear(new Date()))
-  }
-  edit.value = false
+const voltaAno = () => {
+  inicial.value = addYears(ini.value, -1)
+  if (link.value) final.value = addYears(fin.value, -1)
+}
+const voltaMes = () => {
+  inicial.value = addMonths(ini.value, -1)
+  if (link.value) final.value = addMonths(fin.value, -1)
+}
+const vaiMes = () => {
+  final.value = addMonths(fin.value, 1)
+  if (link.value) inicial.value = addMonths(ini.value, 1)
+}
+const vaiAno = () => {
+  final.value = addYears(fin.value, 1)
+  if (link.value) inicial.value = addYears(ini.value, 1)
 }
 </script>
