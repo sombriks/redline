@@ -68,9 +68,9 @@ export const useMovimentacaoStore = defineStore('movimentacao-store', () => {
 
   const getMovimentacao = (id) => store.movimentacoes?.find((m) => m.id == id)
 
-  const transferir = async ({ contaOrigem, contaDestino, valor, vencimento }) => {
+  const transferir = async ({ contaOrigem, contaDestino, categoria, valor, vencimento }) => {
     const { id } = uState.userData
-    await saveTransferencia({ id, contaOrigem, contaDestino, valor, vencimento })
+    await saveTransferencia({ id, contaOrigem, contaDestino, categoria, valor, vencimento })
     await sincronizarMovimentacoes()
   }
 

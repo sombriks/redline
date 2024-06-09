@@ -1,5 +1,5 @@
 import {
-  downloadMovimentacoes, findConta,
+  downloadMovimentacoes, findCategoria, findConta,
   findMovimentacao,
   insertMovimentacao,
   listMovimentacaoByConta,
@@ -71,11 +71,13 @@ export const downloadMovimentacoesRequest = async ctx => {
 
 export const transferenciaRequest = async ctx => {
   const { usuario_id, conta_id: conta_origem_id, conta_destino_id } = ctx.request.params
-  const { valor, vencimento } = ctx.request.body
+  const { valor, vencimento, categoria: categoria_id } = ctx.request.body
   const origem = await findConta({ id: conta_origem_id, usuario_id })
   const destino = await findConta({ id: conta_destino_id, usuario_id })
+  const categoria = await findCategoria({ id: categoria_id, usuario_id })
   if (!origem) return ctx.throw(400, 'conta origem não encontrada')
   if (!destino) return ctx.throw(400, 'conta destino não encontrada')
-  const result = await transferencia({ usuario_id, origem, destino, valor, vencimento })
+  if (!categoria) return ctx.throw(400, 'categoria não encontrada')
+  const result = await transferencia({ origem, destino, categoria, valor, vencimento })
   ctx.body = result
 }

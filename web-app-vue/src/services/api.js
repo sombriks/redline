@@ -124,12 +124,20 @@ export const updateMovimentacao = async ({ id, conta_id, movimentacao }) =>
 export const delMovimentacao = async ({ id, conta_id, movimentacao }) =>
   await del({ uri: `/${id}/movimentacao/${conta_id}/${movimentacao.id}` })
 
-export const saveTransferencia = async ({ id, contaOrigem, contaDestino, valor, vencimento }) =>
+export const saveTransferencia = async ({
+  contaDestino,
+  contaOrigem,
+  vencimento,
+  categoria,
+  valor,
+  id
+}) =>
   await post({
     uri: `/${id}/movimentacao/${contaOrigem}/transferir/${contaDestino}`,
     payload: {
-      valor,
-      vencimento
+      vencimento,
+      categoria,
+      valor
     }
   })
 

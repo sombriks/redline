@@ -11,7 +11,7 @@ const _cfg = {
     min: 2,
     max: 10,
     afterCreate: (conn, cb) =>
-      conn.run('PRAGMA foreign_keys = ON', cb)
+      conn.run('PRAGMA foreign_keys = ON', cb) // does not work with postgres
   },
   migrations: {
     directory: `${__dirname}/migrations`,
@@ -29,17 +29,23 @@ module.exports = {
     connection: {
       filename: ':memory:'
     }
-    // client: 'pg',
-    // connection: process.env.PG_CONNECTION_URL
   },
   staging: {
     ..._cfg,
     client: 'pg',
-    connection: process.env.PG_CONNECTION_URL
+    connection: process.env.PG_CONNECTION_URL,
+    pool: {
+      ..._cfg.pool,
+      afterCreate: undefined
+    }
   },
   production: {
     ..._cfg,
     client: 'pg',
-    connection: process.env.PG_CONNECTION_URL
+    connection: process.env.PG_CONNECTION_URL,
+    pool: {
+      ..._cfg.pool,
+      afterCreate: undefined
+    }
   }
 }
