@@ -126,7 +126,8 @@ export const transferencia = async ({ origem, destino, categoria, valor, vencime
     efetivada: new Date(vencimento).toISOString(),
     conta_id: origem.id,
     categoria_id: categoria.id,
-    tipo_movimentacao_id: 2 // saída
+    tipo_movimentacao_id: 2, // saída
+    interna: true
   }
   const entrada = {
     descricao: `${destino.descricao} <= ${origem.descricao}`,
@@ -137,10 +138,9 @@ export const transferencia = async ({ origem, destino, categoria, valor, vencime
     efetivada: new Date(vencimento).toISOString(),
     conta_id: destino.id,
     categoria_id: categoria.id,
-    tipo_movimentacao_id: 1 // entrada
+    tipo_movimentacao_id: 1, // entrada
+    interna: true
   }
-
-  // TODO flag para marcar movimentações internas (ignorar ao somar todas as contas)
 
   const [{ idEntrada }] = await insertMovimentacao(entrada)
   const [{ idSaida }] = await insertMovimentacao(saida)

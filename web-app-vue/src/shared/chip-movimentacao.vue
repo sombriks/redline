@@ -36,6 +36,9 @@
       </chip-descricao>
       <chip-descricao size="default">{{ props.movimentacao?.descricao }}</chip-descricao>
       <chip-descricao size="default" :color="corPagamento">{{ statusPagamento }}</chip-descricao>
+      <chip-descricao size="default" v-if="!!props.movimentacao?.interna">
+        <i>interna/entre contas</i>
+      </chip-descricao>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
