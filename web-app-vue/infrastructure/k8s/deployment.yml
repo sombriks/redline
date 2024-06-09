@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: redline-app
-          image: ghcr.io/sombriks/redline/redline-app:2024.06.09-473f616
+          image: ghcr.io/sombriks/redline/redline-app:2024.06.09-9e496dc
           ports:
             - containerPort: 5000
           env:
