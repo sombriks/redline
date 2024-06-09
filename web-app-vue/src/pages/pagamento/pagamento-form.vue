@@ -1,8 +1,14 @@
 <template>
   <v-container fluid>
     <v-row align="center">
-      <v-form v-model="valid">
+      <v-form v-model="valid" @submit.prevent.stop="pagar">
         <div class="column">
+          <categoria-autocomplete
+            class="item"
+            label="Categoria da transferência"
+            v-model="formPagamento.categoria"
+            :rules="[requiredRule]"
+          />
           <conta-autocomplete
             class="item"
             label="Conta de origem"
@@ -15,18 +21,26 @@
             v-model="formPagamento.contaDestino"
             :rules="[requiredRule]"
           />
-          <chip-date
-            class="item"
-            label="Data pagamento"
-            v-model="formPagamento.vencimento"
-          />
+          <chip-date class="item" label="Data pagamento" v-model="formPagamento.vencimento" />
           <chip-periodo
             label="Período"
             v-model:inicial="formPagamento.inicial"
             v-model:final="formPagamento.final"
           ></chip-periodo>
           <v-divider />
-          <p>valor total das movimentações do período</p>
+          <p v-if="movimentacoes.length > 0">valor total: {{ prepareMoney(valorTotal) }}</p>
+          <v-chip-group v-model="selMovimentacao" column multiple>
+            <chip-descricao
+              size="small"
+              filter
+              v-for="movimentacao in movimentacoes"
+              :key="movimentacao.id"
+              :value="movimentacao"
+            >
+              {{ prepareDate(movimentacao.vencimento).toLocaleDateString() }} |
+              {{ prepareMoney(movimentacao.valor) }}
+            </chip-descricao>
+          </v-chip-group>
           <!-- movimentações do período -->
           <v-divider />
           <div class="item row">
@@ -36,6 +50,7 @@
               color="green"
               type="submit"
               icon="mdi-check"
+              :disabled="selMovimentacao.length === 0"
             ></v-btn>
             <v-spacer></v-spacer>
             <v-btn
@@ -51,37 +66,85 @@
       </v-form>
     </v-row>
   </v-container>
-  <div>
-    <h1>Pagamento</h1>
-    <ol>
-      <li>selecionar uma conta de origem</li>
-      <li>selecionar uma conta de destino</li>
-      <li>definir um período</li>
-      <li>marcar as movimentações do período para pagamento; calcular o valor</li>
-      <li>salvar o movimento de origem</li>
-      <li>salvar o movimento de destino</li>
-      <li>atualizar as movimentações- marcar como pagas</li>
-    </ol>
-  </div>
 </template>
 <script setup>
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { requiredRule } from '@/services/basic-rules'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
 import ChipPeriodo from '@/shared/chip-periodo.vue'
 import { endOfMonth, startOfMonth } from 'date-fns'
 import ChipDate from '@/shared/chip-date.vue'
-import { router } from '@/services/router'
+import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
+import ChipDescricao from '@/shared/chip-descricao.vue'
+import { prepareDate, prepareMoney } from '@/services/formaters'
+import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
+
+const router = useRouter()
+const movimentacaoStore = useMovimentacaoStore()
 
 const valid = ref(false)
+const selMovimentacao = ref([])
 const formPagamento = reactive({
-  contaOrigem: 0,
-  contaDestino: 0,
-  valor: 0,
-  vencimento: new Date(),
   inicial: startOfMonth(new Date()),
-  final: endOfMonth(new Date())
+  final: endOfMonth(new Date()),
+  vencimento: new Date(),
+  contaDestino: 0,
+  contaOrigem: 0,
+  categoria: 0
 })
+
+const movimentacoes = computed(() => {
+  if (
+    !formPagamento.contaOrigem ||
+    !formPagamento.contaDestino ||
+    !formPagamento.inicial ||
+    !formPagamento.final
+  )
+    return []
+  return movimentacaoStore.store.movimentacoes
+})
+
+const valorTotal = computed(() => selMovimentacao.value.reduce((acc, m) => (acc += m.valor), 0))
+
+watch(formPagamento, async () => {
+  if (
+    formPagamento.contaOrigem !== 0 &&
+    formPagamento.contaDestino !== 0 &&
+    formPagamento.inicial &&
+    formPagamento.final
+  ) {
+    await movimentacaoStore.doListMovimentacoes({
+      conta_id: formPagamento.contaDestino,
+      dataInicio: formPagamento.inicial,
+      dataFim: formPagamento.final,
+      tipo_movimentacao_id: 2,
+      interna: false,
+      efetivada: false
+    })
+    selMovimentacao.value = movimentacaoStore.store.movimentacoes
+  } else selMovimentacao.value = []
+})
+
+const pagar = async () => {
+  if (valid.value && confirm('deseja realmente pagar os itens selecionados?')) {
+    try {
+      await movimentacaoStore.pagar({
+        movimentacoes_id: selMovimentacao.value.map(m => m.id),
+        conta_destino_id: formPagamento.contaDestino,
+        categoria_id: formPagamento.categoria,
+        vencimento: formPagamento.vencimento,
+        conta_id: formPagamento.contaOrigem,
+        valor: valorTotal.value
+      })
+      alert("pagamento realizado com sucesso!")
+      await router.push('/historico')
+    } catch (e) {
+      console.log(e)
+      alert('não foi possível pagar os itens selecionados.')
+    }
+  }
+}
 </script>
 <style scoped>
 .column {

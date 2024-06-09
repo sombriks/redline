@@ -89,18 +89,19 @@
 </template>
 <script setup>
 import { onMounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { numberRule, requiredRule } from '@/services/basic-rules'
-import { router } from '@/services/router'
 import ChipDate from '@/shared/chip-date.vue'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
-
 const props = defineProps(['movimentacao'])
 
 const contaState = useContaStore()
+
+const router = useRouter()
 const categoriaState = useCategoriaStore()
 const movimentacaoState = useMovimentacaoStore()
 

@@ -3,7 +3,7 @@ import {
   findMovimentacao,
   insertMovimentacao,
   listMovimentacaoByConta,
-  listMovimentacaoByUsuario,
+  listMovimentacaoByUsuario, pagamento,
   removeMovimentacao, transferencia,
   updateMovimentacao,
   uploadMovimentacoes
@@ -72,12 +72,37 @@ export const downloadMovimentacoesRequest = async ctx => {
 export const transferenciaRequest = async ctx => {
   const { usuario_id, conta_id: conta_origem_id, conta_destino_id } = ctx.request.params
   const { valor, vencimento, categoria: categoria_id } = ctx.request.body
+
   const origem = await findConta({ id: conta_origem_id, usuario_id })
   const destino = await findConta({ id: conta_destino_id, usuario_id })
   const categoria = await findCategoria({ id: categoria_id, usuario_id })
+
   if (!origem) return ctx.throw(400, 'conta origem não encontrada')
   if (!destino) return ctx.throw(400, 'conta destino não encontrada')
   if (!categoria) return ctx.throw(400, 'categoria não encontrada')
+
   const result = await transferencia({ origem, destino, categoria, valor, vencimento })
+  ctx.body = result
+}
+
+export const pagamentoRequest = async ctx => {
+  const { usuario_id, conta_id, conta_destino_id } = ctx.request.params
+  const {
+    movimentacoes_id,
+    categoria_id,
+    vencimento,
+    valor
+  } = ctx.request.body
+
+  const origem = await findConta({ id: conta_id, usuario_id })
+  const destino = await findConta({ id: conta_destino_id, usuario_id })
+  const categoria = await findCategoria({ id: categoria_id, usuario_id })
+
+  if (!origem) return ctx.throw(400, 'conta origem não encontrada')
+  if (!destino) return ctx.throw(400, 'conta destino não encontrada')
+  if (!categoria) return ctx.throw(400, 'categoria não encontrada')
+  if (!movimentacoes_id || movimentacoes_id.length === 0) return ctx.throw(400, 'informe as movimentações a pagar')
+
+  const result = await pagamento({ origem, destino, categoria, valor, vencimento, movimentacoes_id })
   ctx.body = result
 }

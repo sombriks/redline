@@ -43,6 +43,7 @@ const prepareMovimentacaoQuery = (params, whereParams = {}) => {
     efetivada,
     dataInicio,
     dataFim,
+    interna,
     limit = 50,
     offset = 0,
     sort = 'vencimento',
@@ -70,6 +71,8 @@ const prepareMovimentacaoQuery = (params, whereParams = {}) => {
 
   if (efetivada == 'true') query = query.whereNotNull('efetivada')
   else if (efetivada == 'false') query = query.whereNull('efetivada')
+
+  if (interna == 'false') query = query.whereNot('interna', true)
 
   return query
     .where(whereParams)
@@ -146,6 +149,12 @@ export const transferencia = async ({ origem, destino, categoria, valor, vencime
   const [{ idSaida }] = await insertMovimentacao(saida)
 
   return { idEntrada, idSaida }
+}
+
+export const pagamento = async ({ origem, destino, categoria, valor, vencimento, movimentacoes_id }) => {
+  const transferencias = await transferencia({ origem, destino, categoria, valor, vencimento })
+  await knex('movimentacao').update({ efetivada: vencimento }).whereIn('id', movimentacoes_id)
+  return transferencias
 }
 
 export const uploadMovimentacoes = async ({ id, header, lines }) => {

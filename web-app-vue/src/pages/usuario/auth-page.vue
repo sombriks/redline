@@ -1,6 +1,8 @@
 <script setup>
+import { useRouter } from 'vue-router'
 import CardLogin from '@/pages/usuario/card-login.vue'
-import { router } from '@/services/router'
+
+const router = useRouter()
 
 const doLogin = async () => {
   await router.push('/')

@@ -1,4 +1,5 @@
 import { computed, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import jwt_decode from 'jwt-decode'
 import { clearRedLine, getRedLine, setRedLine } from '@/services/redLine'
@@ -24,7 +25,7 @@ export const useUserStore = defineStore('user-store', () => {
   const doLogin = ({ email, senha }) => login({ email, senha })
 
   const logout = async () => {
-    const { router } = await import('../services/router')
+    const  router  = useRouter()
     store.token = null
     clearRedLine()
     router.push('/auth')

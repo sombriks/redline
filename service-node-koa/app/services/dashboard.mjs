@@ -214,7 +214,8 @@ async function vencimentos({ usuario_id, inicio, fim }) {
       with data_frame as (select vencimento, efetivada
                           from movimentacao
                           where conta_id in (select id from conta where usuario_id = :usuario_id)
-                            and vencimento between :inicio and :fim),
+                            and vencimento between :inicio and :fim 
+                            and interna is not true),
            em_atraso as (select count(*) as contas
                          from data_frame
                          where efetivada is null

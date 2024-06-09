@@ -91,8 +91,9 @@ export const listMovimentacoes = async ({
   categoria_id = undefined,
   dataInicio = undefined,
   conta_id = undefined,
-  dataFim = undefined,
   efetivada = undefined,
+  dataFim = undefined,
+  interna = undefined,
   offset = 0,
   limit = 50,
   id,
@@ -107,6 +108,7 @@ export const listMovimentacoes = async ({
         dataInicio,
         efetivada,
         conta_id,
+        interna,
         dataFim,
         offset,
         limit,
@@ -137,6 +139,25 @@ export const saveTransferencia = async ({
     payload: {
       vencimento,
       categoria,
+      valor
+    }
+  })
+
+export const savePagamento = async ({
+  conta_destino_id,
+  movimentacoes_id,
+  categoria_id,
+  vencimento,
+  conta_id,
+  valor,
+  id
+}) =>
+  await post({
+    uri: `/${id}/movimentacao/${conta_id}/pagar/${conta_destino_id}`,
+    payload: {
+      movimentacoes_id,
+      categoria_id,
+      vencimento,
       valor
     }
   })
