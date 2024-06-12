@@ -3,7 +3,7 @@ import { parseISO } from 'date-fns'
 export const prepareDate = (date) => {
   // console.log(`date: ${JSON.stringify(date)}`)
   if (!date) return date
-  if(date.value) date = date.value
+  if (date.value) date = date.value
   if (date.toLocaleDateString) return date
   if (!isNaN(date)) return new Date(date)
   return parseISO(date)
@@ -35,18 +35,47 @@ export const readTextFile = (file) => {
   })
 }
 
-export const prepareBalance = (movimentacoes) => {
+export const prepareBalance = (movimentacoes, field = 'valor') => {
   if (!movimentacoes.length) return 0
-  return movimentacoes.filter(m => !m.interna).reduce(
-    (p, c) => {
-      return { valor: isPositiveOrNegative(p) + isPositiveOrNegative(c), tipo_movimentacao_id: 1 }
-    },
-    { valor: 0 }
-  ).valor
+  return movimentacoes
+    .filter((m) => !m.interna)
+    .reduce(
+      (p, c) => {
+        return {
+          [field]: isPositiveOrNegative(p, field) + isPositiveOrNegative(c, field),
+          tipo_movimentacao_id: 1
+        }
+      },
+      { [field]: 0 }
+    )[field]
 }
 
-const isPositiveOrNegative = (m) => {
-  const v = parseFloat(m.valor)
-  if (m.tipo_movimentacao_id == 1) return v
+export const prepareIncome = (movimentacoes, field = 'valor') => {
+  if (!movimentacoes.length) return 0
+  return movimentacoes
+    .filter((m) => !m.interna && m.tipo_movimentacao_id === 1)
+    .reduce(
+      (p, c) => {
+        return { [field]: p[field] + parseFloat(c[field]) }
+      },
+      { [field]: 0 }
+    )[field]
+}
+
+export const prepareExpense = (movimentacoes, field = 'valor') => {
+  if (!movimentacoes.length) return 0
+  return movimentacoes
+    .filter((m) => !m.interna && m.tipo_movimentacao_id === 2)
+    .reduce(
+      (p, c) => {
+        return { [field]: p[field] + parseFloat(c[field]) }
+      },
+      { [field]: 0 }
+    )[field]
+}
+
+const isPositiveOrNegative = (m, field = 'valor') => {
+  const v = parseFloat(m[field])
+  if (m.tipo_movimentacao_id === 1) return v
   return -v
 }
