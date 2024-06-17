@@ -1,4 +1,5 @@
 // This is the "Offline copy of pages" service worker
+/* eslint-disable no-undef */
 
 const CACHE = "pwabuilder-offline";
 

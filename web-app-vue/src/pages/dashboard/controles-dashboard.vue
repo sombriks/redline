@@ -166,7 +166,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { VueUiDonut, VueUiSparkbar, VueUiSparkStackbar, VueUiXy } from 'vue-data-ui'
 import ChipPeriodo from '@/shared/chip-periodo.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
-import ChipSaldo from '@/shared/chip-saldo.vue'
+import ChipSaldo from '@/shared/chip-saldo-movimentacao.vue'
 import {
   donutConfig,
   lineChartConfig,

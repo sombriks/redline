@@ -8,7 +8,8 @@
         @click="drawer = !drawer"
         icon="mdi-dots-vertical"
       ></v-btn>
-      <v-divider></v-divider>
+      <chip-saldo-planejamento :planejamentos="planejamentos"></chip-saldo-planejamento>
+      <v-divider thickness="5"></v-divider>
     </v-row>
     <v-row align="center">
       <p v-if="planejamentos.length === 0">Não há planejamentos para exibir</p>
@@ -22,8 +23,7 @@
     </v-row>
   </v-container>
   <v-navigation-drawer v-model="drawer" location="bottom" temporary>
-    <v-radio-group label="Tipo de movimentação"
-                   v-model="filtros.tipo_movimentacao_id" inline>
+    <v-radio-group label="Tipo de movimentação" v-model="filtros.tipo_movimentacao_id" inline>
       <v-radio :value="null" label="Todas"></v-radio>
       <v-radio :value="1" label="Entrada"></v-radio>
       <v-radio :value="2" label="Saída"></v-radio>
@@ -35,6 +35,7 @@ import DetalhePlanejamento from '@/pages/planejamento/detalhe-planejamento.vue'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { usePlanejamentoStore } from '@/stores/planejamentoStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
+import ChipSaldoPlanejamento from '@/shared/chip-saldo-planejamento.vue'
 
 const drawer = ref(false)
 
@@ -47,8 +48,10 @@ const categoriaStore = useCategoriaStore()
 
 const planejamentos = computed(() => {
   const planejamentos = planejamentoStore.store.planejamentos || []
-  return planejamentos.filter(p => filtros.tipo_movimentacao_id != null ?
-    filtros.tipo_movimentacao_id === p.tipo_movimentacao_id : true
+  return planejamentos.filter((p) =>
+    filtros.tipo_movimentacao_id != null
+      ? filtros.tipo_movimentacao_id === p.tipo_movimentacao_id
+      : true
   )
 })
 
@@ -73,5 +76,4 @@ const delPlanejamento = async (planejamento) => {
   }
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>

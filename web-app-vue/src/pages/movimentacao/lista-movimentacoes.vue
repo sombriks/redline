@@ -20,7 +20,7 @@
         icon="mdi-dots-vertical"
       ></v-btn>
       <v-spacer></v-spacer>
-      <chip-saldo label="Saldo Estimado:" :saldo="saldo" />
+      <chip-saldo label="Saldo Estimado:" :movimentacoes="movimentacoes" />
       <v-divider thickness="5"></v-divider>
     </v-row>
     <v-row class="barra-filtros-ativos" align="center">
@@ -188,7 +188,7 @@ import { prepareBalance, prepareDate } from '@/services/formaters'
 import { endOfMonth, format, startOfMonth } from 'date-fns'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
-import ChipSaldo from '@/shared/chip-saldo.vue'
+import ChipSaldo from '@/shared/chip-saldo-movimentacao.vue'
 import ChipConta from '@/shared/chip-conta.vue'
 import ChipPeriodo from '@/shared/chip-periodo.vue'
 import ChipMovimentacao from '@/shared/chip-movimentacao.vue'
@@ -238,8 +238,6 @@ const agrupamentoCategoria = computed(() => {
     })
     .filter((ac) => ac.saldo !== 0)
 })
-
-const saldo = computed(() => prepareBalance(movimentacoes.value))
 
 const statusFiltro = computed(() => ({
   inicio: filtro.dataInicio && format(prepareDate(filtro.dataInicio), 'yyyy-MM-dd'),
