@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 import { describe, beforeEach, it, expect } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { mount } from '@vue/test-utils'

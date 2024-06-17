@@ -33,7 +33,7 @@ const props = defineProps(['modelValue', 'rules'])
 const emit = defineEmits(['update:modelValue'])
 
 const contaId = ref(props.modelValue)
-const rules = ref(props.rules)
+// const rules = ref(props.rules)
 
 watch(contaId, () => emit('update:modelValue', contaId))
 

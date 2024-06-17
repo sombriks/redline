@@ -61,7 +61,7 @@ import ChipDate from '@/shared/chip-date.vue'
 import { addMonths, addYears } from 'date-fns'
 
 const props = defineProps(['label', 'reset'])
-const emit = defineEmits(['update:inicial', 'update:final'])
+// const emit = defineEmits(['update:inicial', 'update:final'])
 
 const inicial = defineModel('inicial')
 const final = defineModel('final')
