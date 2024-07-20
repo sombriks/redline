@@ -4,6 +4,7 @@ import { useUserStore } from '@/stores/userStore'
 const AuthPage = () => import('@/pages/usuario/auth-page.vue')
 const CategoriasPage = () => import('@/pages/categoria/categorias-page.vue')
 const ConfigPage = () => import('@/pages/configuracao/config-page.vue')
+const UserDetailsPage = () => import('@/pages/usuario/user-details.vue')
 const ContasPage = () => import('@/pages/conta/contas-page.vue')
 const DashboardPage = () => import('@/pages/dashboard/dashboard-page.vue')
 const EditarMovimentacaoPage = () => import('@/pages/movimentacao/editar-movimentacao-page.vue')
@@ -82,7 +83,8 @@ export const routes = [
       label: 'Configurações',
       icon: 'mdi-cog-outline'
     }
-  }
+  },
+  { component: UserDetailsPage, path: '/user-details/:editToken' },
 ]
 
 export const router = createRouter({
@@ -90,9 +92,11 @@ export const router = createRouter({
   history: createWebHashHistory()
 })
 
+const skips = ['/auth', '/user-details']
+
 router.beforeEach(async (to) => {
   const userStore = useUserStore()
-  if (!userStore.store.token && to.path !== '/auth') {
+  if (!userStore.store.token && !skips.includes(to.path)) {
     return { path: '/auth' }
   }
 })

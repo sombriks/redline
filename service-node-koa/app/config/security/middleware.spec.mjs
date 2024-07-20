@@ -25,7 +25,11 @@ describe("Middleware tests", () => {
 		const adm = await getAdmin();
 		const { token } = sign(adm);
 		const authorization = `Bearer ${token}`;
-		const ctx = { request: { header: { authorization } }, throw: sinon.fake() };
+		const ctx = {
+			params: { usuario_id: 1 },
+			request: { header: { authorization } },
+			throw: sinon.fake(),
+		};
 		const next = sinon.mock();
 		next.once();
 

@@ -63,13 +63,6 @@
           <div class="item row">
             <conta-autocomplete v-model="exporta.conta_id" :rules="[requiredRule]" />
           </div>
-          <!-- period -->
-          <!--          <div class="item row">-->
-          <!--            <chip-date label="Data inicial" v-model="exporta.data_inicio"></chip-date>-->
-          <!--          </div>-->
-          <!--          <div class="item row">-->
-          <!--            <chip-date label="Data final" v-model="exporta.data_fim"></chip-date>-->
-          <!--          </div>-->
           <div class="item row">
             <chip-periodo
               label="Período"
@@ -100,6 +93,7 @@
         <v-btn v-if="csvDownload" class="item" color="blue" variant="outlined" :href="csvDownload"
           >Baixar arquivo
         </v-btn>
+        <v-btn class="item" color="white" variant="outlined" @click="linkPerfil()">Editar perfil</v-btn>
         <v-btn class="item" color="orange" variant="outlined" @click="logout()">Desconectar</v-btn>
         <v-btn
           v-if="!wantDelete"
@@ -222,6 +216,12 @@ const exportData = async () => {
 const closeExport = () => {
   wantExport.value = false
   csvDownload.value = ''
+}
+
+const linkPerfil = async () => {
+  alert("um email com o link de solicitação de alteração de dados foi enviado!")
+  // XXX remover depois que tiver o serviço de email configurado
+  await router.push('/user-details/1234')
 }
 
 const logout = async () => {
