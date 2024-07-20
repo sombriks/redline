@@ -26,6 +26,7 @@ export const useDashboardStore = defineStore('dashboard-store', () => {
   const sincronizarDashboard = async (inicio, fim) => {
     const { id } = uState.userData
     const result = await getDashboard({ id, inicio, fim })
+    console.log(result)
     store.dashboard = result
   }
 

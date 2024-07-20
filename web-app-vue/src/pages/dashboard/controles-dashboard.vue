@@ -164,6 +164,8 @@
 import { endOfMonth, startOfMonth } from 'date-fns'
 import { computed, onMounted, ref, watch } from 'vue'
 import { VueUiDonut, VueUiSparkbar, VueUiSparkStackbar, VueUiXy } from 'vue-data-ui'
+import { useRouter } from 'vue-router'
+
 import ChipPeriodo from '@/shared/chip-periodo.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
 import ChipSaldo from '@/shared/chip-saldo-movimentacao.vue'
@@ -174,12 +176,14 @@ import {
   sparkStackBarConfig
 } from '@/services/chart-config'
 
+const router = useRouter()
+
+const dashboardState = useDashboardStore()
+
 const inicio = ref(startOfMonth(new Date()))
 const fim = ref(endOfMonth(new Date()))
 
 const folha = ref('')
-
-const dashboardState = useDashboardStore()
 
 const receitaDespesaBarConfig = computed(() => {
   const total =
@@ -349,6 +353,11 @@ watch([inicio, fim], async ([inicio, fim]) => {
 })
 
 onMounted(async () => {
-  await dashboardState.sincronizarDashboard(inicio.value, fim.value)
+  try {
+    await dashboardState.sincronizarDashboard(inicio.value, fim.value)
+  } catch(e) {
+    console.log(e)
+    await router.push('/auth')
+  }
 })
 </script>

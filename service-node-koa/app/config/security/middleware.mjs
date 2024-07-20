@@ -20,10 +20,9 @@ export const ifAuthenticated = async (ctx, next) => {
 		ctx.throw(401, { message: "Something strange with this token" });
 	else if (new Date().getTime() > new Date(details.exp * 1000))
 		ctx.throw(401, { message: "Token expired" });
-	else if(ctx.params.usuario_id != details.id)
-		ctx.throw(401, { message: "user mismatch"});
-	else
-		return await next();
+	else if (ctx.params.usuario_id != details.id)
+		ctx.throw(401, { message: "user mismatch" });
+	else return await next();
 };
 
 export const contaOwnedBy = async (ctx, next) => {
