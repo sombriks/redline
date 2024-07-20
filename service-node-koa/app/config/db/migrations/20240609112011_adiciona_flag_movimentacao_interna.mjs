@@ -5,6 +5,7 @@
 export const up = async (knex) =>
 	knex.schema.table("movimentacao", (tb) => {
 		tb.dropNullable("categoria_id");
+		tb.dropForeign("categoria_id");
 		tb.foreign("categoria_id").references("categoria.id").onDelete("cascade");
 		tb.boolean("interna")
 			.defaultTo(false)
@@ -18,5 +19,7 @@ export const up = async (knex) =>
 export const down = async (knex) =>
 	knex.schema.table("movimentacao", (tb) => {
 		tb.setNullable("categoria_id");
+		tb.dropForeign("categoria_id");
+		tb.foreign("categoria_id").references("categoria.id").onDelete("set null");
 		tb.dropColumn("interna");
 	});

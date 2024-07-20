@@ -26,7 +26,11 @@
             prepend-inner-icon="mdi-cash-100"
           />
           <!--  movEdit.categoria_id-->
-          <categoria-autocomplete class="item" v-model="movForm.categoria_id" />
+          <categoria-autocomplete
+            class="item"
+            v-model="movForm.categoria_id"
+            :rules="[requiredRule]"
+          />
           <!--  movEdit.conta_id-->
           <conta-autocomplete class="item" v-model="movForm.conta_id" :rules="[requiredRule]" />
           <!--  movEdit.descricao-->
@@ -97,6 +101,7 @@ import { numberRule, requiredRule } from '@/services/basic-rules'
 import ChipDate from '@/shared/chip-date.vue'
 import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
+
 const props = defineProps(['movimentacao'])
 
 const contaState = useContaStore()
