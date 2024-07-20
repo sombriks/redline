@@ -18,9 +18,12 @@ export const ifAuthenticated = async (ctx, next) => {
 	const details = extractDetails(ctx); // id, nome, emil, admin, criacao, alteracao, iat, exp
 	if (!details.iat || !details.exp)
 		ctx.throw(401, { message: "Something strange with this token" });
-	if (new Date().getTime() > new Date(details.exp * 1000))
+	else if (new Date().getTime() > new Date(details.exp * 1000))
 		ctx.throw(401, { message: "Token expired" });
-	return await next();
+	else if(ctx.params.usuario_id != details.id)
+		ctx.throw(401, { message: "user mismatch"});
+	else
+		return await next();
 };
 
 export const contaOwnedBy = async (ctx, next) => {

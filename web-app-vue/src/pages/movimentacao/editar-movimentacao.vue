@@ -147,10 +147,15 @@ const sync = async () => {
 
 const salvarMovimentacao = async () => {
   if (!valid.value) return
-  await movimentacaoState.salvarMovimentacao(movForm)
-  Object.assign(movForm, resetMovimentacao())
-  Object.assign(contaSelecionada, resetConta())
-  router.push('/historico')
+  try {
+    await movimentacaoState.salvarMovimentacao(movForm)
+    Object.assign(movForm, resetMovimentacao())
+    Object.assign(contaSelecionada, resetConta())
+    await router.push('/historico')
+  } catch (e) {
+    console.log(e)
+    alert("não foi possível salvar")
+  }
 }
 
 const excluirMovimentacao = async () => {

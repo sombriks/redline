@@ -9,6 +9,7 @@ import {
 import { sign } from "../config/security/index.mjs";
 
 export const userLoginRequest = async (ctx) => {
+	// TODO captcha protection
 	const { email, senha } = ctx.request.body;
 	const user = await login({ email, senha });
 	if (!user) return; // 404
