@@ -50,12 +50,12 @@
           </v-radio-group>
         </v-row>
         <v-text-field
-          :rules="[requiredRule]"
+          :rules="[requiredRule('Descrição obrigatória')]"
           v-model="rec.descricao"
           label="Descrição"
         ></v-text-field>
         <categoria-autocomplete v-model="rec.categoria_id" />
-        <conta-autocomplete :rules="[requiredRule]" v-model="rec.conta_id" />
+        <conta-autocomplete :rules="[requiredRule('Conta obrigatória')]" v-model="rec.conta_id" />
         <v-select
           v-model="rec.tipo_recorrencia_id"
           :items="recorrenciaStore.store.tiposRecorrencia"
@@ -71,7 +71,7 @@
         ></chip-periodo>
         <v-text-field
           class="item"
-          :rules="[requiredRule, minValueRule(1)]"
+          :rules="[requiredRule('Valor obrigatório'), minValueRule(1)]"
           type="number"
           v-model="rec.valorParcela"
           label="Valor parcela"

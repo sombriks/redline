@@ -2,28 +2,28 @@
   <v-card :title="createMode ? 'Criar conta' : 'Login'" elevation="24">
     <v-form v-model="valid" @submit.prevent.stop="doLogin" class="auth-form">
       <v-text-field
-        :rules="[requiredRule]"
+        :rules="[requiredRule('Nome obrigatório')]"
         v-if="createMode"
         v-model="nome"
         label="Nome"
         required
       ></v-text-field>
       <v-text-field
-        :rules="[requiredRule]"
+        :rules="[requiredRule('Email obrigatório')]"
         v-model="email"
         label="Email"
         required
         type="email"
       ></v-text-field>
       <v-text-field
-        :rules="[requiredRule]"
+        :rules="[requiredRule('Senha obrigatória'), minSizeRule(6)]"
         v-model="senha"
         label="Senha"
         required
         type="password"
       ></v-text-field>
       <v-text-field
-        :rules="[requiredRule]"
+        :rules="[requiredRule()]"
         v-if="createMode"
         v-model="invite"
         label="Convite"
@@ -52,7 +52,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/userStore'
-import { requiredRule } from '@/services/basic-rules'
+import { minSizeRule, requiredRule } from '@/services/basic-rules'
 
 const nome = ref('')
 const email = ref('')

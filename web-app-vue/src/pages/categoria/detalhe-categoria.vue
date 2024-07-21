@@ -3,7 +3,7 @@
   <v-card v-if="edit" elevation="24" min-width="300px" class="ma-2">
     <v-form v-model="valid" @submit.prevent.stop="doEdit">
       <v-color-picker v-model="catEdit.cor"></v-color-picker>
-      <v-text-field :rules="[requiredRule]" v-model="catEdit.descricao" label="Nome"></v-text-field>
+      <v-text-field :rules="[requiredRule('Descrição obrigatória')]" v-model="catEdit.descricao" label="Nome"></v-text-field>
       <v-container>
         <v-row align="center">
           <v-btn

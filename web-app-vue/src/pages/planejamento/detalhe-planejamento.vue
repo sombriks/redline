@@ -34,7 +34,7 @@
         </v-row>
         <v-row align="center">
           <v-text-field
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Descrição obrigatória')]"
             v-model="plan.descricao"
             label="Descrição"
           ></v-text-field>
@@ -42,7 +42,7 @@
         <v-row align="center">
           <v-text-field
             class="item"
-            :rules="[requiredRule, numberRule]"
+            :rules="[requiredRule('Valor obrigatório'), numberRule]"
             type="number"
             v-model="plan.limite"
             label="Valor"

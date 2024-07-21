@@ -7,19 +7,19 @@
             class="item"
             label="Categoria da transferência"
             v-model="formPagamento.categoria"
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Categoria obrigatória')]"
           />
           <conta-autocomplete
             class="item"
             label="Conta de origem"
             v-model="formPagamento.contaOrigem"
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Conta origem obrigatória')]"
           />
           <conta-autocomplete
             class="item"
             label="Conta de destino"
             v-model="formPagamento.contaDestino"
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Conta destino obrigatória')]"
           />
           <chip-date class="item" label="Data pagamento" v-model="formPagamento.vencimento" />
           <chip-periodo

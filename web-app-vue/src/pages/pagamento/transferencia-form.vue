@@ -7,23 +7,23 @@
             class="item"
             label="Categoria da transferência"
             v-model="formTransferencia.categoria"
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Categoria obrigatória')]"
           />
           <conta-autocomplete
             class="item"
             label="Conta de origem"
             v-model="formTransferencia.contaOrigem"
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Conta origem obrigatória')]"
           />
           <conta-autocomplete
             class="item"
             label="Conta de destino"
             v-model="formTransferencia.contaDestino"
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Conta destino obrigatória')]"
           />
           <v-text-field
             class="item"
-            :rules="[requiredRule, numberRule]"
+            :rules="[requiredRule('Valor obrigatório'), numberRule]"
             type="number"
             v-model="formTransferencia.valor"
             label="Valor"

@@ -19,7 +19,7 @@
           <p class="item">Veja o <a href="dados.csv">arquivo de exemplo</a></p>
           <v-file-input
             v-model="csvFile"
-            :rules="[requiredRule, lengthRule(1)]"
+            :rules="[requiredRule('Arquivo obrigatório'), lengthRule(1)]"
             accept="text/plain, text/csv"
             class="item"
             label="Selecionar CSV"
@@ -61,7 +61,7 @@
         >
           <!-- account -->
           <div class="item row">
-            <conta-autocomplete v-model="exporta.conta_id" :rules="[requiredRule]" />
+            <conta-autocomplete v-model="exporta.conta_id" :rules="[requiredRule('Conta obrigatória')]" />
           </div>
           <div class="item row">
             <chip-periodo
@@ -111,7 +111,7 @@
         >
           <v-text-field
             v-model="pwd"
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Senha obrigatória')]"
             label="Confirme sua senha"
             type="password"
           />

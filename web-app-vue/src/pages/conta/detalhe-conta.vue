@@ -20,7 +20,7 @@
       >
       </v-select>
       <v-text-field
-        :rules="[requiredRule]"
+        :rules="[requiredRule('Descrição obrigatória')]"
         v-model="contaEdit.descricao"
         label="Descrição"
       ></v-text-field>

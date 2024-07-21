@@ -2,27 +2,27 @@
   <v-card title="Editar dados pessoais" elevation="24">
     <v-form v-model="valid" @submit.prevent.stop="save" class="auth-form">
       <v-text-field
-        :rules="[requiredRule]"
+        :rules="[requiredRule('Nome obrigatório')]"
         v-model="userUpdate.nome"
         label="Nome"
         required
       ></v-text-field>
       <v-text-field
-        :rules="[requiredRule]"
+        :rules="[requiredRule('Email obrigatório')]"
         v-model="userUpdate.email"
         label="Email"
         required
         type="email"
       ></v-text-field>
       <v-text-field
-        :rules="[requiredRule, minSizeRule(6)]"
+        :rules="[requiredRule('Senha obrigatória'), minSizeRule(6)]"
         v-model="userUpdate.senha"
         label="Senha"
         required
         type="password"
       ></v-text-field>
       <v-text-field
-        :rules="[requiredRule, minSizeRule(6)]"
+        :rules="[requiredRule('Confirmação de senha obrigatória'), minSizeRule(6)]"
         v-model="userUpdate.repetirSenha"
         label=" Confirma Senha"
         required

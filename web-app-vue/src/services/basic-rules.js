@@ -1,5 +1,5 @@
-export const requiredRule = (value) => {
-  return !!value || 'Required field'
+export const requiredRule = (message = 'Required field') => (value) => {
+  return !!value || message
 }
 
 export const lengthRule = (n, msg = `Minimum ${n} required`) => (value) => {
