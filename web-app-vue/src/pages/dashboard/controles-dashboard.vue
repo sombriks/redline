@@ -6,7 +6,7 @@
       <chip-periodo v-model:inicial="inicio" v-model:final="fim"></chip-periodo>
     </v-row>
     <v-row>
-      <v-expansiuon-panels v-model="folha" variant="accordion">
+      <v-expansion-panels v-model="folha" variant="accordion">
         <v-expansion-panel value="composicao">
           <v-expansion-panel-title>Composição</v-expansion-panel-title>
           <v-expansion-panel-text>
@@ -55,7 +55,7 @@
             <saldos/>
           </v-expansion-panel-text>
         </v-expansion-panel>
-      </v-expansiuon-panels>
+      </v-expansion-panels>
     </v-row>
   </v-container>
 </template>

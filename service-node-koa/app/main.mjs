@@ -34,6 +34,7 @@ import {
 	updateMovimentacaoRequest,
 	updatePlanejamentoRequest,
 	updateRecorrenciaRequest,
+	updateUserRequest,
 	uploadMovimentacoesRequest,
 	userLoginRequest,
 	userSignupRequest,
@@ -77,7 +78,7 @@ new ApiBuilder({ router })
 
 		b.path("/:usuario_id", ifAuthenticated, (b) => {
 			b.del("/removeAccount", delUsuarioRequest);
-
+			b.put("/updateUser", updateUserRequest);
 			b.path("/categoria", (b) => {
 				b.get(listCategoriasRequest);
 				b.post(insertCategoriaRequest);
