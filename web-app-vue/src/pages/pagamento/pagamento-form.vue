@@ -77,7 +77,7 @@ import { endOfMonth, startOfMonth } from 'date-fns'
 import ChipDate from '@/shared/chip-date.vue'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
 import ChipDescricao from '@/shared/chip-descricao.vue'
-import { prepareDate, prepareMoney } from '@/services/formaters'
+import { prepareDate, prepareMoney } from '@/services/formatters'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 
 const router = useRouter()

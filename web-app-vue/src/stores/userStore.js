@@ -2,7 +2,7 @@ import { computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
 import { jwtDecode } from 'jwt-decode'
 import { clearRedLine, getRedLine, setRedLine } from '@/services/redLine'
-import { createUser, login, removeAccount } from '@/services/api'
+import { createUser, login, removeAccount, updateUser } from '@/services/api'
 
 export const useUserStore = defineStore('user-store', () => {
   const store = reactive({
@@ -33,5 +33,9 @@ export const useUserStore = defineStore('user-store', () => {
     await logout()
   }
 
-  return { store, userData, setToken, doLogin, doCreateUser, logout, deleteAccount }
+  const update = async (update) => {
+    await updateUser(update)
+  }
+
+  return { store, userData, setToken, doLogin, doCreateUser, logout, deleteAccount, update }
 })

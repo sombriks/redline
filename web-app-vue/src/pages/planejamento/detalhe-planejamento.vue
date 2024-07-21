@@ -94,7 +94,7 @@ import { numberRule, requiredRule } from '@/services/basic-rules'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { endOfYear, startOfYear } from 'date-fns/fp'
-import { prepareMoney } from '@/services/formaters'
+import { prepareMoney } from '@/services/formatters'
 import ChipPeriodo from '@/shared/chip-periodo.vue'
 
 const categoriaStore = useCategoriaStore()

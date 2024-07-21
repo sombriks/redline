@@ -121,7 +121,7 @@ import {
   startOfMonth
 } from 'date-fns'
 import { minValueRule, requiredRule } from '@/services/basic-rules'
-import { prepareDate, prepareMoney } from '@/services/formaters'
+import { prepareDate, prepareMoney } from '@/services/formatters'
 import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
 import { useRecorrenciaStore } from '@/stores/recorrenciaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'

@@ -57,6 +57,9 @@ export const createUser = async (newUser) => await post({ uri: '/signup', payloa
 export const removeAccount = async ({ id, email, senha }) =>
   await del({ uri: `/${id}/removeAccount?email=${email}&senha=${senha}` })
 
+export const updateUser = async ({id = -1, updateToken,  }) =>
+  await put()
+
 export const listTiposConta = async () => await get({ uri: '/tipo-conta' })
 
 export const listTiposRecorrencia = async () => await get({ uri: '/tipo-recorrencia' })

@@ -56,7 +56,7 @@
 </style>
 <script setup>
 import { computed, defineModel, ref } from 'vue'
-import { prepareDate } from '@/services/formaters'
+import { prepareDate } from '@/services/formatters'
 import ChipDate from '@/shared/chip-date.vue'
 import { addMonths, addYears } from 'date-fns'
 

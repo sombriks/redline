@@ -22,3 +22,7 @@ export const numberRule = (value) => {
 export const minValueRule = min => value => {
   return parseInt(value) >= parseInt(min) || `Value smaller than ${min}`
 }
+
+export const minSizeRule = min => value => {
+  return parseInt(value.length) >= parseInt(min) || `Must have size of at least ${min}`
+}

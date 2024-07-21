@@ -64,7 +64,7 @@
 </template>
 <script setup>
 import { computed, defineModel } from 'vue'
-import { prepareDate, prepareMoney } from '@/services/formaters'
+import { prepareDate, prepareMoney } from '@/services/formatters'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import ChipCategoria from '@/shared/chip-categoria.vue'

@@ -18,8 +18,20 @@ export const useDashboardStore = defineStore('dashboard-store', () => {
       limites: [],
       receitaDespesaTotalPeriodo: [],
       receitaDespesaEfetivadaPeriodo: [],
-      saldos: {},
-      vencimentos: {}
+      saldos: {
+        anterior1Ano: 0,
+        anterior1Mes: 0,
+        anterior6Meses: 0,
+        periodo: 0,
+        projetado1Ano: 0,
+        projetado1Mes: 0,
+        projetado6Meses: 0
+      },
+      vencimentos: {
+        a_vencer: 0,
+        em_atraso: 0,
+        quitadas: 0
+      }
     }
   })
 
