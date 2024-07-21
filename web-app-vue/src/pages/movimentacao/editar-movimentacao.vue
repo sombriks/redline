@@ -19,7 +19,7 @@
           <!-- valor -->
           <v-text-field
             class="item"
-            :rules="[requiredRule('Valor obrigatório'), numberRule]"
+            :rules="[requiredRule('Valor obrigatório'), numberRule('Informe um valor numérico')]"
             type="number"
             v-model="movForm.valor"
             label="Valor"

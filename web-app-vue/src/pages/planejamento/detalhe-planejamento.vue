@@ -42,7 +42,7 @@
         <v-row align="center">
           <v-text-field
             class="item"
-            :rules="[requiredRule('Valor obrigatório'), numberRule]"
+            :rules="[requiredRule('Valor obrigatório'), numberRule('Informe um valor numérico')]"
             type="number"
             v-model="plan.limite"
             label="Valor"

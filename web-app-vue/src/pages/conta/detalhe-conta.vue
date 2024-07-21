@@ -26,21 +26,21 @@
       ></v-text-field>
       <v-text-field
         v-if="contaEdit.tipo_conta_id == 3"
-        :rules="[dayOfMonthRule]"
+        :rules="[dayOfMonthRule('Dia inválido')]"
         v-model="contaEdit.dia_fechamento"
         label="Fechamento"
         prepend-inner-icon="mdi-calendar-check"
       ></v-text-field>
       <v-text-field
         v-if="contaEdit.tipo_conta_id == 3"
-        :rules="[dayOfMonthRule]"
+        :rules="[dayOfMonthRule('Dia inválido')]"
         v-model="contaEdit.dia_vencimento"
         label="Vencimento"
         prepend-inner-icon="mdi-calendar-alert"
       ></v-text-field>
       <v-text-field
         v-if="contaEdit.tipo_conta_id == 3 || contaEdit.tipo_conta_id == 2"
-        :rules="[numberRule]"
+        :rules="[numberRule('Inorme um valor numérico')]"
         type="number"
         v-model="contaEdit.limite"
         :label="contaEdit.tipo_conta_id == 2 ? 'Cheque especial' : 'Limite'"

@@ -15,7 +15,7 @@
         type="email"
       ></v-text-field>
       <v-text-field
-        :rules="[requiredRule('Senha obrigatória'), minSizeRule(6)]"
+        :rules="[requiredRule('Senha obrigatória'), minSizeRule(6, 'Senha deve ter no mínimo 6 caracteres')]"
         v-model="userUpdate.senha"
         label="Senha"
         required
