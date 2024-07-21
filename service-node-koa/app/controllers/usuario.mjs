@@ -4,6 +4,7 @@ import {
 	novoUsuario,
 	resetCategorias,
 	resetConta,
+	updateUser,
 	validaInvite,
 } from "../services/index.mjs";
 import { sign } from "../config/security/index.mjs";
@@ -48,5 +49,9 @@ export const updateUserRequest = async (ctx) => {
 	if (!senha) ctx.throw(400, "Senha requerida");
 	if (!editToken) ctx.throw(400, "editToken requerido");
 	if (id != usuario.id) ctx.throw(400, "Usuário incorreto!");
-
+	// TODO verificar/consumir o editToken
+	const affected = await updateUser({ id, nome, email, senha });
+	// ctx.response.status = 303
+	// ctx.set("Location", `/dashboard`) // XXX too fancy!
+	ctx.body = { status: "success", affected };
 };

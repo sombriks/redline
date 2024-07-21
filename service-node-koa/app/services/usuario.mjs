@@ -15,3 +15,7 @@ export const login = async ({ email, senha }) => {
 	if (!user || decrypt(user.senha) !== senha) return null;
 	return user;
 };
+
+export const updateUser = async ({ id, nome, email, senha }) => {
+	return knex("usuario").where({ id }).update({ nome, email, senha: encrypt(senha) });
+};
