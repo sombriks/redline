@@ -17,8 +17,9 @@ export const login = async ({ email, senha }) => {
 };
 
 export const updateUser = async ({ id, nome, email, senha }) => {
-	return knex("usuario").where({ id }).update({ nome, email, senha: encrypt(senha) });
+	return knex("usuario")
+		.where({ id })
+		.update({ nome, email, senha: encrypt(senha) });
 };
 
-export const getById = async ({id}) =>
-	knex("usuario").where({ id }).first();
+export const getById = async ({ id }) => knex("usuario").where({ id }).first();

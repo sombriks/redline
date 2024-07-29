@@ -1,12 +1,13 @@
 import {
-	delUsuario, getById,
+	delUsuario,
+	getById,
 	login,
 	novoUsuario,
 	resetCategorias,
 	resetConta,
 	updateUser,
-	validaInvite
-} from '../services/index.mjs'
+	validaInvite,
+} from "../services/index.mjs";
 import { sign } from "../config/security/index.mjs";
 
 export const userLoginRequest = async (ctx) => {
