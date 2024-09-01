@@ -23,7 +23,6 @@
         type="password"
       ></v-text-field>
       <v-text-field
-        :rules="[requiredRule()]"
         v-if="createMode"
         v-model="invite"
         label="Convite"
@@ -68,17 +67,21 @@ const doLogin = async () => {
   if (!valid.value) return
   try {
     if (createMode.value) {
-      await uState.doCreateUser({
+      const result = await uState.doCreateUser({
         nome: nome.value,
         email: email.value,
         senha: senha.value,
         invite: invite.value
       })
+      if(result.created) {
+        const result = await uState.doLogin({ email: email.value, senha: senha.value })
+        // TODO guardar informação do usuário logado
+        uState.setToken(result.token)
+        emit('onLogin')
+      } else {
+        alert(result.message)
+      }
     }
-    const result = await uState.doLogin({ email: email.value, senha: senha.value })
-    // TODO guardar informação do usuário logado
-    uState.setToken(result.token)
-    emit('onLogin')
   } catch (e) {
     console.log(e)
     alert('Algo deu errado')

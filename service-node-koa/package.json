@@ -7,7 +7,6 @@
   "private": "true",
   "scripts": {
     "start": "node -r dotenv-flow/config index.mjs",
-    "predev:service": "biome format --write app",
     "dev:service": "cross-env NODE_ENV=development nodemon -r dotenv-flow/config",
     "staging:service": "cross-env NODE_ENV=staging nodemon -r dotenv-flow/config",
     "test:service": "cross-env NODE_ENV=test mocha -r dotenv-flow/config -r app/config/_test_hooks.mjs --recursive app",
@@ -44,7 +43,6 @@
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.1",
     "c8": "^7.13.0",
     "chai": "^4.3.7",
     "chai-http": "^4.3.0",
