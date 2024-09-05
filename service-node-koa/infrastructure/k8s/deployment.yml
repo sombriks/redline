@@ -27,3 +27,18 @@ spec:
                 configMapKeyRef:
                   name: config-map-redline-api
                   key: PG_CONNECTION_URL
+            - name: EMAIL_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map-redline-api
+                  key: EMAIL_API_URL
+            - name: EMAIL_API_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map-redline-api
+                  key: EMAIL_API_USERNAME
+            - name: EMAIL_API_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: config-map-redline-api
+                  key: EMAIL_API_PASSWORD
