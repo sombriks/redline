@@ -1,6 +1,6 @@
 .DS_Store
 *.private.env.json
 *.save
-.idea
+.idea/*
 node_modules
 !.idea/runConfigurations/
