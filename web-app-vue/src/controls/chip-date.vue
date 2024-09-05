@@ -47,7 +47,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import { prepareDate } from '@/services/formaters'
+import { prepareDate } from '@/services/formatters'
 
 const props = defineProps(['modelValue', 'label'])
 const emit = defineEmits(['update:modelValue', 'close'])

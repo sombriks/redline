@@ -50,12 +50,12 @@
           </v-radio-group>
         </v-row>
         <v-text-field
-          :rules="[requiredRule]"
+          :rules="[requiredRule('Descrição obrigatória')]"
           v-model="rec.descricao"
           label="Descrição"
         ></v-text-field>
         <categoria-autocomplete v-model="rec.categoria_id" />
-        <conta-autocomplete :rules="[requiredRule]" v-model="rec.conta_id" />
+        <conta-autocomplete :rules="[requiredRule('Conta obrigatória')]" v-model="rec.conta_id" />
         <v-select
           v-model="rec.tipo_recorrencia_id"
           :items="recorrenciaStore.store.tiposRecorrencia"
@@ -71,7 +71,7 @@
         ></chip-periodo>
         <v-text-field
           class="item"
-          :rules="[requiredRule, minValueRule(1)]"
+          :rules="[requiredRule('Valor obrigatório'), minValueRule(1)]"
           type="number"
           v-model="rec.valorParcela"
           label="Valor parcela"
@@ -121,12 +121,12 @@ import {
   startOfMonth
 } from 'date-fns'
 import { minValueRule, requiredRule } from '@/services/basic-rules'
-import { prepareDate, prepareMoney } from '@/services/formaters'
-import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
+import { prepareDate, prepareMoney } from '@/services/formatters'
+import CategoriaAutocomplete from '@/controls/categoria-autocomplete.vue'
 import { useRecorrenciaStore } from '@/stores/recorrenciaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
-import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
-import ChipPeriodo from '@/shared/chip-periodo.vue'
+import ContaAutocomplete from '@/controls/conta-autocomplete.vue'
+import ChipPeriodo from '@/controls/chip-periodo.vue'
 
 const recorrenciaStore = useRecorrenciaStore()
 const categoriaStore = useCategoriaStore()

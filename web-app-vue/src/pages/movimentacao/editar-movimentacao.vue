@@ -19,7 +19,7 @@
           <!-- valor -->
           <v-text-field
             class="item"
-            :rules="[requiredRule, numberRule]"
+            :rules="[requiredRule('Valor obrigatório'), numberRule('Informe um valor numérico')]"
             type="number"
             v-model="movForm.valor"
             label="Valor"
@@ -29,14 +29,14 @@
           <categoria-autocomplete
             class="item"
             v-model="movForm.categoria_id"
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Categoria obrigatória')]"
           />
           <!--  movEdit.conta_id-->
-          <conta-autocomplete class="item" v-model="movForm.conta_id" :rules="[requiredRule]" />
+          <conta-autocomplete class="item" v-model="movForm.conta_id" :rules="[requiredRule('Conta obrigatória')]" />
           <!--  movEdit.descricao-->
           <v-text-field
             class="item"
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Descrição obrigatória')]"
             v-model="movForm.descricao"
             label="Descrição"
           />
@@ -98,9 +98,9 @@ import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { numberRule, requiredRule } from '@/services/basic-rules'
-import ChipDate from '@/shared/chip-date.vue'
-import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
-import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
+import ChipDate from '@/controls/chip-date.vue'
+import ContaAutocomplete from '@/controls/conta-autocomplete.vue'
+import CategoriaAutocomplete from '@/controls/categoria-autocomplete.vue'
 
 const props = defineProps(['movimentacao'])
 

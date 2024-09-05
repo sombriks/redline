@@ -36,7 +36,7 @@ export const readTextFile = (file) => {
 }
 
 export const prepareBalance = (movimentacoes, field = 'valor') => {
-  if (!movimentacoes.length) return 0
+  if (!movimentacoes?.length) return 0
   return movimentacoes
     .filter((m) => !m.interna)
     .reduce(
@@ -51,7 +51,7 @@ export const prepareBalance = (movimentacoes, field = 'valor') => {
 }
 
 export const prepareIncome = (movimentacoes, field = 'valor') => {
-  if (!movimentacoes.length) return 0
+  if (!movimentacoes?.length) return 0
   return movimentacoes
     .filter((m) => !m.interna && m.tipo_movimentacao_id === 1)
     .reduce(
@@ -63,7 +63,7 @@ export const prepareIncome = (movimentacoes, field = 'valor') => {
 }
 
 export const prepareExpense = (movimentacoes, field = 'valor') => {
-  if (!movimentacoes.length) return 0
+  if (!movimentacoes?.length) return 0
   return movimentacoes
     .filter((m) => !m.interna && m.tipo_movimentacao_id === 2)
     .reduce(

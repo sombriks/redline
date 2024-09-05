@@ -255,12 +255,12 @@ async function saldos({ usuario_id, inicio, fim }) {
 async function saldo({ usuario_id, inicio, fim }) {
 	return knex.raw(
 		`
-      with entradas as (select sum(valor) as value
+      with entradas as (select coalesce(sum(valor),0) as value
                         from movimentacao
                         where tipo_movimentacao_id = 1
                           and conta_id in (select id from conta where usuario_id = :usuario_id)
                           and vencimento between :inicio and :fim),
-           saidas as (select sum(valor) as value
+           saidas as (select coalesce(sum(valor),0) as value
                       from movimentacao
                       where tipo_movimentacao_id = 2
                         and conta_id in (select id from conta where usuario_id = :usuario_id)

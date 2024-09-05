@@ -1,29 +1,73 @@
+<script setup>
+import { reactive, ref } from 'vue'
+import { useUserStore } from '@/stores/userStore'
+import { minSizeRule, requiredRule } from '@/services/basic-rules'
+import { useRoute, useRouter } from 'vue-router'
+
+const valid = ref(false)
+const uState = useUserStore()
+const router = useRouter()
+const route = useRoute()
+
+const userUpdate = reactive({
+  id: uState.userData.id,
+  nome: uState.userData.nome,
+  email: uState.userData.email,
+  editToken: route.params.editToken,
+  repetirSenha: '',
+  senha: ''
+})
+
+const save = async () => {
+  if (!valid.value) return
+  if (confirm('Deseja realmente alterar seus dados pessoais?')) {
+    alert('Verifique o email de confirmação de alteração de dados')
+    try {
+      // TODO alterar os dados e descartar o link de alteração
+      await uState.update(userUpdate)
+      await uState.logout()
+      await router.push('/auth')
+    } catch (e) {
+      console.log(e)
+      alert('Problema ao atualizar')
+    }
+  }
+}
+
+const cancelar = async () => {
+  if (confirm('Deseja realmente cancelar? será preciso gerar um novo link de alteração de dados!')) {
+    // TODO descartar o link de alteração
+    await uState.logout()
+    await router.push('/auth')
+  }
+}
+</script>
 <template>
   <v-card title="Editar dados pessoais" elevation="24">
     <v-form v-model="valid" @submit.prevent.stop="save" class="auth-form">
       <v-text-field
-        :rules="[requiredRule]"
-        v-model="user.nome"
+        :rules="[requiredRule('Nome obrigatório')]"
+        v-model="userUpdate.nome"
         label="Nome"
         required
       ></v-text-field>
       <v-text-field
-        :rules="[requiredRule]"
-        v-model="user.email"
+        :rules="[requiredRule('Email obrigatório')]"
+        v-model="userUpdate.email"
         label="Email"
         required
         type="email"
       ></v-text-field>
       <v-text-field
-        :rules="[requiredRule]"
-        v-model="user.senha"
+        :rules="[requiredRule('Senha obrigatória'), minSizeRule(6, 'Senha deve ter no mínimo 6 caracteres')]"
+        v-model="userUpdate.senha"
         label="Senha"
         required
         type="password"
       ></v-text-field>
       <v-text-field
-        :rules="[requiredRule]"
-        v-model="user.repetirSenha"
+        :rules="[requiredRule('Confirmação de senha obrigatória'), minSizeRule(6)]"
+        v-model="userUpdate.repetirSenha"
         label=" Confirma Senha"
         required
         type="password"
@@ -50,42 +94,6 @@
     </v-form>
   </v-card>
 </template>
-<script setup>
-
-import { reactive, ref } from 'vue'
-import { useUserStore } from '@/stores/userStore'
-import { requiredRule } from '@/services/basic-rules'
-import { useRouter } from 'vue-router'
-
-const valid = ref(false)
-const uState = useUserStore()
-const router = useRouter()
-
-const user = reactive({
-  nome: uState.userData.nome,
-  email: uState.userData.email,
-  senha: '',
-  repetirSenha: ''
-})
-
-const save = async () => {
-  if (!valid.value) return
-  if(confirm("Deseja realmente alterar seus dados pessoais?")) {
-    alert('Verifique o email de confirmação de alteração de dados')
-    // TODO alterar os dados e descartar o link de alteração
-    await uState.logout()
-    await router.push('/auth')
-  }
-}
-
-const cancelar = async () => {
-  if(confirm('Deseja realmente cancelar? será preciso gerar um novo link de alteração de dados!')) {
-    // TODO descartar o link de alteração
-    await uState.logout()
-    await router.push('/auth')
-  }
-}
-</script>
 <style scoped>
 .auth-form {
   display: flex;
@@ -93,6 +101,7 @@ const cancelar = async () => {
   min-width: 300px;
   padding: 1em;
 }
+
 .row {
   display: flex;
   flex-direction: row;

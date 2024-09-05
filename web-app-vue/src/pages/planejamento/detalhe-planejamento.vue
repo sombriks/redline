@@ -34,7 +34,7 @@
         </v-row>
         <v-row align="center">
           <v-text-field
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Descrição obrigatória')]"
             v-model="plan.descricao"
             label="Descrição"
           ></v-text-field>
@@ -42,7 +42,7 @@
         <v-row align="center">
           <v-text-field
             class="item"
-            :rules="[requiredRule, numberRule]"
+            :rules="[requiredRule('Valor obrigatório'), numberRule('Informe um valor numérico')]"
             type="number"
             v-model="plan.limite"
             label="Valor"
@@ -91,11 +91,11 @@
 <script setup>
 import { computed, onMounted, ref, toRaw, watch } from 'vue'
 import { numberRule, requiredRule } from '@/services/basic-rules'
-import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
+import CategoriaAutocomplete from '@/controls/categoria-autocomplete.vue'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { endOfYear, startOfYear } from 'date-fns/fp'
-import { prepareMoney } from '@/services/formaters'
-import ChipPeriodo from '@/shared/chip-periodo.vue'
+import { prepareMoney } from '@/services/formatters'
+import ChipPeriodo from '@/controls/chip-periodo.vue'
 
 const categoriaStore = useCategoriaStore()
 

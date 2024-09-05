@@ -57,6 +57,9 @@ export const createUser = async (newUser) => await post({ uri: '/signup', payloa
 export const removeAccount = async ({ id, email, senha }) =>
   await del({ uri: `/${id}/removeAccount?email=${email}&senha=${senha}` })
 
+export const updateUser = async ({id = -1, nome, email, senha, editToken,  }) =>
+  await put({uri:`/${id}/updateUser`, payload: {nome, email, senha, editToken}})
+
 export const listTiposConta = async () => await get({ uri: '/tipo-conta' })
 
 export const listTiposRecorrencia = async () => await get({ uri: '/tipo-recorrencia' })
@@ -227,3 +230,6 @@ export const geraLancamentosRecorrencia = async ({ id, recorrencia_id }) =>
 
 export const getDashboard = async ({ id, inicio, fim }) =>
   await get({ uri: uriParams({ uri: `/${id}/dashboard`, params: { inicio, fim } }) })
+
+export const confirmaCadastro = async ({email, challenge}) =>
+  await put({uri:'/confirma-cadastro', payload: {email, challenge}})

@@ -7,19 +7,19 @@
             class="item"
             label="Categoria da transferência"
             v-model="formPagamento.categoria"
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Categoria obrigatória')]"
           />
           <conta-autocomplete
             class="item"
             label="Conta de origem"
             v-model="formPagamento.contaOrigem"
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Conta origem obrigatória')]"
           />
           <conta-autocomplete
             class="item"
             label="Conta de destino"
             v-model="formPagamento.contaDestino"
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Conta destino obrigatória')]"
           />
           <chip-date class="item" label="Data pagamento" v-model="formPagamento.vencimento" />
           <chip-periodo
@@ -71,14 +71,14 @@
 import { computed, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { requiredRule } from '@/services/basic-rules'
-import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
-import ChipPeriodo from '@/shared/chip-periodo.vue'
+import ContaAutocomplete from '@/controls/conta-autocomplete.vue'
+import ChipPeriodo from '@/controls/chip-periodo.vue'
 import { endOfMonth, startOfMonth } from 'date-fns'
-import ChipDate from '@/shared/chip-date.vue'
+import ChipDate from '@/controls/chip-date.vue'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
-import ChipDescricao from '@/shared/chip-descricao.vue'
-import { prepareDate, prepareMoney } from '@/services/formaters'
-import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
+import ChipDescricao from '@/controls/chip-descricao.vue'
+import { prepareDate, prepareMoney } from '@/services/formatters'
+import CategoriaAutocomplete from '@/controls/categoria-autocomplete.vue'
 
 const router = useRouter()
 const movimentacaoStore = useMovimentacaoStore()

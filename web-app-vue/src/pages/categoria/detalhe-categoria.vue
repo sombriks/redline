@@ -3,7 +3,7 @@
   <v-card v-if="edit" elevation="24" min-width="300px" class="ma-2">
     <v-form v-model="valid" @submit.prevent.stop="doEdit">
       <v-color-picker v-model="catEdit.cor"></v-color-picker>
-      <v-text-field :rules="[requiredRule]" v-model="catEdit.descricao" label="Nome"></v-text-field>
+      <v-text-field :rules="[requiredRule('Descrição obrigatória')]" v-model="catEdit.descricao" label="Nome"></v-text-field>
       <v-container>
         <v-row align="center">
           <v-btn
@@ -40,7 +40,7 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { requiredRule } from '@/services/basic-rules'
-import ChipCategoria from '@/shared/chip-categoria.vue'
+import ChipCategoria from '@/controls/chip-categoria.vue'
 
 const props = defineProps(['categoria'])
 const emit = defineEmits(['onRemove', 'onEdit'])

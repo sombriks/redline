@@ -20,27 +20,27 @@
       >
       </v-select>
       <v-text-field
-        :rules="[requiredRule]"
+        :rules="[requiredRule('Descrição obrigatória')]"
         v-model="contaEdit.descricao"
         label="Descrição"
       ></v-text-field>
       <v-text-field
         v-if="contaEdit.tipo_conta_id == 3"
-        :rules="[dayOfMonthRule]"
+        :rules="[dayOfMonthRule('Dia inválido')]"
         v-model="contaEdit.dia_fechamento"
         label="Fechamento"
         prepend-inner-icon="mdi-calendar-check"
       ></v-text-field>
       <v-text-field
         v-if="contaEdit.tipo_conta_id == 3"
-        :rules="[dayOfMonthRule]"
+        :rules="[dayOfMonthRule('Dia inválido')]"
         v-model="contaEdit.dia_vencimento"
         label="Vencimento"
         prepend-inner-icon="mdi-calendar-alert"
       ></v-text-field>
       <v-text-field
         v-if="contaEdit.tipo_conta_id == 3 || contaEdit.tipo_conta_id == 2"
-        :rules="[numberRule]"
+        :rules="[numberRule('Inorme um valor numérico')]"
         type="number"
         v-model="contaEdit.limite"
         :label="contaEdit.tipo_conta_id == 2 ? 'Cheque especial' : 'Limite'"
@@ -83,7 +83,7 @@
 import { computed, reactive, ref } from 'vue'
 import { useContaStore } from '@/stores/contaStore'
 import { dayOfMonthRule, numberRule, requiredRule } from '@/services/basic-rules'
-import ChipConta from '@/shared/chip-conta.vue'
+import ChipConta from '@/controls/chip-conta.vue'
 
 const cState = useContaStore()
 

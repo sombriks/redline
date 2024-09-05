@@ -1,9 +1,9 @@
-export const requiredRule = (value) => {
-  return !!value || 'Required field'
+export const requiredRule = (message = 'Required field') => (value) => {
+  return !!value || message
 }
 
-export const lengthRule = (n, msg = `Minimum ${n} required`) => (value) => {
-  return value.length >= n || msg
+export const lengthRule = (n, message = `Minimum ${n} required`) => (value) => {
+  return value.length >= n || message
 }
 
 const dayOfMonth = [
@@ -11,14 +11,18 @@ const dayOfMonth = [
   28, 29, 30, 31
 ]
 
-export const dayOfMonthRule = (value) => {
-  return dayOfMonth.includes(parseInt(value)) || 'Must provide a valid day'
+export const dayOfMonthRule = (message = 'Must provide a valid day') => (value) => {
+  return dayOfMonth.includes(parseInt(value)) || message
 }
 
-export const numberRule = (value) => {
-  return !isNaN(value) || "Provide a valid number"
+export const numberRule = (message = 'Provide a valid number') => (value) => {
+  return !isNaN(value) || message
 }
 
-export const minValueRule = min => value => {
-  return parseInt(value) >= parseInt(min) || `Value smaller than ${min}`
+export const minValueRule = (min, message = `Value smaller than ${min}`) => value => {
+  return parseInt(value) >= parseInt(min) || message
+}
+
+export const minSizeRule = (min, message = `Must have size of at least ${min}`) => value => {
+  return parseInt(value.length) >= parseInt(min) || message
 }

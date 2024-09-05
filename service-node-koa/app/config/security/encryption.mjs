@@ -39,3 +39,5 @@ export const sign = (payload) => {
 export const verify = (token) => {
 	return jwt.verify(token?.token || token, process.env.SECRET);
 };
+
+export const newChallenge = () => randomBytes(3).toString('hex')

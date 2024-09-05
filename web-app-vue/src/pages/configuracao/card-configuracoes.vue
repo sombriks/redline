@@ -8,7 +8,7 @@
           color="green"
           variant="outlined"
           @click="(e) => (wantImport = true)"
-          >Importar
+        >Importar
         </v-btn>
         <v-form
           v-if="wantImport"
@@ -19,7 +19,7 @@
           <p class="item">Veja o <a href="dados.csv">arquivo de exemplo</a></p>
           <v-file-input
             v-model="csvFile"
-            :rules="[requiredRule, lengthRule(1)]"
+            :rules="[requiredRule('Arquivo obrigatório'), lengthRule(1,'Ao menos um arquivo deve ser selecionado')]"
             accept="text/plain, text/csv"
             class="item"
             label="Selecionar CSV"
@@ -51,7 +51,7 @@
           color="blue"
           variant="outlined"
           @click="wantExport = true"
-          >Exportar
+        >Exportar
         </v-btn>
         <v-form
           v-if="wantExport"
@@ -61,7 +61,7 @@
         >
           <!-- account -->
           <div class="item row">
-            <conta-autocomplete v-model="exporta.conta_id" :rules="[requiredRule]" />
+            <conta-autocomplete v-model="exporta.conta_id" :rules="[requiredRule('Conta obrigatória')]" />
           </div>
           <div class="item row">
             <chip-periodo
@@ -91,7 +91,7 @@
           </div>
         </v-form>
         <v-btn v-if="csvDownload" class="item" color="blue" variant="outlined" :href="csvDownload"
-          >Baixar arquivo
+        >Baixar arquivo
         </v-btn>
         <v-btn class="item" color="white" variant="outlined" @click="linkPerfil()">Editar perfil</v-btn>
         <v-btn class="item" color="orange" variant="outlined" @click="logout()">Desconectar</v-btn>
@@ -101,7 +101,7 @@
           color="red"
           variant="outlined"
           @click="wantDelete = true"
-          >Excluir conta
+        >Excluir conta
         </v-btn>
         <v-form
           v-if="wantDelete"
@@ -111,7 +111,7 @@
         >
           <v-text-field
             v-model="pwd"
-            :rules="[requiredRule]"
+            :rules="[requiredRule('Senha obrigatória')]"
             label="Confirme sua senha"
             type="password"
           />
@@ -151,14 +151,14 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
 import { lengthRule, requiredRule } from '@/services/basic-rules'
-import { prepareByte, readTextFile } from '@/services/formaters'
+import { prepareByte, readTextFile } from '@/services/formatters'
 import { downloadCsv, uploadCsv } from '@/services/api'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
-import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
+import ContaAutocomplete from '@/controls/conta-autocomplete.vue'
 import { endOfMonth, startOfMonth } from 'date-fns'
-import ChipPeriodo from '@/shared/chip-periodo.vue'
+import ChipPeriodo from '@/controls/chip-periodo.vue'
 
 const router = useRouter()
 
@@ -219,7 +219,7 @@ const closeExport = () => {
 }
 
 const linkPerfil = async () => {
-  alert("um email com o link de solicitação de alteração de dados foi enviado!")
+  alert('um email com o link de solicitação de alteração de dados foi enviado!')
   // XXX remover depois que tiver o serviço de email configurado
   await router.push('/user-details/1234')
 }
