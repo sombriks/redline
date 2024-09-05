@@ -3,3 +3,4 @@
 *.save
 .idea
 node_modules
+!.idea/runConfigurations/
