@@ -86,7 +86,7 @@ export const routes = [
       icon: 'mdi-cog-outline'
     }
   },
-  {component: UserDetailsPage, name: '/user-details', path: '/user-details/:editToken'},
+  {component: UserDetailsPage, name: '/user-details', path: '/user-details'},
 ]
 
 export const router = createRouter({

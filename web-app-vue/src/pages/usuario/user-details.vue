@@ -1,27 +1,23 @@
 <script setup>
-import { reactive, ref } from 'vue'
-import { useUserStore } from '@/stores/userStore'
-import { minSizeRule, requiredRule } from '@/services/basic-rules'
-import { useRoute, useRouter } from 'vue-router'
+import {reactive, ref} from 'vue'
+import {useUserStore} from '@/stores/userStore'
+import {minSizeRule, requiredRule} from '@/services/basic-rules'
+import {useRoute, useRouter} from 'vue-router'
 
 const valid = ref(false)
 const uState = useUserStore()
 const router = useRouter()
-const route = useRoute()
 
 const userUpdate = reactive({
   id: uState.userData.id,
   nome: uState.userData.nome,
   email: uState.userData.email,
-  editToken: route.params.editToken,
-  repetirSenha: '',
   senha: ''
 })
 
 const save = async () => {
   if (!valid.value) return
   if (confirm('Deseja realmente alterar seus dados pessoais?')) {
-    alert('Verifique o email de confirmação de alteração de dados')
     try {
       // TODO alterar os dados e descartar o link de alteração
       await uState.update(userUpdate)
@@ -29,66 +25,55 @@ const save = async () => {
       await router.push('/auth')
     } catch (e) {
       console.log(e)
-      alert('Problema ao atualizar')
+      alert(e?.message || 'Problema ao atualizar')
     }
   }
 }
 
 const cancelar = async () => {
-  if (confirm('Deseja realmente cancelar? será preciso gerar um novo link de alteração de dados!')) {
-    // TODO descartar o link de alteração
-    await uState.logout()
-    await router.push('/auth')
-  }
+  await router.push('/')
 }
 </script>
 <template>
   <v-card title="Editar dados pessoais" elevation="24">
     <v-form v-model="valid" @submit.prevent.stop="save" class="auth-form">
       <v-text-field
-        :rules="[requiredRule('Nome obrigatório')]"
-        v-model="userUpdate.nome"
-        label="Nome"
-        required
+          :rules="[requiredRule('Nome obrigatório')]"
+          v-model="userUpdate.nome"
+          label="Nome"
+          required
       ></v-text-field>
       <v-text-field
-        :rules="[requiredRule('Email obrigatório')]"
-        v-model="userUpdate.email"
-        label="Email"
-        required
-        type="email"
+          :rules="[requiredRule('Email obrigatório')]"
+          v-model="userUpdate.email"
+          label="Email"
+          required
+          type="email"
       ></v-text-field>
       <v-text-field
-        :rules="[requiredRule('Senha obrigatória'), minSizeRule(6, 'Senha deve ter no mínimo 6 caracteres')]"
-        v-model="userUpdate.senha"
-        label="Senha"
-        required
-        type="password"
+          :rules="[requiredRule('Senha obrigatória'), minSizeRule(6, 'Senha deve ter no mínimo 6 caracteres')]"
+          v-model="userUpdate.senha"
+          label="Senha"
+          required
+          type="password"
       ></v-text-field>
-      <v-text-field
-        :rules="[requiredRule('Confirmação de senha obrigatória'), minSizeRule(6)]"
-        v-model="userUpdate.repetirSenha"
-        label=" Confirma Senha"
-        required
-        type="password"
-      ></v-text-field>
-      <v-divider />
+      <v-divider/>
       <div class="row">
         <v-btn
-          variant="outlined"
-          class="ma-2"
-          color="green"
-          type="submit"
-          icon="mdi-check"
+            variant="outlined"
+            class="ma-2"
+            color="green"
+            type="submit"
+            icon="mdi-check"
         ></v-btn>
         <v-spacer></v-spacer>
         <v-btn
-          variant="outlined"
-          color="red"
-          class="ma-2"
-          type="button"
-          @click="cancelar"
-          icon="mdi-close"
+            variant="outlined"
+            color="red"
+            class="ma-2"
+            type="button"
+            @click="cancelar"
+            icon="mdi-close"
         ></v-btn>
       </div>
     </v-form>

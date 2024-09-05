@@ -20,7 +20,7 @@ const enviaChallenge = async () => {
       alert('Sucesso! faça login normalmente!')
       await router.push("/auth")
     } else {
-      alert('Algo deu errado, tente novamente')
+      alert('Algo deu errado, tente novamente.')
     }
   } catch (e) {
     console.log(e)

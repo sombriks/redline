@@ -72,12 +72,10 @@ export const delUsuarioRequest = async (ctx) => {
 
 export const updateUserRequest = async (ctx) => {
   const {usuario_id: id} = ctx.params;
-  const {nome, email, senha, editToken} = ctx.request.body;
+  const {nome, email, senha} = ctx.request.body;
   if (!nome) ctx.throw(400, "Nome de usuário requerido");
   if (!email) ctx.throw(400, "Email requerido");
   if (!senha) ctx.throw(400, "Senha requerida");
-  if (!editToken) ctx.throw(400, "editToken requerido");
-  // TODO verificar/consumir o editToken
   const affected = await updateUser({id, nome, email, senha});
   // ctx.response.status = 303
   // ctx.set("Location", `/dashboard`) // XXX too fancy!

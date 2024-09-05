@@ -219,9 +219,7 @@ const closeExport = () => {
 }
 
 const linkPerfil = async () => {
-  alert('um email com o link de solicitação de alteração de dados foi enviado!')
-  // XXX remover depois que tiver o serviço de email configurado
-  await router.push('/user-details/1234')
+  await router.push('/user-details')
 }
 
 const logout = async () => {
