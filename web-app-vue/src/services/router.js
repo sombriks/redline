@@ -1,7 +1,8 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import { useUserStore } from '@/stores/userStore'
+import {createRouter, createWebHashHistory} from 'vue-router'
+import {useUserStore} from '@/stores/userStore'
 
 const AuthPage = () => import('@/pages/usuario/auth-page.vue')
+const ConfirmaCadastro = () => import('@/pages/usuario/confirma-cadastro.vue')
 const CategoriasPage = () => import('@/pages/categoria/categorias-page.vue')
 const ConfigPage = () => import('@/pages/configuracao/config-page.vue')
 const UserDetailsPage = () => import('@/pages/usuario/user-details.vue')
@@ -15,17 +16,18 @@ const PlanejamentoPage = () => import('@/pages/planejamento/planejamento-page.vu
 const RecorrenciasPage = () => import('@/pages/recorrencia/recorrencias-page.vue')
 
 export const routes = [
-  { path: '/', redirect: '/dashboard' },
-  { component: AuthPage, path: '/auth' },
+  {path: '/', redirect: '/dashboard'},
+  {component: AuthPage, name: '/auth', path: '/auth'},
+  {component: ConfirmaCadastro, name: '/confirma-cadastro', path: '/confirma-cadastro/:email', props: true},
   {
     component: DashboardPage,
     path: '/dashboard',
-    meta: { label: 'Dashboard', icon: 'mdi-chart-bar' }
+    meta: {label: 'Dashboard', icon: 'mdi-chart-bar'}
   },
   {
     component: NovaMovimentacaoPage,
     path: '/nova-movimentacao',
-    meta: { label: 'Novo lançamento', icon: 'mdi-cash-plus' }
+    meta: {label: 'Novo lançamento', icon: 'mdi-cash-plus'}
   },
   {
     component: MovimentacaoPage,
@@ -59,7 +61,7 @@ export const routes = [
       icon: 'mdi-playlist-check'
     }
   },
-  { component: EditarMovimentacaoPage, path: '/editar-movimentacao/:id' },
+  {component: EditarMovimentacaoPage, path: '/editar-movimentacao/:id'},
   {
     component: PlanejamentoPage,
     path: '/planejamento',
@@ -84,7 +86,7 @@ export const routes = [
       icon: 'mdi-cog-outline'
     }
   },
-  { component: UserDetailsPage, path: '/user-details/:editToken' },
+  {component: UserDetailsPage, name: '/user-details', path: '/user-details/:editToken'},
 ]
 
 export const router = createRouter({
@@ -92,11 +94,12 @@ export const router = createRouter({
   history: createWebHashHistory()
 })
 
-const skips = ['/auth', '/user-details']
+const skips = ['/auth', '/confirma-cadastro', '/user-details']
 
 router.beforeEach(async (to) => {
   const userStore = useUserStore()
-  if (!userStore.store.token && !skips.includes(to.path)) {
-    return { path: '/auth' }
+  if (!userStore.store.token && !skips.includes(to.name)) {
+    console.log(`${to.path} not in ${skips}`)
+    return {path: '/auth'}
   }
 })

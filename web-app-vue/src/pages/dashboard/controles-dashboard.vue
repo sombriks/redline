@@ -65,7 +65,7 @@ import { endOfMonth, startOfMonth } from 'date-fns'
 import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
-import ChipPeriodo from '@/shared/chip-periodo.vue'
+import ChipPeriodo from '@/controls/chip-periodo.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
 import Saldos from '@/pages/dashboard/graficos/saldos.vue'
 import Vencimentos from '@/pages/dashboard/graficos/vencimentos.vue'

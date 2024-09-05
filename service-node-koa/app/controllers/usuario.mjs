@@ -1,6 +1,5 @@
 import {
   delUsuario,
-  getById,
   login,
   novoUsuario,
   resetCategorias,
@@ -9,6 +8,16 @@ import {
   validaInvite,
 } from "../services/index.mjs";
 import {sign} from "../config/security/index.mjs";
+import {
+  marcarConsumoConfirmaCadastro,
+  marcarEnvioConfirmaCadastro,
+  novoConfirmaCadastro,
+  validaConfirmaCadastro
+} from "../services/confirma_cadastro.mjs";
+import {emailConfirmaCadastro} from "../services/email.mjs";
+import {logger} from "../config/base-logging.mjs";
+
+const log = logger.scope('controllers/usuario.mjs')
 
 export const userLoginRequest = async (ctx) => {
   // TODO captcha protection
@@ -29,9 +38,25 @@ export const userSignupRequest = async (ctx) => {
     await resetConta({usuario_id: id});
     ctx.body = {id, nome, email, created: true};
   } else {
+    // email challenge
+    await validaConfirmaCadastro({email})
+    const [{challenge}] = await novoConfirmaCadastro({nome, email, senha});
+    const result = await emailConfirmaCadastro({email, nome, challenge})
+    log.info(result)
+    await marcarEnvioConfirmaCadastro({email, challenge})
     ctx.body = {message: "check mail for activation code!"}
   }
 };
+
+export const userConfirmRequest = async (ctx) => {
+  // TODO captcha protection
+  const {email, challenge} = ctx.request.body;
+  const {nome, senha} = await marcarConsumoConfirmaCadastro({email, challenge});
+  const [{id}] = await novoUsuario({nome, email, senha, pwdEncrypt: false});
+  await resetCategorias({usuario_id: id});
+  await resetConta({usuario_id: id});
+  ctx.body = {id, nome, email, created: true};
+}
 
 export const delUsuarioRequest = async (ctx) => {
   const {email, senha} = ctx.request.query;

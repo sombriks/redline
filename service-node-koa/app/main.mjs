@@ -35,7 +35,7 @@ import {
   updatePlanejamentoRequest,
   updateRecorrenciaRequest,
   updateUserRequest,
-  uploadMovimentacoesRequest,
+  uploadMovimentacoesRequest, userConfirmRequest,
   userLoginRequest,
   userSignupRequest,
 } from "./controllers/index.mjs";
@@ -66,6 +66,7 @@ new ApiBuilder({router})
 
     b.post("/login", userLoginRequest);
     b.post("/signup", userSignupRequest);
+    b.put("/confirma-cadastro", userConfirmRequest);
 
     b.path("/:usuario_id", ifAuthenticated, (b) => {
       b.del("/removeAccount", delUsuarioRequest);

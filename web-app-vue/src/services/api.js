@@ -230,3 +230,6 @@ export const geraLancamentosRecorrencia = async ({ id, recorrencia_id }) =>
 
 export const getDashboard = async ({ id, inicio, fim }) =>
   await get({ uri: uriParams({ uri: `/${id}/dashboard`, params: { inicio, fim } }) })
+
+export const confirmaCadastro = async ({email, challenge}) =>
+  await put({uri:'/confirma-cadastro', payload: {email, challenge}})

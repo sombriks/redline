@@ -62,10 +62,10 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { numberRule, requiredRule } from '@/services/basic-rules'
-import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
-import ChipDate from '@/shared/chip-date.vue'
+import ContaAutocomplete from '@/controls/conta-autocomplete.vue'
+import ChipDate from '@/controls/chip-date.vue'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
-import CategoriaAutocomplete from '@/shared/categoria-autocomplete.vue'
+import CategoriaAutocomplete from '@/controls/categoria-autocomplete.vue'
 
 const router = useRouter()
 const movimentacaoStore = useMovimentacaoStore()

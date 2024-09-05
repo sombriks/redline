@@ -35,7 +35,7 @@ import DetalhePlanejamento from '@/pages/planejamento/detalhe-planejamento.vue'
 import { computed, onMounted, reactive, ref } from 'vue'
 import { usePlanejamentoStore } from '@/stores/planejamentoStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
-import ChipSaldoPlanejamento from '@/shared/chip-saldo-planejamento.vue'
+import ChipSaldoPlanejamento from '@/controls/chip-saldo-planejamento.vue'
 
 const drawer = ref(false)
 

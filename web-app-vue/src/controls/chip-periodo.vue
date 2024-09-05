@@ -57,7 +57,7 @@
 <script setup>
 import { computed, defineModel, ref } from 'vue'
 import { prepareDate } from '@/services/formatters'
-import ChipDate from '@/shared/chip-date.vue'
+import ChipDate from '@/controls/chip-date.vue'
 import { addMonths, addYears } from 'date-fns'
 
 const props = defineProps(['label', 'reset'])

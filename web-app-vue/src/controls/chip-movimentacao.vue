@@ -67,9 +67,9 @@ import { computed, defineModel } from 'vue'
 import { prepareDate, prepareMoney } from '@/services/formatters'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
-import ChipCategoria from '@/shared/chip-categoria.vue'
-import ChipConta from '@/shared/chip-conta.vue'
-import ChipDescricao from '@/shared/chip-descricao.vue'
+import ChipCategoria from '@/controls/chip-categoria.vue'
+import ChipConta from '@/controls/chip-conta.vue'
+import ChipDescricao from '@/controls/chip-descricao.vue'
 import { isBefore } from 'date-fns'
 
 const mode = defineModel('mode', { default: 0 })

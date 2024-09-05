@@ -40,7 +40,7 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { requiredRule } from '@/services/basic-rules'
-import ChipCategoria from '@/shared/chip-categoria.vue'
+import ChipCategoria from '@/controls/chip-categoria.vue'
 
 const props = defineProps(['categoria'])
 const emit = defineEmits(['onRemove', 'onEdit'])

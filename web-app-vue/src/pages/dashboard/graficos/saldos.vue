@@ -31,7 +31,7 @@
   />
 </template>
 <script setup>
-import ChipValor from '@/shared/chip-valor.vue'
+import ChipValor from '@/controls/chip-valor.vue'
 import { useDashboardStore } from '@/stores/dashboardStore'
 
 const dashboardState = useDashboardStore()

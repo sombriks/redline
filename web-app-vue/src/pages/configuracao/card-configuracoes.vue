@@ -156,9 +156,9 @@ import { downloadCsv, uploadCsv } from '@/services/api'
 import { useContaStore } from '@/stores/contaStore'
 import { useCategoriaStore } from '@/stores/categoriaStore'
 import { useMovimentacaoStore } from '@/stores/movimentacaoStore'
-import ContaAutocomplete from '@/shared/conta-autocomplete.vue'
+import ContaAutocomplete from '@/controls/conta-autocomplete.vue'
 import { endOfMonth, startOfMonth } from 'date-fns'
-import ChipPeriodo from '@/shared/chip-periodo.vue'
+import ChipPeriodo from '@/controls/chip-periodo.vue'
 
 const router = useRouter()
 
